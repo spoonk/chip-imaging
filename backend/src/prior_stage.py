@@ -18,7 +18,7 @@ class PriorStage(Stage, Device):
 
     def connect(self):
         try:
-            self.connection = Serial(port=self.__serial_port, baudrate=STAGE_BAUD_RATE)
+            self.__connection = Serial(port=self.__serial_port, baudrate=STAGE_BAUD_RATE)
             self.__is_connected = True
         except SerialException as e:
             raise ConnectionError(f"Unable to connect to stage: reason {e}")
@@ -26,16 +26,31 @@ class PriorStage(Stage, Device):
     def close(self):
         if self.is_connected():
             self.__connected = False
-            self.connection.close()
+            self.__connection.close()
 
     def is_connected(self) -> bool:
         return self.__connected
-    
 
     def move(self, x:int, y:int):
         move_command = self.__format_move_cmd(x, y)
         self.__send_command(move_command)
         self.__wait_for_not_moving()
+
+    def get_current_position(self) -> tuple[float, float]:
+        # read x, y from stage
+        read_position_cmd = "P"
+        self.__send_command(read_position_cmd)
+        response = self.__connection.readline().decode()
+        # TODO: verify response is nice
+        # returns x,y,z
+        coordinates = tuple(response.split(',')[:1]) 
+        return (coordinates)
+
+    def get_step_resolution(self) -> tuple[float, float]:
+        get_step_res_cmd = "X" 
+        self.__send_command(get_step_res_cmd) 
+        response = self.__connection.readline().decode()
+        return tuple(response.split(',')[0])
 
     # formats a x,y movement command to a string that can be directly
     # sent to the controller
@@ -43,9 +58,8 @@ class PriorStage(Stage, Device):
         return f"G,{x},{y}"
         
     def __send_command(self, command:str):
-        self.connection.write(command)
-        self.connection.flush()
-
+        self.__connection.write(command)
+        self.__connection.flush()
 
     # waits for the stage to finish moving, blocking
     # control until the stage stops moving
@@ -54,6 +68,8 @@ class PriorStage(Stage, Device):
             sleep(STAGE_POLL_DELAY)
 
     def __is_moving(self) -> bool:
+        # call each twice to handle weird read
+        # TODO: investigate initial response
         return (self.__check_axis_moving_cmd('X') and
                 self.__check_axis_moving_cmd('Y') and
                 self.__check_axis_moving_cmd('X') and
@@ -62,10 +78,11 @@ class PriorStage(Stage, Device):
     def __check_axis_moving_cmd(self, axis:str) -> bool:
         check_axis_moving_cmd = f"$,{axis}"
         self.__send_command(check_axis_moving_cmd)
-        response = self.connect.readline().decode()
+        response = self.__connection.readline().decode()
         try:
             return bool(response)
         except Exception as e:
-            # TODO: when in doubt, be safe and say the stage is moving
+            # TODO: investigate
             print(e)
+            # when in doubt, be safe and say the stage is moving
             return True

@@ -25,8 +25,9 @@ class Stage(abc.ABC):
         pass
 
     # returns how much the stage moves in a single step (measured in nm / step)
+    # steps may differ between each axis
     @abc.abstractmethod
-    def get_step_resolution(self) -> float:
+    def get_step_resolution(self) -> tuple[float, float]:
         pass
 
     # returns an [x, y] tuple representing the coordinates of the center of 

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4fdc2a09a2b3cdc68c7a423c2119dfd24613af59426026b9f595781992943872"
+            "sha256": "647be58c59b5001e5a91aa7b58c9bd935a5ca0f0c44a651c399b60d6d20fde1f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -135,7 +135,7 @@
                 "sha256:f64bb98ac59b3ea3bf74b02f13836eb2e24e48e0ab0145bbda646295769bd780",
                 "sha256:f9006288bcf4895917d02583cf3411f98631275bc67cce355a7f39f8c14338fa"
             ],
-            "markers": "python_version >= '3.9'",
+            "markers": "python_version >= '3.7'",
             "version": "==1.24.2"
         },
         "opencv-python": {
@@ -179,6 +179,14 @@
             ],
             "index": "pypi",
             "version": "==10.3.0.71.0"
+        },
+        "pyserial": {
+            "hashes": [
+                "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb",
+                "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"
+            ],
+            "index": "pypi",
+            "version": "==3.5"
         },
         "werkzeug": {
             "hashes": [

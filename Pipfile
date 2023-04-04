@@ -4,10 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-opencv-python = "*"
-flask = "*"
-pymmcore = "*"
-pyserial = "*"
 
 [dev-packages]
 

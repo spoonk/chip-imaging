@@ -19,7 +19,7 @@ class PriorStage(Stage, Device):
     def connect(self):
         try:
             self.__connection = Serial(port=self.__serial_port, baudrate=STAGE_BAUD_RATE)
-            self.__is_connected = True
+            self.__connected = True
         except SerialException as e:
             raise ConnectionError(f"Unable to connect to stage: reason {e}")
         

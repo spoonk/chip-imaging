@@ -23,30 +23,25 @@ class MovementCoordinator():
 
     def move_to_next_location(self):
         # move to the next imaging location
-        
         self.__current_cell_ind += 1
         location: ImagingLocation = self.__grid.get_cell(self.__current_cell_ind)
 
-
         new_stage_position: tuple[float, float] = location.get_center_location()
+        pos_in_steps: tuple[int, int] = self.__location_nm_to_steps(new_stage_position)
 
-
-
-
-        pass
+        self.__stage.move_to(pos_in_steps[0], pos_in_steps[1]) 
 
     def has_next_location(self) -> bool:
         # returns true if we are not at the final location
-
-        pass
+        return self.__current_cell_ind != self.__grid.get_num_cells()
 
     def reset(self):
         # resets us to the start of the iteration 
         # does not move the stage to the first position
-
+        self.__current_cell_ind = -1
         pass
 
-    def location_nm_to_steps(self, location: tuple[float, float]) -> tuple[int, int]:
+    def __location_nm_to_steps(self, location: tuple[float, float]) -> tuple[int, int]:
         x_steps = location[0] / self.__nm_per_step
         y_steps = location[1] / self.__nm_per_step
         return tuple([x_steps, y_steps])

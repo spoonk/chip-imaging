@@ -1,10 +1,10 @@
-import abc
+from abc import ABC, abstractmethod
 
 """
 An interface for a microscope stage device
 """
 
-class Stage(abc.ABC):
+class Stage(ABC):
     """
     A stage is a moveable 2d-plane that can move to specified 
     positions and read the current position.
@@ -14,24 +14,24 @@ class Stage(abc.ABC):
     """
 
     # serialport: which COM port the stage controller is on 
-    @abc.abstractmethod
+    @abstractmethod
     def __init__(self, serialPort:str):
         pass
 
     # moves the stage to the absolute position (x,y) where x is left-right
     # y is forward-back and both are measured in steps
-    @abc.abstractmethod
-    def move(self, x: int, y:int):
+    @abstractmethod
+    def move_to(self, x: int, y:int):
         pass
 
     # returns how much the stage moves in a single step (measured in nm / step)
     # steps may differ between each axis
-    @abc.abstractmethod
+    @abstractmethod
     def get_step_resolution(self) -> tuple[float, float]:
         pass
 
     # returns an [x, y] tuple representing the coordinates of the center of 
     # the stage. Measure in nm
-    @abc.abstractmethod
+    @abstractmethod
     def get_current_position(self) -> tuple[float, float]:
         pass

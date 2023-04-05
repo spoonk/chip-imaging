@@ -31,7 +31,7 @@ class PriorStage(Stage, Device):
     def is_connected(self) -> bool:
         return self.__connected
 
-    def move(self, x:int, y:int):
+    def move_to(self, x:int, y:int):
         move_command = self.__format_move_cmd(x, y)
         self.__send_command(move_command)
         self.__wait_for_not_moving()

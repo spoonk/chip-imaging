@@ -8,6 +8,8 @@ opencv-python = "*"
 flask = "*"
 pymmcore = "*"
 pyserial = "*"
+ipykernel = "*"
+pycromanager = "*"
 
 [dev-packages]
 

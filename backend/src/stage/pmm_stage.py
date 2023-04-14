@@ -21,7 +21,6 @@ class PMMStage(Stage):
 
         final_pos = self.get_current_position()
         logging.getLogger().info(f"movement complete, final position ({final_pos[0]}, {final_pos[1]})")
-        
 
     def get_current_position(self) -> tuple[float, float]:
         return self._core.getXYPosition()

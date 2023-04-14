@@ -21,5 +21,20 @@ DEMO_DEVICE_CONFIG_PATH = r"C:\Program Files\Micro-Manager-2.0chipimaging/MMConf
 DATA_PATH = r"C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\prototyping\sample_data"
 
 
-# the config to be loaded when we run the program
-DEVICE_CONFIG = DEMO_DEVICE_CONFIG_PATH
+# configuration of the eclipse device 
+_ECLIPSE_DEVICE_CONFIG = {
+    "config_path": ECLIPSE_DEVICE_CONFIG_PATH,
+}
+
+# configuration of the eclipse device 
+_DEMO_DEVICE_CONFIG = {
+    "config_path": DEMO_DEVICE_CONFIG_PATH,
+}
+
+# the device we actually use
+DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
+
+# serial port the prior stage connects to
+PRIOR_CONTROLLER_PORT = "COM5"
+
+

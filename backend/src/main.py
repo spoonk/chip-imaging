@@ -1,20 +1,10 @@
-from stage.prior_stage import PriorStage
+import logging
+logging.basicConfig(level = logging.DEBUG)
 
 
-p = PriorStage('hi')
+from stage.pmm_stage import PMMStage
+s = PMMStage()
 
 
-from imager.pymmcore_singleton import PymmcoreSingleton
-
-
-inst = PymmcoreSingleton()
-del inst
-
-inst2 = PymmcoreSingleton()
-
-inst3 = PymmcoreSingleton()
-
-inst4 = PymmcoreSingleton()
-
-inst5 = PymmcoreSingleton()
-
+s.move_to(100.0, 100.0)
+print(s.get_current_position())

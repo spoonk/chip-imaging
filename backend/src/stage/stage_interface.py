@@ -13,25 +13,18 @@ class Stage(ABC):
     movement has finished
     """
 
-    # serialport: which COM port the stage controller is on 
     @abstractmethod
-    def __init__(self, serialPort:str):
+    def __init__(self):
         pass
 
     # moves the stage to the absolute position (x,y) where x is left-right
-    # y is forward-back and both are measured in steps
+    # y is forward-back and both are measured in um
     @abstractmethod
-    def move_to(self, x: int, y:int):
-        pass
-
-    # returns how much the stage moves in a single step (measured in nm / step)
-    # steps may differ between each axis
-    @abstractmethod
-    def get_step_resolution(self) -> tuple[float, float]:
+    def move_to(self, x: float, y:float):
         pass
 
     # returns an [x, y] tuple representing the coordinates of the center of 
-    # the stage. Measure in nm
+    # the stage. Measure in um
     @abstractmethod
     def get_current_position(self) -> tuple[float, float]:
         pass

@@ -1,7 +1,11 @@
+# DEPRECATED!!!
+
+raise Exception("this class is deprecated (for now)")
+
 from serial import Serial, SerialException
 from stage.stage_interface import Stage 
 from imager.device import Device
-from imager.config import STAGE_BAUD_RATE, STAGE_POLL_DELAY
+from imager.config import STAGE_BAUD_RATE, STAGE_POLL_DELAY, PRIOR_CONTROLLER_PORT
 from time import sleep # don't use this often
 
 class PriorStage(Stage, Device):
@@ -11,8 +15,8 @@ class PriorStage(Stage, Device):
     controls the stage    
     """
 
-    def __init__(self, serial_port:str):
-        self.__serial_port = serial_port
+    def __init__(self):
+        self.__serial_port = PRIOR_CONTROLLER_PORT
         self.__connected = False
         self.__connection: Serial = None
 

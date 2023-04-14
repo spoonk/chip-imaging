@@ -1,7 +1,7 @@
 from serial import Serial, SerialException
-from stage import Stage
-from device import Device
-from config import STAGE_BAUD_RATE, STAGE_POLL_DELAY
+from stage.stage_interface import Stage 
+from imager.device import Device
+from imager.config import STAGE_BAUD_RATE, STAGE_POLL_DELAY
 from time import sleep # don't use this often
 
 class PriorStage(Stage, Device):

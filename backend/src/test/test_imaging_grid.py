@@ -1,4 +1,4 @@
-from imaging_grid import ImagingGrid
+from imager.imaging_grid import ImagingGrid
 
 import unittest
 
@@ -15,7 +15,6 @@ class TestImagingGrid(unittest.TestCase):
         # should be able to call all get_cells without error
         for i in range(grid.get_num_cells()):
             cell = grid.get_cell(i)
-            print(cell.get_center_location())
 
         # cell locations should positively increase (unless the wrap lol)
 

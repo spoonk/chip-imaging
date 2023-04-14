@@ -1,4 +1,4 @@
-from prior_stage import PriorStage
+from stage.prior_stage import PriorStage
 
 
 p = PriorStage('hi')

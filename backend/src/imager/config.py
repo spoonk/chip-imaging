@@ -36,5 +36,3 @@ DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
 
 # serial port the prior stage connects to
 PRIOR_CONTROLLER_PORT = "COM5"
-
-

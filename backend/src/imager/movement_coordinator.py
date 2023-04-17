@@ -1,5 +1,5 @@
-from stage import Stage
-from imaging_grid import ImagingGrid, ImagingLocation
+from stage.stage_interface import Stage
+from imager.imaging_grid import ImagingGrid, ImagingLocation
 
 class MovementCoordinator():
     """
@@ -19,7 +19,6 @@ class MovementCoordinator():
         self.__stage: Stage = stage
         self.__grid: ImagingGrid = grid
         self.__current_cell_ind: int = -1
-        self.__nm_per_step: float = stage.get_step_resolution()
 
     def move_to_next_location(self):
         # move to the next imaging location
@@ -27,13 +26,14 @@ class MovementCoordinator():
         location: ImagingLocation = self.__grid.get_cell(self.__current_cell_ind)
 
         new_stage_position: tuple[float, float] = location.get_center_location()
-        pos_in_steps: tuple[int, int] = self.__location_nm_to_steps(new_stage_position)
+        # pos_in_steps: tuple[int, int] = self.__location_nm_to_steps(new_stage_position)
 
-        self.__stage.move_to(pos_in_steps[0], pos_in_steps[1]) 
+        self.__stage.move_to(new_stage_position[0], new_stage_position[1]) 
 
     def has_next_location(self) -> bool:
         # returns true if we are not at the final location
-        return self.__current_cell_ind != self.__grid.get_num_cells()
+        # print(self.__grid.get_num_cells())
+        return self.__current_cell_ind < self.__grid.get_num_cells() - 1
 
     def reset(self):
         # resets us to the start of the iteration 

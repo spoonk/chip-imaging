@@ -31,7 +31,7 @@ _DEMO_DEVICE_CONFIG = {
     "config_path": DEMO_DEVICE_CONFIG_PATH,
 }
 
-# the device we actually use
+# the device configuration that gets used in the program
 DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
 
 # serial port the prior stage connects to

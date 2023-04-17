@@ -31,6 +31,14 @@ class ImagingGrid():
         self.__distance_between: float = distance_between_cells 
         self.__cells = self.__compute_image_grid()
 
+    def __init__(self):
+        # empty constructor representing an unspecified grid
+        self.__top_left = (0.0, 0.0)
+        self.__imaging_width = 0.0
+        self.__imaging_height = 0.0
+        self.__distance_between = 0.1
+        self.__cells = self.__compute_image_grid()
+
     def __compute_image_grid(self) -> list[ImagingLocation]:
         """Recompute the imaging grid with the current parameters"""
         # 1 + since the first image won't be 100% chip

@@ -51,7 +51,8 @@ class ImagingGrid():
         for r in range(rows):
             for c in range(cols):
                # vertical position
-               y_offset: float = top_left_y + self.__distance_between * r
+               # note we use minus here since a negative value moves to a downward channel on the chip
+               y_offset: float = top_left_y - self.__distance_between * r
                # horizontal position
                x_offset: float = top_left_x + self.__distance_between * c
                loc = ImagingLocation(tuple([x_offset, y_offset]))

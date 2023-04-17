@@ -20,19 +20,25 @@ DEMO_DEVICE_CONFIG_PATH = r"C:\Program Files\Micro-Manager-2.0chipimaging/MMConf
 # default directory to store images int
 DATA_PATH = r"C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\prototyping\sample_data"
 
+# how long the camera should wait before and after taking an image (ms)
+CAMERA_WAIT_DURATION = 0.5
+
 
 # configuration of the eclipse device 
 _ECLIPSE_DEVICE_CONFIG = {
     "config_path": ECLIPSE_DEVICE_CONFIG_PATH,
+    "stage_name" : "TIXYDrive"
 }
 
 # configuration of the eclipse device 
 _DEMO_DEVICE_CONFIG = {
     "config_path": DEMO_DEVICE_CONFIG_PATH,
+    "stage_name": "XY"
 }
 
 # the device configuration that gets used in the program
-DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
+# DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
+DEVICE_CONFIG = _ECLIPSE_DEVICE_CONFIG
 
 # serial port the prior stage connects to
 PRIOR_CONTROLLER_PORT = "COM5"

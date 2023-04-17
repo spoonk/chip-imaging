@@ -3,6 +3,10 @@ from camera.camera_interface import Camera
 import numpy as np
 from math import ceil
 import logging
+from time import sleep
+from imager.config import CAMERA_WAIT_DURATION
+
+SLEEP_DURATION = 0.5 # 500ms
 
 class PMMCamera(Camera):
     """
@@ -26,10 +30,12 @@ class PMMCamera(Camera):
         self._connected = False
 
     def take_image(self) -> np.array:
+        sleep(CAMERA_WAIT_DURATION)
         self._core.snapImage()
-        im = self._core.getImage()
+        im = np.array(self._core.getImage())
         self._apply_gain(im)
-        return np.array(im)
+        sleep(CAMERA_WAIT_DURATION)
+        return im
     
     def set_gain(self, gain: int):
         self._gain = max(gain, 1)
@@ -47,7 +53,7 @@ class PMMCamera(Camera):
     def get_exposure(self) -> float:
         return self._core.getExposure()
 
-    def _apply_gain(self, image):
+    def _apply_gain(self, image: np.array):
         # @modifies image
 
         # the extra number of bits we will need to apply 
@@ -55,5 +61,5 @@ class PMMCamera(Camera):
         gainFactor = ceil(np.log10(self._gain) / np.log10(2))
 
         np.clip(image, 0, 2**(16-gainFactor)-1, out=image)
-        np.multiply(image, np.array(image)
+        np.multiply(image, np.array(self._gain)
             .astype(np.float64), out=image, casting='unsafe')

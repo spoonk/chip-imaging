@@ -20,7 +20,7 @@ class PymmcoreSingleton():
             PymmcoreSingleton._instance = pymmcore.CMMCore()
             PymmcoreSingleton._instance.setDeviceAdapterSearchPaths([MICROMANAGER_PATH])
             PymmcoreSingleton._instance.loadSystemConfiguration(DEVICE_CONFIG["config_path"])
-            logging.getLogger().info("pymmcore instance loaded")
+            logging.getLogger().info(f"pymmcore instance loaded from {DEVICE_CONFIG['config_path']}")
 
         self.core = PymmcoreSingleton._instance
         PymmcoreSingleton._instance_counter += 1

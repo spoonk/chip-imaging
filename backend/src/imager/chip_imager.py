@@ -45,9 +45,9 @@ class ChipImager():
             self._movement.move_to_next_location()
             image = self._camera.take_image()
             self._save_image(image, data_directory_path, f"{str(image_num)}.TIFF")
-            image_num += 1
             logging.getLogger().info(f"saved image {str(image_num)}")
-        
+            image_num += 1
+
         logging.getLogger().info(f"finished snapping images, check {data_directory_path}")
 
     def save_top_left_pos(self):

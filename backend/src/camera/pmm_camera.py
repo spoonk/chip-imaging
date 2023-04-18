@@ -4,9 +4,10 @@ import numpy as np
 from math import ceil
 import logging
 from time import sleep
+import cv2
 from imager.config import CAMERA_WAIT_DURATION
+from PIL import Image
 
-SLEEP_DURATION = 0.5 # 500ms
 
 class PMMCamera(Camera):
     """
@@ -30,11 +31,9 @@ class PMMCamera(Camera):
         self._connected = False
 
     def take_image(self) -> np.array:
-        sleep(CAMERA_WAIT_DURATION)
         self._core.snapImage()
         im = np.array(self._core.getImage())
         self._apply_gain(im)
-        sleep(CAMERA_WAIT_DURATION)
         return im
     
     def set_gain(self, gain: int):
@@ -63,3 +62,4 @@ class PMMCamera(Camera):
         np.clip(image, 0, 2**(16-gainFactor)-1, out=image)
         np.multiply(image, np.array(self._gain)
             .astype(np.float64), out=image, casting='unsafe')
+        

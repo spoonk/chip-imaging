@@ -6,6 +6,8 @@ from PIL import Image
 from imager.movement_coordinator import MovementCoordinator
 # from imager import device
 from os import path
+from time import sleep
+from imager.config import CAMERA_WAIT_DURATION
 
 import logging
 
@@ -43,7 +45,9 @@ class ChipImager():
         while self._movement.has_next_location():
             # print(self._movement.has_next_location())
             self._movement.move_to_next_location()
+            sleep(CAMERA_WAIT_DURATION)
             image = self._camera.take_image()
+            sleep(CAMERA_WAIT_DURATION)
             self._save_image(image, data_directory_path, f"{str(image_num)}.TIFF")
             logging.getLogger().info(f"saved image {str(image_num)}")
             image_num += 1

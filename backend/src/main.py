@@ -1,42 +1,29 @@
 import logging
 logging.basicConfig(level = logging.INFO)
+logging.getLogger('socketio').setLevel(logging.ERROR)
+logging.getLogger('engineio').setLevel(logging.ERROR)
+logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
+
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 from PIL import Image
 import io
-# import pyserial
-
-# from imager.chip_imager import ChipImager
-
+from flask_socketio import SocketIO
+from time import sleep
 
 from flask import Flask, Response
 from flask_cors import CORS
 from camera.pmm_camera import PMMCamera
 
 app = Flask('src')
-
-# cam = PMMCamera()
-# cam.connect()
-
-# cam = None
+CORS(app)
+sock = SocketIO(app, cors_allowed_origins='*')
 
 cache = {}
-
-# app.run(host='127.0.0.1', port=8078, debug=True)
-# CORS(app)
-# cam.connect()
-# cam.set_gain(2)
 
 
 # @app.route('/')
 # def hello():
     # return 'Hello, cruel world!'
-
-# @app.route('/echo/<phrase>')
-# def echo(phrase):
-#     return [phrase]
-
-# @app.route('/camera_feed')
-# def stream_camera_feed():
-#     return Response(cam.generate_live_feed(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/frame')
 def get_frame():
@@ -59,7 +46,32 @@ def init_camera():
     return "worked!"
 
 
+@sock.on('connect')
+def handle_connect():
+    print('connected')
+    sock.emit('message', 'hello there, my new socket friend')
+
+@sock.on('video')
+def handle_connect():
+    while True:
+        # sock.emit('message', i)
+        cam = cache['camera']
+
+        im = Image.fromarray(cam.take_image())
+        img_byte_arr = io.BytesIO()
+        im.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+        sock.emit('image', {'image_data': img_byte_arr})
+        sleep (0.1)
+
+
+
+
+@sock.on('disconnect')
+def handle_disconnect():
+    print('disconnected')
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8078, debug=True)
+    sock.run(app, host='127.0.0.1', port=8078, debug=True)
     if 'camera' in cache:
         del cache['camera']

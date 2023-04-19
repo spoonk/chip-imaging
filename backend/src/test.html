@@ -4,15 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <title>imaging testing client</title>
 </head>
 <body>
-    <img src="http://localhost:8078/frame" width="100%" height="auto">
+    <!-- <img src="http://localhost:8078/frame" width="100%" height="auto"> -->
+    <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        id="video"
+        width="100%" 
+        height="auto"
+    >
 
     <script>
         console.log('hur')
-        // fetch("http://localhost:8078/frame").then(res => { console.log(res); })
+        var socket = io.connect('http://localhost:8078')
+        socket.on('connect', () => {
+            console.log('connected')
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnected')
+        });
+
+       socket.on('message' , (data) => {
+            console.log(data)
+       });
+
+       socket.on('image', (imageData) => {
+            console.log(imageData)
+            var arrayBuffer = new Uint8Array(imageData['image_data'])
+            var blob = new Blob( [arrayBuffer], { type:"image/jpeg" } );
+
+            var img_url = URL.createObjectURL(blob);
+
+            var feed = document.getElementById('video')
+
+            // var im = document.createElement('img');
+            // im.src = img_url
+            // document.body.appendChild(im)
+
+            feed.src = img_url
+       })
     </script>
-        
-    
 </body>

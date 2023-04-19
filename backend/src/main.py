@@ -2,6 +2,7 @@ import logging
 logging.basicConfig(level = logging.INFO)
 from PIL import Image
 import io
+# import pyserial
 
 # from imager.chip_imager import ChipImager
 
@@ -12,10 +13,14 @@ from camera.pmm_camera import PMMCamera
 
 app = Flask('src')
 
-cam = PMMCamera()
-cam.connect()
+# cam = PMMCamera()
+# cam.connect()
 
-app.run(host='127.0.0.1', port=8078, debug=True)
+# cam = None
+
+cache = {}
+
+# app.run(host='127.0.0.1', port=8078, debug=True)
 # CORS(app)
 # cam.connect()
 # cam.set_gain(2)
@@ -33,16 +38,28 @@ app.run(host='127.0.0.1', port=8078, debug=True)
 # def stream_camera_feed():
 #     return Response(cam.generate_live_feed(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# @app.route('/frame')
-# def get_frame():
-#     im = Image.fromarray(cam.take_image())
-#     # im.show()
+@app.route('/frame')
+def get_frame():
+    # cam = PMMCamera()
+    # cam.connect()
+    cam = cache['camera']
 
-#     img_byte_arr = io.BytesIO()
-#     im.save(img_byte_arr, format='PNG')
-#     img_byte_arr = img_byte_arr.getvalue()
+    im = Image.fromarray(cam.take_image())
+    img_byte_arr = io.BytesIO()
+    im.save(img_byte_arr, format='PNG')
+    img_byte_arr = img_byte_arr.getvalue()
 
-#     return Response(img_byte_arr, mimetype='image/jpeg; boundary=frame')
+    return Response(img_byte_arr, mimetype='image/jpeg; boundary=frame')
 
-# if __name__ == '__main__':
-    # app.run(host='127.0.0.1', port=8078, debug=True)
+@app.route('/init')
+def init_camera():
+    cache['camera'] = PMMCamera()
+    cache['camera'].connect()
+    cache['camera'].set_gain(35)
+    return "worked!"
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=8078, debug=True)
+    if 'camera' in cache:
+        del cache['camera']

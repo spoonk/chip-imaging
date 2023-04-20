@@ -31,10 +31,15 @@ class CameraWindow extends Component {
         });
 
         socket.on('frame', (data) => {
+            console.info('got frame')
             var arrayBuffer = new Uint8Array(data['image_data'])
             var blob = new Blob( [arrayBuffer], { type:"image/jpeg" } );
             var img_url = URL.createObjectURL(blob);
             this.setState({ imgUrl: img_url })
+        })
+
+        socket.on('message', (data) => {
+            console.info(data)
         })
     }
 
@@ -50,7 +55,7 @@ class CameraWindow extends Component {
      */
     startVideoFeed = () => {
         console.info('starting the camera feed')
-        try { socket.emit('start_feed');
+        try { socket.emit('video');
         } catch (err) { console.error(err) }
     }
 
@@ -58,7 +63,7 @@ class CameraWindow extends Component {
         return ( 
             <div className={styles.CameraWindow}>
                 <CameraFeed imgUrl={this.state.imgUrl} />
-                <CameraControl startFeedFN ={this.startVideoFeed} />
+                <CameraControl startFeedFN={this.startVideoFeed} />
             </div>
         );
     }

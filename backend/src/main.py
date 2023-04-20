@@ -43,6 +43,7 @@ def init_camera():
     cache['camera'] = PMMCamera()
     cache['camera'].connect()
     cache['camera'].set_gain(35)
+    sock.send("I hate this")
     return "worked!"
 
 
@@ -53,9 +54,10 @@ def handle_connect():
 
 @sock.on('video')
 def handle_connect():
+    cam = cache['camera']
     while True:
-        # sock.emit('message', i)
-        cam = cache['camera']
+        sock.emit('message', 1)
+        # cam = cache['camera']
 
         im = Image.fromarray(cam.take_image())
         img_byte_arr = io.BytesIO()

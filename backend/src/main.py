@@ -1,6 +1,6 @@
 import logging
 logging.basicConfig(level = logging.INFO)
-# logging.getLogger('werkzeug').setLevel(logging.ERROR)
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 # logging.getLogger('socketio').setLevel(logging.ERROR)
 # logging.getLogger('engineio').setLevel(logging.ERROR)
 # logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
@@ -8,7 +8,7 @@ logging.basicConfig(level = logging.INFO)
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from time import sleep
+from time import sleep, time
 import io
 from PIL import Image
 
@@ -22,19 +22,17 @@ cache = {} # server lifetime-wide cache
 
 @sock.on('video')
 def handle_video():
-    # cam = PMMCamera()
-    # cam.connect()
+    cam = PMMCamera()
+    cam.connect()
+    cam.set_exposure(100)
 
     logging.getLogger().info("starting video loop")
-    i = 0
-    for i in range(201):
-        sock.emit('message', i)
-        # im = Image.fromarray(cam.take_image())
-        # img_byte_arr = io.BytesIO()
-        # im.save(img_byte_arr, format='PNG')
-        # img_byte_arr = img_byte_arr.getvalue()
-        # sock.emit('frame', {'image_data': img_byte_arr})
-        sleep (0.1)
+    while True:
+        im = Image.fromarray(cam.take_image())
+        img_byte_arr = io.BytesIO()
+        im.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+        sock.emit('frame', {'image_data': img_byte_arr})
 
 @sock.on('connect')
 def connect():

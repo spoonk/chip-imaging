@@ -1,0 +1,34 @@
+.input_field {
+    width: 100%;
+    /* margin:10px; */
+    /* height:100%; */
+}
+
+.input_bar {
+    outline: none;
+    border:none;
+    border-bottom: 2px solid black;
+    margin-bottom: -2px;
+    font-size: 32px;
+    width: 100%;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.label {
+    font-size: 32px;
+    position: relative;
+    transition: 0.12s;
+}
+
+.label_empty {
+    /* top: 42px; */
+    transform: translate(0, 42px);
+    width: fit-content;
+    user-select: none;
+    /* z-index: 1; */
+}
+
+.label_nonempty {
+
+}

@@ -1,14 +1,9 @@
-import CameraStream from './components/cameraWindow/CameraWindow';
-
+// import CameraStream from './components/cameraWindow/CameraWindow';
+import AppContainer from './components/AppContainer/AppContainer';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <CameraStream />
-      
-      </header>
-    </div>
+    <AppContainer />
   );
 }
 

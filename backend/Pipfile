@@ -12,6 +12,8 @@ ipykernel = "*"
 pycromanager = "*"
 matplotlib = "*"
 pillow = "*"
+flask-socketio = "*"
+flask-cors = "*"
 
 [dev-packages]
 

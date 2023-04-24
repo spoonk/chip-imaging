@@ -1,0 +1,6 @@
+.control_container {
+    outline: 1px solid black;
+    width:60%;
+    height: auto;
+    padding:100px;
+}

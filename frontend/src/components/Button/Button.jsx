@@ -11,9 +11,7 @@ class Button extends Component {
                 className={styles.button}
                 onClick={() => this.props.callback()}
             >
-
                 {this.props.name}
-
             </button>
          );
     }

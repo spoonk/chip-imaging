@@ -16,3 +16,7 @@ code {
   margin: 0;
   padding: 0;
 }
+
+:root {
+  --hover-color: rgb(242, 242, 242);
+}

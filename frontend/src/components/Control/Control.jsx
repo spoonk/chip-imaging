@@ -10,8 +10,7 @@ import MenuList from '../menus/MenuList/MenuList';
 
 class Control extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {currentMenu: menuArr[0]}
     }
 
@@ -26,6 +25,7 @@ class Control extends Component {
                     changeMenuCB = {this.setMenuCB.bind(this)}
                     currentMenu = {this.state.currentMenu}
                 />
+                {this.state.currentMenu[1]}
             </div>
         );
     }

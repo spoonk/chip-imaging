@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import Button from '../../Button/Button';
 
 class AcquisitionMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
+    beginAcquisition = async() => { }
 
     render() { 
         return (  
-            <h1>Acquisition</h1>
+            <div className="menu">
+                <Button 
+                    name="begin acquisition"
+                    callback={this.beginAcquisition.bind(this)}
+                />
+            </div>
         );
     }
 }

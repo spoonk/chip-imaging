@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import styles from "./InputField.module.css"
 
+
+/**
+ * props
+ * 
+ * name: the label of the input field
+ * changeCB: the callback function that is
+ *      called when the value in the input changes
+ *      (used for updating value)
+ * 
+ * value: the value displayed in the input field
+ */
+
 class InputField extends Component {
     
     isNumber = (str) => {

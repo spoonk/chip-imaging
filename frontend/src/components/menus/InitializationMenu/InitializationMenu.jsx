@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Button from '../../Button/Button';
 
 class InitializationMenu extends Component {
     constructor(props) {
@@ -8,10 +8,17 @@ class InitializationMenu extends Component {
 
     getName = () => { return "Initialization" }
 
+    initializeDevice = async() => { }
+
     render() { 
-        console.log('init render')
         return (  
-            <h1>init menu</h1>
+            <div className="menu">
+                { /** * connect to device */ }
+                <Button 
+                    name="initialize the device"
+                    callback={this.initializeDevice.bind(this)}
+                />
+            </div>
         );
     }
 }

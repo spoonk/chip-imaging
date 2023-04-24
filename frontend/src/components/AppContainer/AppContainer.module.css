@@ -1,5 +1,5 @@
 .app_container {
-    outline: 1px solid black;
+    /* outline: 1px solid black; */
     height:60vh;
     display: flex;
     position:absolute;

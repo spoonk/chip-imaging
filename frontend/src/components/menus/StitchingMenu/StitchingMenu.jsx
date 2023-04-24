@@ -1,14 +1,39 @@
 import React, { Component } from 'react';
-
+import Button from '../../Button/Button';
 
 class StitchingMenu extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            stitchng: false,
+            hasResult: false,
+        }
     }
-    state = {  }
+
+    startStitching = async() => { }
+    getStitched = async() => { }
+
     render() { 
         return (  
-            <h1>Sticthing</h1>
+            <div className="menu">
+                <Button
+                    name="start stitching"
+                    callback={this.startStitching.bind(this)}
+                />
+                <Button
+                    name="get stitching result"
+                    callback={this.getStitched.bind(this)}
+                />
+                {
+                    /**
+                     * will eventually have an image to display
+                     * 
+                     * eventually have some way to select a path
+                     * and save as tiff file there
+                     */
+                }
+            </div>
         );
     }
 }

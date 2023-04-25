@@ -4,9 +4,8 @@ import numpy as np
 from math import ceil
 import logging
 from time import sleep
-from imager.config import CAMERA_WAIT_DURATION
 
-SLEEP_DURATION = 0.5 # 500ms
+# SLEEP_DURATION = 0.5 # 500ms
 
 class PMMCamera(Camera):
     """
@@ -18,7 +17,7 @@ class PMMCamera(Camera):
         self._core = self._pymm.core
         self._connected = False
         self._gain = 1
-        logging.getLogger().info("camera instantiated")
+        logging.getLogger().info("pycromanager camera instantiated")
 
     def connect(self):
         # set the camera to a state where it can take pictures
@@ -30,11 +29,9 @@ class PMMCamera(Camera):
         self._connected = False
 
     def take_image(self) -> np.array:
-        sleep(CAMERA_WAIT_DURATION)
         self._core.snapImage()
         im = np.array(self._core.getImage())
         self._apply_gain(im)
-        sleep(CAMERA_WAIT_DURATION)
         return im
     
     def set_gain(self, gain: int):

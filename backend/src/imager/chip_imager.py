@@ -4,7 +4,7 @@ from camera.camera_interface import Camera
 from imager.imaging_grid import ImagingGrid
 from PIL import Image
 from imager.movement_coordinator import MovementCoordinator
-from config import CAMERA_WAIT_DURATION
+from imager.config import CAMERA_WAIT_DURATION
 from time import sleep
 # from imager import device
 from os import path
@@ -66,7 +66,7 @@ class ChipImager():
         self._ready = True
     
     def _save_image(self, image, data_directory_path:str, image_name:str):
-        # @requires pah exists
+        # @requires path exists
         "saves this image to the target directory"
         pilIm: Image = Image.fromarray(image) 
         pilIm.save(path.join(data_directory_path, image_name))

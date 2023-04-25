@@ -1,0 +1,41 @@
+.input_field {
+    width: 100%;
+    margin:10px;
+    margin-top:25;
+    margin-bottom: 25;
+    display: flex;
+    transition: 0.12s;
+    border-radius: 15px 15px 0px 15px;
+}
+
+.input_bar {
+    outline: none;
+    border:none;
+    font-size: 28px;
+    width: 100%;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    border-bottom: 2px solid black;
+    margin-bottom: -2px;
+    padding:10px;
+    background-color: rgba(255, 255, 255, 0);
+    /* border-radius: 0 0 15px 0; */
+}
+
+.input_field:hover {
+    background-color: var(--hover-color);
+}
+
+.label {
+    font-size: 28px;
+    position: relative;
+    transition: 0.12s;
+    padding:10px;
+    padding-right: 25px;
+}
+
+.label_empty {
+    transform: translate(0, 42px);
+    width: fit-content;
+    user-select: none;
+}

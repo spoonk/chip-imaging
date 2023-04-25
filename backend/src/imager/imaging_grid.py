@@ -34,9 +34,9 @@ class ImagingGrid():
     def __init__(self):
         # empty constructor representing an unspecified grid
         self.__top_left = (0.0, 0.0)
-        self.__imaging_width = 0.0
-        self.__imaging_height = 0.0
-        self.__distance_between = 0.1
+        self.__imaging_width = 1000.0
+        self.__imaging_height = 1000.0
+        self.__distance_between = 500.0
         self.__cells = self.__compute_image_grid()
 
     def __compute_image_grid(self) -> list[ImagingLocation]:

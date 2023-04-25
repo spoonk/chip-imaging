@@ -1,0 +1,19 @@
+.input_container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-right:100px;
+}
+
+.button_container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.camera_control {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}

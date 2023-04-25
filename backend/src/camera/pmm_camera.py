@@ -29,9 +29,11 @@ class PMMCamera(Camera):
         self._connected = False
 
     def take_image(self) -> np.array:
+        # sleep(CAMERA_WAIT_DURATION)
         self._core.snapImage()
         im = np.array(self._core.getImage())
         self._apply_gain(im)
+        # sleep(CAMERA_WAIT_DURATION)
         return im
     
     def set_gain(self, gain: int):

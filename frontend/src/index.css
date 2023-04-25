@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --hover-color: rgb(242, 242, 242);
+}
+
+
+.menu {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 28px;
+  height: 100%;
+}

@@ -20,7 +20,7 @@ class CameraWindow extends Component {
 
     componentDidMount = () => {
         // TODO: move these into their own functions
-        socket.connect();
+        // socket.connect();
 
         socket.on('connect', () => {
             console.info('socket connection established')
@@ -55,13 +55,16 @@ class CameraWindow extends Component {
      */
     startVideoFeed = () => {
         console.info('starting the camera feed')
-        try { socket.emit('video');
+        try { 
+            socket.connect();
+            socket.emit('video');
+
         } catch (err) { console.error(err) }
     }
 
     render() { 
         return ( 
-            <div className={styles.CameraWindow}>
+            <div className={styles.camera_window}>
                 <CameraFeed imgUrl={this.state.imgUrl} />
                 <CameraControl startFeedFN={this.startVideoFeed} />
             </div>

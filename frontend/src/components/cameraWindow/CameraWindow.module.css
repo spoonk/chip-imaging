@@ -1,6 +1,5 @@
 .camera_window {
-    width:40vw;
-    height: 100vh;
+    width:40%;
 }
 .camera_stream_container {
      color: red;
@@ -11,6 +10,11 @@
 }
 
 .camera_frame {
-    width: 100%;
+    width: 50%;
     height:auto;
+}
+
+img {
+    width:100%;
+    height: auto;
 }

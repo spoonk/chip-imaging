@@ -1,0 +1,8 @@
+.input_column {
+    width:100%;
+    padding: 30px;
+}
+
+.column_wrapper {
+    display: flex;
+}

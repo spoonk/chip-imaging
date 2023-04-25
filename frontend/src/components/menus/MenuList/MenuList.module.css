@@ -1,0 +1,28 @@
+.menu_list {
+    display: flex;
+    flex-direction: row;
+    padding: 0 50px;
+    /* height: 100px; */
+}
+
+.menu_list_item {
+    padding: 40px;
+    font-size: 32px;
+    width: 100%;
+    text-align: center;
+    transition: 0.12s;
+    cursor: pointer;
+}
+
+.item_active {
+    color:black;
+}
+
+.item_inactive {
+    color:gray;
+}
+
+
+.item_inactive:hover {
+    color:black;
+}

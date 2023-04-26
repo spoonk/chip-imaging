@@ -24,6 +24,9 @@ DATA_PATH = r"C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\prototyping
 CAMERA_WAIT_DURATION = 0.5
 
 
+CAMERA_RESOLUTION = (1344, 1024)
+
+
 # configuration of the eclipse device 
 _ECLIPSE_DEVICE_CONFIG = {
     "config_path": ECLIPSE_DEVICE_CONFIG_PATH,

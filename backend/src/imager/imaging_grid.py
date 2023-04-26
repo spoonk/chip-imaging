@@ -10,9 +10,6 @@ class ImagingLocation():
         """
         return self.__center
 
-
-# TODO: add an iterable class for this that can be returned (just for convenience)
-
 class ImagingGrid():
     """
     An imaging grid plans a set of locations
@@ -24,12 +21,13 @@ class ImagingGrid():
 
     # distance_between_cells is measured in nanometers (nm)
     # top_left is the x,y (nm) coordinates of the center of the top left image cell
-    def __init__(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float):
+    def __init__(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixels_per_um: float):
         self.__top_left: tuple[float, float] = top_left 
         self.__imaging_width = imaging_width
         self.__imaging_height = imaging_height
         self.__distance_between: float = distance_between_cells 
         self.__cells = self.__compute_image_grid()
+        self.__pixels_per_um = pixels_per_um # each pixel represents a 1x1 um square
 
     def __init__(self):
         # empty constructor representing an unspecified grid
@@ -38,6 +36,7 @@ class ImagingGrid():
         self.__imaging_height = 1000.0
         self.__distance_between = 500.0
         self.__cells = self.__compute_image_grid()
+        self.__pixels_per_um = 1 # each pixel represents a 1x1 um square
 
     def __compute_image_grid(self) -> list[ImagingLocation]:
         """Recompute the imaging grid with the current parameters"""
@@ -60,20 +59,33 @@ class ImagingGrid():
         
         return cells
 
+    # returns (rows, cols) for imaging locations
+    def get_grid_dimensions(self) -> tuple[int, int]:
+        rows = 1 + math.ceil(self.__imaging_height / self.__distance_between)
+        cols = 1 + math.ceil(self.__imaging_width / self.__distance_between)
+        return tuple([rows, cols])
+
     # pre: index is in [0, num_cells)
     def get_cell(self, index: int) -> ImagingLocation:
         return self.__cells[index]
     
     def get_num_cells(self) -> int:
         return len(self.__cells)
+    
+    def get_pixels_per_um(self) -> float:
+        return self.__pixels_per_um
+    
+    def set_pixels_per_um(self, pixels_per_um: float):
+        self.__pixels_per_um = pixels_per_um
 
-    def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float):
+    def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixel_size_um: float):
         # reset all properties of the imaging grid
         self.__top_left: tuple[float, float] = top_left 
         self.__imaging_width = imaging_width
         self.__imaging_height = imaging_height
         self.__distance_between: float = distance_between_cells 
         self.__cells = self.__compute_image_grid()
+        self.__pixels_per_um = pixel_size_um
 
     def set_top_left(self, top_left: tuple[float, float]):
         self.__top_left = top_left

@@ -66,6 +66,12 @@ class ImagingGrid():
     
     def get_num_cells(self) -> int:
         return len(self.__cells)
+    
+    # returns (rows, cols) for imaging locations
+    def get_grid_dimensions(self) -> tuple[int, int]:
+        rows = 1 + math.ceil(self.__imaging_height / self.__distance_between)
+        cols = 1 + math.ceil(self.__imaging_width / self.__distance_between)
+        return tuple([rows, cols])
 
     def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float):
         # reset all properties of the imaging grid

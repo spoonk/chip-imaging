@@ -53,10 +53,13 @@ class LinearStitcher(StitchPipeline):
         # uses the image grid to determine where to paste the images in the canvas
         top_left = self._grid.get_cell(0).get_center_location()
         center_offset = (0, 0) # shift x and y by the width of the image / 2, height / 2
-        # y_shift = -18
-        # x_shift = 5
-        y_shift = 0
-        x_shift = 0
+        y_shift = -12
+        x_shift = 12
+        # y_shift = -30
+        # x_shift = 30
+
+        # y_shift = 0
+        # x_shift = 0
 
         grid_dims = self._grid.get_grid_dimensions()
 

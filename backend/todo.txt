@@ -12,3 +12,6 @@ Integration requirements:
 
 - prepare a demo notebook for the device
 - debug stage dying issue
+
+
+- don't want the device to be runabble if we're stitching, so context imager manager needs to cover that

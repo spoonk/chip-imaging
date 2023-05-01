@@ -48,15 +48,18 @@ class LinearStitcher(StitchPipeline):
 
         # for image in images:
 
-    def _paste_images_into_canvas(self, canvas, images):
+    def _paste_images_into_canvas(self, canvas, images, x_shift = 9, y_shift = -9):
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
         top_left = self._grid.get_cell(0).get_center_location()
+        # TODO: fix with integration testing
         center_offset = (0, 0) # shift x and y by the width of the image / 2, height / 2
+
+        #TODO: change shifting depending on distance between images
         # y_shift = -18
         # x_shift = 5
-        y_shift = 0
-        x_shift = 0
+        # y_shift = 0
+        # x_shift = 0
 
         grid_dims = self._grid.get_grid_dimensions()
 

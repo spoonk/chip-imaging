@@ -2,7 +2,7 @@ from stitcher.stitch_pipeline_interface import StitchPipeline
 from imager.imaging_grid import ImagingGrid
 from os import listdir, path
 from PIL import Image, ImageDraw
-from imager.config import CAMERA_RESOLUTION
+from imager.config import CAMERA_RESOLUTION, STITCHED_IMAGE_NAME
 
 class LinearStitcher(StitchPipeline):
     """
@@ -20,20 +20,14 @@ class LinearStitcher(StitchPipeline):
         # load images
         images = self._load_tiff_images()
         # figure out each image's center (via imaging grid's get cell)
-
+        result = self._stitch_images(images)
         # convert those centers to pixel locations
-
-        # paste the images into a canvas based off of their offset
-        
-        pass
+        result.save(path.join(self._data_path, STITCHED_IMAGE_NAME))
 
     def get_stitch_result(self):
         
         pass
     
-    def save_stitch_result(self, save_dir_path: str):
-
-        pass
 
     def _stitch_images(self, images):
         total_width_um = self._compute_image_width_um()
@@ -44,22 +38,21 @@ class LinearStitcher(StitchPipeline):
 
         canvas:Image = Image.new('I;16',  size=(pixels_x, pixels_y))
 
+        # paste the images into the canvas
+        canvas = self._paste_images_into_canvas(canvas, images)
+
         return canvas
 
-        # for image in images:
-
     def _paste_images_into_canvas(self, canvas, images, x_shift = 9, y_shift = -9):
+        # @modifies: canvas
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
-        top_left = self._grid.get_cell(0).get_center_location()
+        
         # TODO: fix with integration testing
+        top_left = self._grid.get_cell(0).get_center_location()
         center_offset = (0, 0) # shift x and y by the width of the image / 2, height / 2
 
-        #TODO: change shifting depending on distance between images
-        # y_shift = -18
-        # x_shift = 5
-        # y_shift = 0
-        # x_shift = 0
+        #TODO: change shifting depending on distance between images (or for now leave it as a parameter)
 
         grid_dims = self._grid.get_grid_dimensions()
 
@@ -73,12 +66,11 @@ class LinearStitcher(StitchPipeline):
             image_center_px[0] = int(abs(image_center_px[0])) + (x_shift * (i // grid_dims[0]))
             image_center_px[1] = int(abs(image_center_px[1])) + (y_shift * (i % grid_dims[1]))
 
-            # image_center_px[0] += -top_left[0] + center_offset[0]
-            # image_center_px[1] += -top_left[1] + center_offset[1]
+            image_center_px[0] += -top_left[0] + center_offset[0]
+            image_center_px[1] += -top_left[1] + center_offset[1]
 
-            # image_center_px[0] = int(image_center_px[0])
-            # image_center_px[1] = int(image_center_px[1])
-
+            image_center_px[0] = int(image_center_px[0])
+            image_center_px[1] = int(image_center_px[1])
 
             print(image_center_px)
             canvas.paste(image, image_center_px)
@@ -127,7 +119,7 @@ class LinearStitcher(StitchPipeline):
             if file_path.endswith(".TIFF"):
                 # use this file
                 image = Image.open(file_path)
-                draw = ImageDraw.Draw(image, 'I;16') 
+                # draw = ImageDraw.Draw(image, 'I;16') 
                 # draw.line((0,0, image.width - 1, 0), fill=0, width=20)
                 # draw.line((0,0, 0, image.height - 1), fill=0, width=20)
                 images.append(image)

@@ -26,6 +26,9 @@ CAMERA_WAIT_DURATION = 0.5
 
 CAMERA_RESOLUTION = (1344, 1024)
 
+# name of the stitched file
+STITCHED_IMAGE_NAME = "stitched.TIFF"
+
 
 # configuration of the eclipse device 
 _ECLIPSE_DEVICE_CONFIG = {

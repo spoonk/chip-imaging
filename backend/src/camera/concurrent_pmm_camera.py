@@ -7,43 +7,42 @@ class CPMMCamera(Camera):
     Concurrency wrapper around a pycromanager-camera that 
     only allows one thread to access the camera at a time
     """
+    # TODO: could write a decorator...
 
     def __init__(self):
         self._cam = PMMCamera()
         self._lock = Lock()
 
     def connect(self):
-        self._lock.acquire()
-        self._cam.connect()
-        self._lock.release()
+        with self._lock:
+            self._cam.connect()
 
     def close(self):
-        self._lock.acquire()
-        self._cam.close()
-        self._lock.release()
+        with self._lock:
+            self._cam.close()
 
     def take_image(self):
-        self._lock.acquire()
-        im = self._cam.take_image()
-        self._lock.release()
-        return im
+        with self._lock:
+            im = self._cam.take_image()
+            return im
 
     def set_gain(self, gain: int):
-        self._lock.acquire()
-        self._cam.set_gain(gain)
-        self._lock.release()
+        with self._lock:
+            self._cam.set_gain(gain)
 
     def set_exposure(self, exposure: float):
-        self._lock.acquire()
-        self._cam.set_exposure(exposure)
-        self._lock.release()
+        with self._lock:
+            self._cam.set_exposure(exposure)
 
     def is_connected(self):
-        return self._cam.is_connected()
+        with self._lock:
+            return self._cam.is_connected()
     
     def get_gain(self):
-        return self._cam.get_gain()
+        with self._lock:
+            return self._cam.get_gain()
     
     def get_exposure(self) -> float:
-        return self._cam.get_exposure()
+        with self._lock:
+            return self._cam.get_exposure()
     

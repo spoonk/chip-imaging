@@ -8,7 +8,7 @@ import { serverUrl } from "./config"
 
 /**
  * pings the server for the status of the device,
- * returning a json object
+ * returning a json object or None
  */
 const getStatus = async() => {
 

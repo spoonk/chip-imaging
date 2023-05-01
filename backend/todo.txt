@@ -1,0 +1,17 @@
+Integration requirements: 
+- device wrapper that rejects requests if device is busy
+-- needs to maintain some status via threads
+- wrapper needs a getStatus method for client to ping
+- (client side should be completely disabled until a get status returns idle)
+- the device wrapper should only handle the imaging + saving side of imaging
+- the pipeline can be separate
+
+
+- try to keep the server code separate, just calling one method in each route
+
+
+- prepare a demo notebook for the device
+- debug stage dying issue
+
+
+- don't want the device to be runabble if we're stitching, so context imager manager needs to cover that

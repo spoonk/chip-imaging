@@ -12,7 +12,11 @@ from time import sleep, time
 import io
 from PIL import Image
 
-from camera.pmm_camera import PMMCamera
+# from camera.pmm_camera import PMMCamera
+from camera.concurrent_pmm_camera import CPMMCamera
+from stage.pmm_stage import PMMStage
+from imager.chip_imager import ChipImager
+from server.imager_manager import ImagerManager
 
 app = Flask('src')
 CORS(app)
@@ -22,9 +26,10 @@ cache = {} # server lifetime-wide cache
 
 @sock.on('video')
 def handle_video():
-    cam = PMMCamera()
-    cam.connect()
-    cam.set_exposure(100)
+    # cam = CPMMCamera()
+    # cam.connect()
+    # cam.set_exposure(100)
+    cam = cache['camera']
 
     logging.getLogger().info("starting video loop")
     while True:
@@ -34,13 +39,47 @@ def handle_video():
         img_byte_arr = img_byte_arr.getvalue()
         sock.emit('frame', {'image_data': img_byte_arr})
 
-@sock.on('connect')
-def connect():
-    print('connected')
+@app.route('/initialize')
+def initialize():
+    cam = CPMMCamera()
+    cam.connect()
+    cam.set_exposure(100)
+    cache['camera'] = cam
 
-@sock.on('disconnect')
-def connect():
-    print('disconnected')
+    stage = PMMStage()
+    cache['stage'] = stage
+
+    imager = ChipImager(stage, cam)  
+    cache['imager'] = imager
+
+    imager_manager = ImagerManager(imager)
+    cache['manager'] = imager_manager
+
+    return "initialized"
+
+@app.route('status')
+def get_status():
+    return cache['manager'].get_status()
+
+
+
+# set imaging parameters
+
+# set a path
+
+# start stitching
+
+# get stitch result
+
+# start acquiring
+
+# @sock.on('connect')
+# def connect():
+#     print('connected')
+
+# @sock.on('disconnect')
+# def connect():
+#     print('disconnected')
 
 if __name__ == '__main__':
     sock.run(app, host='127.0.0.1', port=8079, debug=True)

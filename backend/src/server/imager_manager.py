@@ -44,19 +44,18 @@ class ImagerManager():
             return False
 
     # change chip parameters
-    def change_imaging_parameters(self, top_left: tuple[float, float], 
-            imaging_width: float, imaging_height: float, 
-            distance_between_cells: float, pixel_size_um: float) -> bool:
+    def change_imaging_parameters(self, imaging_width: float, imaging_height: float, 
+            distance_between_cells: float) -> bool:
 
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 grid:ImagingGrid = self._imager.get_imaging_grid()
                 grid.set_properties(
-                    top_left,
+                    grid.get_cell(0).get_center_location(), # reuse top left
                     imaging_width,
                     imaging_height,
                     distance_between_cells,
-                    pixel_size_um)
+                    grid.get_pixels_per_um)
                 
                 # note that updating the grid will still update the stitcher
                 return True

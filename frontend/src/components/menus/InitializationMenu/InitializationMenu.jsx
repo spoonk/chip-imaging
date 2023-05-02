@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../Button/Button';
+import { ServerInterface } from '../../../ServerInterface';
 
 class InitializationMenu extends Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class InitializationMenu extends Component {
 
     getName = () => { return "Initialization" }
 
-    initializeDevice = async() => { }
+    initializeDevice = () => { ServerInterface.initialize() }
 
     render() { 
         return (  

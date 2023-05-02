@@ -46,12 +46,12 @@ class ConfigMenu extends Component {
 
                         <div className={styles.input_column}>
                             <InputField 
-                                name="width of chip (um)"
+                                name="width of stitched image (um)"
                                 changeCB={(val) => {this.setState({width: val})}}
                                 value={this.state.width}
                             />
                             <InputField 
-                                name="height of chip (um)"
+                                name="height of stitched image (um)"
                                 changeCB={(val) => {this.setState({height: val})}}
                                 value={this.state.height}
                             />

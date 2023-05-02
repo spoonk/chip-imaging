@@ -15,6 +15,8 @@ class LinearStitcher(StitchPipeline):
         # use imaging grid to determine layout of each image
         self._data_path = tiff_images_dir_path
         self._grid = grid
+        self.dx = 9
+        self.dy = -9
 
     def run(self):
         # load images
@@ -27,7 +29,10 @@ class LinearStitcher(StitchPipeline):
     def get_stitch_result(self):
         
         pass
-    
+
+    def set_xy_shift(self, x_shift, y_shift):
+        self._dx = x_shift
+        self._dy = y_shift
 
     def _stitch_images(self, images):
         total_width_um = self._compute_image_width_um()
@@ -39,11 +44,12 @@ class LinearStitcher(StitchPipeline):
         canvas:Image = Image.new('I;16',  size=(pixels_x, pixels_y))
 
         # paste the images into the canvas
+        # shift_factor = (0.009) * self._grid.get_distance_between_images_um()
         canvas = self._paste_images_into_canvas(canvas, images)
 
         return canvas
 
-    def _paste_images_into_canvas(self, canvas, images, x_shift = 9, y_shift = -9):
+    def _paste_images_into_canvas(self, canvas, images):
         # @modifies: canvas
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
@@ -55,6 +61,8 @@ class LinearStitcher(StitchPipeline):
         #TODO: change shifting depending on distance between images (or for now leave it as a parameter)
 
         grid_dims = self._grid.get_grid_dimensions()
+        x_shift = self._dx
+        y_shift = self._dy
 
         for i in range(len(images)):
             image = images[i]
@@ -66,8 +74,8 @@ class LinearStitcher(StitchPipeline):
             image_center_px[0] = int(abs(image_center_px[0])) + (x_shift * (i // grid_dims[0]))
             image_center_px[1] = int(abs(image_center_px[1])) + (y_shift * (i % grid_dims[1]))
 
-            image_center_px[0] += -top_left[0] + center_offset[0]
-            image_center_px[1] += -top_left[1] + center_offset[1]
+            # image_center_px[0] += -top_left[0] + center_offset[0]
+            # image_center_px[1] += -top_left[1] + center_offset[1]
 
             image_center_px[0] = int(image_center_px[0])
             image_center_px[1] = int(image_center_px[1])

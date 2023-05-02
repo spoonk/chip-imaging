@@ -75,6 +75,9 @@ class ImagingGrid():
     def get_pixels_per_um(self) -> float:
         return self.__pixels_per_um
     
+    def get_distance_between_images_um(self) -> float:
+        return self.__distance_between
+    
     def set_pixels_per_um(self, pixels_per_um: float):
         self.__pixels_per_um = pixels_per_um
 

@@ -4,6 +4,7 @@ import { socket } from '../../socket';
 import CameraFeed from '../cameraFeed/CameraFeed';
 import { defaultImg } from '../../config';
 import CameraControl from '../CameraControl/CameraControl';
+import { ServerInterface } from '../../ServerInterface';
 
 /**
  * A CameraWindow is a widget for streaming camera from the microscope
@@ -62,11 +63,19 @@ class CameraWindow extends Component {
         } catch (err) { console.error(err) }
     }
 
+    setGainAndExposure = (gain, exposure) => {
+        // console.info(`setting gain and exposure to ${gain}, ${exposure}`)
+        try {
+           ServerInterface.setGainExposure(gain, exposure) 
+           console.log("hi")
+        } catch (err) { console.error(err) }
+    }
+
     render() { 
         return ( 
             <div className={styles.camera_window}>
                 <CameraFeed imgUrl={this.state.imgUrl} />
-                <CameraControl startFeedFN={this.startVideoFeed} />
+                <CameraControl startFeedFN={this.startVideoFeed} setGainExposureFN={this.setGainAndExposure} />
             </div>
         );
     }

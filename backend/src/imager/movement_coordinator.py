@@ -1,5 +1,6 @@
 from stage.stage_interface import Stage
 from imager.imaging_grid import ImagingGrid, ImagingLocation
+from time import sleep
 
 class MovementCoordinator():
     """

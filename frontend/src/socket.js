@@ -1,4 +1,4 @@
 import { io } from 'socket.io-client'
-import { backendAddress } from './config'
+import { serverUrl } from './config'
 
-export const socket = io(backendAddress)
+export const socket = io(serverUrl)

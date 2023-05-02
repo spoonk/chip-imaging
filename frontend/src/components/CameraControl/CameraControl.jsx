@@ -14,6 +14,7 @@ class CameraControl extends Component {
 
     changeExposureCB = (exposure) => { this.setState({exposureVal: exposure}) }
     changeGainCB = (gain) => { this.setState({gainVal: gain}) }
+    setGainExposure = () => { this.props.setGainExposureFN(this.state.gainVal, this.state.exposureVal) }
 
     render() { 
         return (  
@@ -36,7 +37,7 @@ class CameraControl extends Component {
                         name={'start camera feed'}
                     />
                     <Button 
-                        callback={this.props.startFeedFN} 
+                        callback={this.setGainExposure.bind(this)} 
                         name={'set gain and exposure'}
                     />
                 </div>

@@ -11,6 +11,8 @@ from flask_socketio import SocketIO
 from time import sleep, time
 import io
 from PIL import Image
+from tkinter.filedialog import askdirectory
+from tkinter import Tk
 
 # from camera.pmm_camera import PMMCamera
 from camera.concurrent_pmm_camera import CPMMCamera
@@ -28,7 +30,6 @@ cache = {} # server lifetime-wide cache
 def handle_video():
     if 'feeding' in cache and not cache['feeding']:
         cache['feeding'] = True
-        cache['amount'] += 1
         cam = cache['camera']
 
         logging.getLogger().info("starting video loop")
@@ -39,9 +40,6 @@ def handle_video():
             im.save(img_byte_arr, format='PNG')
             img_byte_arr = img_byte_arr.getvalue()
             sock.emit('frame', {'image_data': img_byte_arr})
-            # print(cache['amount'])
-        print("I exited")
-        cache['feeding'] = False
 
 
 @app.route('/initialize')
@@ -63,6 +61,7 @@ def initialize():
     cache['feeding'] = False
     cache['amount'] = 0
 
+
     return "initialized"
 
 @app.route('/status')
@@ -77,7 +76,6 @@ def update_imaging_parameters(width, height, distance):
         cache['manager'].change_imaging_parameters(width, height, distance)
         return f"set parameters to {width} {height} {distance}"
     return f"{width}, {height}, {distance}"
-
 
 @app.route('/exposure/<exposure>')
 def set_camera_exposure(exposure):
@@ -97,22 +95,41 @@ def set_gain(gain):
         return f"set gain to {gain}"
     return "camera not initialized"
 
+@app.route('/promptDataPath')
+def prompt_path():
+    # prompts the user to select where the data images will be saved
+    if 'manager' in cache:
+        # TODO: move into a helper function, add a button on tkinter window
+        # that says select path then destroys window
+        root = Tk()
+        root.wm_attributes('-topmost', 1)
+        root.mainloop()
+        directory_path = askdirectory(initialdir="./")
+        print(directory_path)
+        cache['manager'].set_image_output_path(directory_path)
+        return directory_path
+    return "please initialize the device first"
 
-# set a path
+@app.route('/stitch')
+def start_stitching():
+    if 'manager' in cache:
+        cache['manager'].stitch()
+        return "stitching started"
+    return "please initialize the device first"
 
-# start stitching
 
-# get stitch result
+@app.route('/acquire')
+def run_acquisition():
+    if 'manager' in cache:
+        cache['manager'].start_acquisition
+        return "acquisition started"
+    return "please initialize the device first"
 
-# start acquiring
 
-# @sock.on('connect')
-# def connect():
-#     print('connected')
-
-# @sock.on('disconnect')
-# def connect():
-#     print('disconnected')
+# TODO: this
+# @app.route('/getStitch')
+# def get_stitch_result():
+#     if 'manager' in cache:
 
 if __name__ == '__main__':
     sock.run(app, host='127.0.0.1', port=8079, debug=True)

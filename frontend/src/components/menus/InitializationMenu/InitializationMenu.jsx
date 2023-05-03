@@ -10,6 +10,7 @@ class InitializationMenu extends Component {
     getName = () => { return "Initialization" }
 
     initializeDevice = () => { ServerInterface.initialize() }
+    getStatus = () => { ServerInterface.getStatus() }
 
     render() { 
         return (  
@@ -18,6 +19,10 @@ class InitializationMenu extends Component {
                 <Button 
                     name="initialize the device"
                     callback={this.initializeDevice.bind(this)}
+                />
+                <Button 
+                    name="get status"
+                    callback={this.getStatus.bind(this)}
                 />
             </div>
         );

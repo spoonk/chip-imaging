@@ -74,8 +74,8 @@ def get_status():
 def update_imaging_parameters(width, height, distance):
     if 'manager' in cache:
         cache['manager'].change_imaging_parameters(width, height, distance)
-        return f"set parameters to {width} {height} {distance}"
-    return f"{width}, {height}, {distance}"
+        return f"success"
+    return 'please initialize the device'
 
 @app.route('/exposure/<exposure>')
 def set_camera_exposure(exposure):
@@ -106,7 +106,7 @@ def prompt_path():
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
         print(directory_path)
-        cache['manager'].set_image_output_path(directory_path)
+        cache['manager'].set_imaging_output_path(directory_path)
         return directory_path
     return "please initialize the device first"
 

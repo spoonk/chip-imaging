@@ -43,11 +43,17 @@ export class ServerInterface {
         return [text==='success', text]
     }
 
+    static saveTopLeftPosition = async() => {
+        const saveTopLeftResult = await fetch(`${serverUrl}/topLeft`)
+        const text = await saveTopLeftResult.text()
+        return [text ==='please initialize the device first']
+    }
+
     static setGainExposure = async(gain, exposure) => {
         const exposureResult = await fetch(`${serverUrl}/exposure/${exposure}`)
         const gainResult = await fetch(`${serverUrl}/gain/${gain}`)
         // TODO: interpret if they worked
-
+        return [exposureResult !== gainResult, [exposureResult, gainResult]]
     }
 
     static promptPath = async() => {

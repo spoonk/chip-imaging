@@ -61,6 +61,13 @@ class ImagerManager():
                 return True
             return False
         
+    def save_top_left_position(self):
+        with self._state_lock:
+            if self._status == ImagerManager.STATUS_IDLE:
+                self._imager.save_top_left_pos()
+                return True
+            return False
+
     # tells the device to start snapping images
     # returns True if the request wasn't rejected
     def start_acquisition(self) -> bool:

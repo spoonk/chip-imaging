@@ -59,8 +59,6 @@ def initialize():
     cache['manager'] = imager_manager
 
     cache['feeding'] = False
-    cache['amount'] = 0
-
 
     return "initialized"
 
@@ -130,6 +128,13 @@ def run_acquisition():
 # @app.route('/getStitch')
 # def get_stitch_result():
 #     if 'manager' in cache:
+
+@app.route('./topLeft')
+def save_top_left():
+    if 'manager' in cache:
+        cache['manager'].save_top_left_position()
+        return "saved"
+    return "please initialize the device first"
 
 if __name__ == '__main__':
     sock.run(app, host='127.0.0.1', port=8079, debug=True)

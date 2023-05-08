@@ -14,6 +14,7 @@ matplotlib = "*"
 pillow = "*"
 flask-socketio = "*"
 flask-cors = "*"
+scikit-image = "*"
 
 [dev-packages]
 

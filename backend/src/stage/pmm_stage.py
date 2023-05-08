@@ -17,16 +17,16 @@ class PMMStage(Stage):
         logging.getLogger().info("stage instantiated")
 
     def move_to(self, x:float, y:float):
-        sleep(0.1)
+        sleep(0.2)
         self._core.setXYPosition(x, y)
         logging.getLogger().info(f"stage moving to ({x}, {y})")
         
 
         self._core.waitForDevice(DEVICE_CONFIG["stage_name"]) # the xy stage
-        sleep(0.1)
+        sleep(0.2)
         
         final_pos = self.get_current_position()
-        sleep(0.1)
+        sleep(0.2)
         logging.getLogger().info(f"movement complete, final position ({final_pos[0]}, {final_pos[1]})")
 
     def get_current_position(self) -> tuple[float, float]:

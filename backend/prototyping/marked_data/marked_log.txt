@@ -1,0 +1,43 @@
+INFO:root:stage moving to (1061.5000158175826, -31846.00047454238)
+INFO:root:movement complete, final position (10061.500149928033, -31846.00047454238)
+INFO:root:saved image 1
+INFO:root:stage moving to (2561.5000158175826, -31846.00047454238)
+INFO:root:movement complete, final position (2561.5000381693244, -31845.70047453791)
+INFO:root:saved image 2
+INFO:root:stage moving to (4061.5000158175826, -31846.00047454238)
+INFO:root:movement complete, final position (4061.500060521066, -31846.00047454238)
+INFO:root:saved image 3
+INFO:root:stage moving to (5561.500015817583, -31846.00047454238)
+INFO:root:movement complete, final position (5561.500082872808, -31846.00047454238)
+INFO:root:saved image 4
+INFO:root:stage moving to (7061.500015817583, -31846.00047454238)
+INFO:root:movement complete, final position (7061.40010522306, -31846.00047454238)
+INFO:root:saved image 5
+INFO:root:stage moving to (8561.500015817583, -31846.00047454238)
+INFO:root:movement complete, final position (8561.500127576292, -31846.90047455579)
+INFO:root:saved image 6
+INFO:root:stage moving to (10061.500015817583, -31846.00047454238)
+INFO:root:movement complete, final position (10061.500149928033, -31846.00047454238)
+INFO:root:saved image 7
+INFO:root:stage moving to (1061.5000158175826, -33346.00047454238)
+INFO:root:movement complete, final position (10061.500149928033, -33346.10049689561)
+INFO:root:saved image 8
+INFO:root:stage moving to (2561.5000158175826, -33346.00047454238)
+INFO:root:movement complete, final position (2561.5000381693244, -33346.10049689561)
+INFO:root:saved image 9
+INFO:root:stage moving to (4061.5000158175826, -33346.00047454238)
+INFO:root:movement complete, final position (4061.400060519576, -33346.10049689561)
+INFO:root:saved image 10
+INFO:root:stage moving to (5561.500015817583, -33346.00047454238)
+INFO:root:movement complete, final position (5561.500082872808, -33346.00049689412)
+INFO:root:saved image 11
+INFO:root:stage moving to (7061.500015817583, -33346.00047454238)
+INFO:root:movement complete, final position (7061.50010522455, -33346.00049689412)
+INFO:root:saved image 12
+INFO:root:stage moving to (8561.500015817583, -33346.00047454238)
+INFO:root:movement complete, final position (8561.500127576292, -33346.00049689412)
+INFO:root:saved image 13
+INFO:root:stage moving to (10061.500015817583, -33346.00047454238)
+INFO:root:movement complete, final position (8561.400127574801, -33346.00049689412)
+INFO:root:saved image 14
+INFO:root:finished snapping images, check C:\Users\Luke\Desktop\chip-imager\chip-imaging

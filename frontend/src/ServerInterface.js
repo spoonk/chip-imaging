@@ -81,6 +81,9 @@ export class ServerInterface {
      */
     static getAlignmentGrid = async(h, w) => {
         const acqRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
-        console.log(acqRes)
+        const alJson = await acqRes.json()
+        console.log(alJson)
+        return alJson
+        // console.log(acqRes)
     }
 }

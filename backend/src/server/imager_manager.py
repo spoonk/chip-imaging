@@ -4,6 +4,8 @@ from camera.camera_interface import Camera
 from stage.stage_interface import Stage
 from threading import Thread, Lock
 from stitcher.linear_stitcher import LinearStitcher
+from stitcher.cv_stitcher import CVStitchPipeline
+from PIL import Image
 
 """
 An imager manager wraps an imager, allowing 
@@ -28,18 +30,18 @@ class ImagerManager():
         self._running_thread: Thread = None
         self._state_lock: Lock = Lock()
 
-        self._stitcher: LinearStitcher = None
+        # self._stitcher: LinearStitcher = None
+        self._stitcher: CVStitchPipeline = None
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
     def set_imaging_output_path(self, path:str) -> bool:
         # requires: path must be an existing directory
         with self._state_lock:
-            if self._stitcher == None: return False
             if self._status == ImagerManager.STATUS_IDLE:
                 self._imaging_path = path
-                self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
-
+                self._stitcher = CVStitchPipeline(path)
+                # self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
                 return True
             return False
 
@@ -108,7 +110,11 @@ class ImagerManager():
 
     # @TODO: also return imaging grid
     def get_top_left_grid(self, w, h):
-        images = self._stitcher._load_tiff_images()
+        # images = self._stitcher._load_tiff_images()
+        self._stitcher._generate_jpeg_from_tiff()
+        images = self._stitcher._load_jpeg_images()
+
+        # images = self._stitcher._load_tiff_images()
         grid = self._imager.get_imaging_grid()
         r, c = grid.get_grid_dimensions()
         if r < h or c < w: return None
@@ -116,6 +122,12 @@ class ImagerManager():
         top_lefties = []
         for row in range(h):
             row_images = []
-            for col in range(w): row_images.append(images[row * w + col])
+            for col in range(w): 
+                # image:Image = images[row * w + col]
+                # image.convert("RGB")
+                # row_images.append(image)
+
+                row_images.append(images[row * w + col])
+
             top_lefties.append(row_images)
         return top_lefties

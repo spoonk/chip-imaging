@@ -10,7 +10,11 @@ import io
 from PIL import Image
 from tkinter.filedialog import askdirectory
 from tkinter import Tk
-
+# from io import StringIO
+from io import BytesIO
+from flask import send_file
+from flask import jsonify
+from base64 import encodebytes
 # from camera.pmm_camera import PMMCamera
 from camera.concurrent_pmm_camera import CPMMCamera
 from stage.pmm_stage import PMMStage
@@ -94,14 +98,12 @@ def set_gain(gain):
 def prompt_path():
     # prompts the user to select where the data images will be saved
     if 'manager' in cache:
-        # TODO: move into a helper function, add a button on tkinter window
-        # that says select path then destroys window
         root = Tk()
         root.wm_attributes('-topmost', 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        print(directory_path)
-        cache['manager'].set_imaging_output_path(directory_path)
+
+        print(cache['manager'].set_imaging_output_path(directory_path))
         return directory_path
     return "please initialize the device first"
 
@@ -137,9 +139,47 @@ def save_top_left():
 @app.route('/manualGrid/<h>/<w>')
 def get_manual_grid(h, w):
     if 'manager' in cache:
+        h = int(h)
+        w = int(w)
         manager:ImagerManager = cache['manager']
         images = manager.get_top_left_grid(int(h), int(w))
-        return images
+
+        encoded_images = []
+        for image_row in images:
+            for image in image_row:
+                encoded_images.append(get_response_image(image))
+        
+        return jsonify({'result': encoded_images})
+
+        # image_list = []
+        # for i in range(h):
+        #     for j in range(w):
+        #         image_list.append(serve_pil_image(images[i][j]))
+
+        # return  jsonify(image_list)
     return "fail"
+
+# def serve_pil_image(pil_img):
+#     img_io = BytesIO()
+#     pil_img.save(img_io, 'JPEG', quality=70)
+#     img_io.seek(0)
+#     return send_file(img_io, mimetype='image/jpeg')
+
+def get_response_image(image):
+    byte_arr = io.BytesIO()
+    image.save(byte_arr, format='PNG') # convert the PIL image to byte array
+    encoded_img = encodebytes(byte_arr.getvalue())
+    return encoded_img
+
+# @app.route('/get_images',methods=['GET'])
+# def get_images():
+#     ##reuslt  contains list of path images
+#     result = get_images_from_local_storage()
+#     encoded_imges = []
+#     for image_path in result:
+#         encoded_imges.append(get_response_image(image_path))
+#     return jsonify({'result': encoded_imges})
+
+
 if __name__ == '__main__':
     sock.run(app, host='127.0.0.1', port=8079, debug=True)

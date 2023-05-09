@@ -24,7 +24,7 @@ class AppContainer extends Component {
         }
     }
 
-    componentDidMount = () => { this.updateDeviceStatus() }
+    componentDidMount = () => { this.getDeviceStatus() }
 
     render() { 
         return ( 

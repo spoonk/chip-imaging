@@ -54,10 +54,11 @@ class CVStitchPipeline(StitchPipeline):
         for file_name in os.listdir(self._data_path):
             if file_name.endswith(".jpeg"):
                 file_path = os.path.join(self._data_path, file_name)
-                image = cv2.imread(file_path)
+                image = Image.open(file_path)
+                # image = cv2.imread(file_path)
                 images.append(image)
 
-        images = np.array(images)
+        # images = np.array(images)
         return images
     
     def _delete_temp_jpegs(self):

@@ -126,12 +126,20 @@ def run_acquisition():
 # def get_stitch_result():
 #     if 'manager' in cache:
 
-@app.route('./topLeft')
+@app.route('/topLeft')
 def save_top_left():
     if 'manager' in cache:
         cache['manager'].save_top_left_position()
         return "saved"
     return "please initialize the device first"
 
+
+@app.route('/manualGrid/<h>/<w>')
+def get_manual_grid(h, w):
+    if 'manager' in cache:
+        manager:ImagerManager = cache['manager']
+        images = manager.get_top_left_grid(int(h), int(w))
+        return images
+    return "fail"
 if __name__ == '__main__':
     sock.run(app, host='127.0.0.1', port=8079, debug=True)

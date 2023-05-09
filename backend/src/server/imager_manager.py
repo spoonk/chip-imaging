@@ -105,3 +105,17 @@ class ImagerManager():
         with self._state_lock:
             self._status = ImagerManager.STATUS_IDLE
             self._running_thread = None
+
+    # @TODO: also return imaging grid
+    def get_top_left_grid(self, w, h):
+        images = self._stitcher._load_tiff_images()
+        grid = self._imager.get_imaging_grid()
+        r, c = grid.get_grid_dimensions()
+        if r < h or c < w: return None
+        # for now we will know nothing about the location of the images 
+        top_lefties = []
+        for row in range(h):
+            row_images = []
+            for col in range(w): row_images.append(images[row * w + col])
+            top_lefties.append(row_images)
+        return top_lefties

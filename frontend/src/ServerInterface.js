@@ -74,4 +74,13 @@ export class ServerInterface {
         return [text!=='please initialize the device first' ,text]
     }
 
+    /**
+     * Fetches a 3x3 grid of images representing the top left 3x3 image grid of the chip
+     * If there aren't enough images for a 3x3, returns as many images as possible
+     * (<9). If there are no images at all, success will be false
+     */
+    static getAlignmentGrid = async(h, w) => {
+        const acqRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
+        console.log(acqRes)
+    }
 }

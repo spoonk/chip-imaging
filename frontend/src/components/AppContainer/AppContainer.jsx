@@ -11,7 +11,7 @@ class AppContainer extends Component {
         }
     }
 
-    updateDeviceStatus = async() => {
+    getDeviceStatus = async() => {
         // fetches status from the server
         // this is an object that will contain
         // - which operation is currently running
@@ -24,9 +24,7 @@ class AppContainer extends Component {
         }
     }
 
-    componentDidMount = () => {
-        this.updateDeviceStatus()
-    }
+    componentDidMount = () => { this.updateDeviceStatus() }
 
     render() { 
         return ( 

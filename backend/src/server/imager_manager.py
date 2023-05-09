@@ -98,7 +98,7 @@ class ImagerManager():
         
     def get_status(self):
         with self._state_lock:
-            return self._status
+            return [self._status, self._imaging_path]
         
     def _thread_wrapper(self, function, args):
         function(args)

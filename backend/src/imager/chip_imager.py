@@ -19,8 +19,6 @@ class ChipImager():
     imaging step
     """
 
-    # TODO: maybe this should connect the devices (probably not)
-
     def __init__(self, stage: Stage, camera: Camera):
         self._camera: Camera = camera
         self._stage: Stage = stage

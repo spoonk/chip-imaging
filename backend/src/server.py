@@ -1,9 +1,6 @@
 import logging
 logging.basicConfig(level = logging.INFO)
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
-# logging.getLogger('socketio').setLevel(logging.ERROR)
-# logging.getLogger('engineio').setLevel(logging.ERROR)
-# logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
 
 from flask import Flask
 from flask_cors import CORS
@@ -72,7 +69,7 @@ def get_status():
 def update_imaging_parameters(width, height, distance):
     if 'manager' in cache:
         cache['manager'].change_imaging_parameters(width, height, distance)
-        return f"success"
+        return "success"
     return 'please initialize the device'
 
 @app.route('/exposure/<exposure>')

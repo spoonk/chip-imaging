@@ -15,6 +15,7 @@ pillow = "*"
 flask-socketio = "*"
 flask-cors = "*"
 scikit-image = "*"
+imutils = "*"
 
 [dev-packages]
 

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9e4c81c1f08f09755c2db2d06e18f6377944e18378d3ed9ee2aa9e58f2807002"
+            "sha256": "1a20ef2a4c858afc4d5800bad6121afd1180ed3f833e659e4dba61602654fd0d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -260,6 +260,13 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==6.6.0"
+        },
+        "imutils": {
+            "hashes": [
+                "sha256:03827a9fca8b5c540305c0844a62591cf35a0caec199cb0f2f0a4a0fb15d8f24"
+            ],
+            "index": "pypi",
+            "version": "==0.5.4"
         },
         "ipykernel": {
             "hashes": [
@@ -737,11 +744,11 @@
         },
         "pycromanager": {
             "hashes": [
-                "sha256:40a66d316862300adc1227cdb1495c445cca805fd0476d497f8d9d2c8ffc1e67",
-                "sha256:b3959e485561b98e7ad0b5188619436eb0c2a7da826a258f5ad140bcf1799383"
+                "sha256:021ecb4e892badc2f0b4730c493a9cbe799468430ea1483ed3daf8b929b4facc",
+                "sha256:300987a2f25b3081c97d333f9d5a978e1d41daad6f20d04ad1216aa23b0ee228"
             ],
             "index": "pypi",
-            "version": "==0.27.3"
+            "version": "==0.27.5"
         },
         "pygments": {
             "hashes": [
@@ -1119,11 +1126,11 @@
         },
         "werkzeug": {
             "hashes": [
-                "sha256:4866679a0722de00796a74086238bb3b98d90f423f05de039abb09315487254a",
-                "sha256:a987caf1092edc7523edb139edb20c70571c4a8d5eed02e0b547b4739174d091"
+                "sha256:1d5a58e0377d1fe39d061a5de4469e414e78ccb1e1e59c0f5ad6fa1c36c52b76",
+                "sha256:48e5e61472fee0ddee27ebad085614ebedb7af41e88f687aaf881afb723a162f"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==2.3.3"
+            "version": "==2.3.4"
         },
         "zipp": {
             "hashes": [

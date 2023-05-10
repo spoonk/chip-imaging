@@ -43,8 +43,8 @@ _DEMO_DEVICE_CONFIG = {
 }
 
 # the device configuration that gets used in the program
-DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
-# DEVICE_CONFIG = _ECLIPSE_DEVICE_CONFIG
+# DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
+DEVICE_CONFIG = _ECLIPSE_DEVICE_CONFIG
 
 # serial port the prior stage connects to
 PRIOR_CONTROLLER_PORT = "COM5"

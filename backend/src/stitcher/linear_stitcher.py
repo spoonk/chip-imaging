@@ -67,7 +67,7 @@ class LinearStitcher(StitchPipeline):
         x_shift = self._dx
         y_shift = self._dy
 
-        for i in range(len(images)):
+        for i in range(len(images))[::-1]:
             image = images[i]
             # compute pixel coords of where this image's center should go
             image_center_um = self._grid.get_cell(i).get_center_location()

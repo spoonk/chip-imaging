@@ -150,13 +150,6 @@ def get_manual_grid(h, w):
                 encoded_images.append(get_response_image(image))
         
         return jsonify({'result': encoded_images})
-
-        # image_list = []
-        # for i in range(h):
-        #     for j in range(w):
-        #         image_list.append(serve_pil_image(images[i][j]))
-
-        # return  jsonify(image_list)
     return "fail"
 
 # def serve_pil_image(pil_img):

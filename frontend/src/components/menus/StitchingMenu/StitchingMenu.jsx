@@ -20,11 +20,12 @@ class StitchingMenu extends Component {
             let image_bytes = await ServerInterface.getAlignmentGrid(3, 3) ;
             let urls = []
             image_bytes.result.forEach(bytes => {
-                console.log("DFKDFSJKFdj")
-                var arrayBuffer = new Uint8Array(bytes)
-                var blob = new Blob( [arrayBuffer], { type:"image/jpeg" } );
-                var img_url = URL.createObjectURL(blob);
-                urls.push(img_url)
+                // console.log("DFKDFSJKFdj")
+                // var arrayBuffer = new Uint8Array(bytes)
+                // var blob = new Blob( [arrayBuffer], { type:"image/jpeg" } );
+                // var img_url = URL.createObjectURL(blob);
+                // urls.push(img_url)
+                urls.push(bytes)
             })
             this.setState({images: urls})
             console.log(urls)
@@ -49,21 +50,15 @@ class StitchingMenu extends Component {
                     callback={this.getManual.bind(this)}
                 />
                 {
-                    // this.state.images.map(url => {
-                    //     return(
-                    //         <img 
-                    //             src={url} 
-                    //             alt="camera feed frame" 
-                    //         />
-                    //     )
-                    // })
+                    this.state.images.map(url => {
+                        return(
+                            <img 
+                                src={"data:image/png;base64, " + url} 
+                                alt="camera feed frame" 
+                            />
+                        )
+                    })
 
-                }
-                    <img 
-                     src={this.state.image} 
-               alt="camera feed frame" 
-                     />
-                {
                     /**
                      * will eventually have an image to display
                      * 

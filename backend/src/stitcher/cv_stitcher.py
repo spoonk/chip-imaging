@@ -40,7 +40,9 @@ class CVStitchPipeline(StitchPipeline):
     def _generate_jpeg_from_tiff(self):
         # helper function to produce a jpeg image 
         # from each tiff image
-        for file_name in os.listdir(self._data_path):
+        files = os.listdir(self._data_path)
+        files.sort(key=self._file_comparefun)
+        for file_name in files:
             if file_name.endswith(".TIFF"):
                 in_file_path = os.path.join(self._data_path, file_name)
                 out_file_path = in_file_path.split(".TIFF")[0] + ".jpeg"
@@ -49,9 +51,18 @@ class CVStitchPipeline(StitchPipeline):
                 image.mode = 'I'
                 image.point(lambda i:i*(1./256)).convert('L').save(out_file_path)
 
+    def _file_comparefun(self, file_name):
+        # sorts files named {number}.{extension} by increasing 
+        # number where number is some decimal value
+        no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
+        return int(no_ext)
+
     def _load_jpeg_images(self):
         images = []
-        for file_name in os.listdir(self._data_path):
+        files = os.listdir(self._data_path)
+        files.sort(key=self._file_comparefun)
+
+        for file_name in files:
             if file_name.endswith(".jpeg"):
                 file_path = os.path.join(self._data_path, file_name)
                 image = Image.open(file_path)

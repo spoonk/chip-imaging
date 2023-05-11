@@ -45,27 +45,6 @@ class StitchingMenu extends Component {
                     name="get stitching result"
                     callback={this.getStitched.bind(this)}
                 />
-                <Button
-                    name="query manual grid"
-                    callback={this.getManual.bind(this)}
-                />
-                {
-                    this.state.images.map(url => {
-                        return(
-                            <img 
-                                src={"data:image/png;base64, " + url} 
-                                alt="camera feed frame" 
-                            />
-                        )
-                    })
-
-                    /**
-                     * will eventually have an image to display
-                     * 
-                     * eventually have some way to select a path
-                     * and save as tiff file there
-                     */
-                }
             </div>
         );
     }

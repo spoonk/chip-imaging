@@ -3,7 +3,7 @@ import InitializationMenu from './InitializationMenu/InitializationMenu';
 import AcquisitionMenu from './AcquisitionMenu/AcquisitionMenu';
 import StitchingMenu from './StitchingMenu/StitchingMenu';
 import ConfigMenu from './ConfigMenu/ConfigMenu';
-import ManualAlign from '../ManualAlign/ManualAlign';
+import ManualAlignMenu from '../ManualAlign/ManualAlignMenu';
 // const nameToComp = {
 //     "initialization": ["initialization", <InitializationMenu />],
 //     "configuration": ["configuration", <ConfigMenu />],
@@ -17,7 +17,7 @@ const menuArr = [
     ["configuration", <ConfigMenu />],
     ["acquisition", <AcquisitionMenu />],
     ["stitching", <StitchingMenu />],
-    ["manual rotation", <ManualAlign />],
+    ["manual rotation", <ManualAlignMenu />],
 ];
 
 export default menuArr;

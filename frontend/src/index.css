@@ -21,11 +21,19 @@ code {
   --hover-color: rgb(242, 242, 242);
 }
 
-
 .menu {
   justify-content: center;
   align-items: center;
   display: flex;
   font-size: 28px;
   height: 100%;
+}
+
+.alignment-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.alignment-image {
+  width:100px;
 }

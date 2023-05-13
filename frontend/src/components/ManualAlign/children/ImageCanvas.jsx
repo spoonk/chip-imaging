@@ -21,7 +21,14 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance}) => {
     const canvasRef = useRef(null)
 
     useEffect(() => {
-        console.log("yo")
+        // first-time setup commands
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext('2d')
+
+        ctx.scale(0.75, 0.75)
+    }, [])
+
+    useEffect(() => {
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
 
@@ -52,6 +59,7 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance}) => {
         })
         
     }, [images, rows, cols, pixelsPerUM, theta, distance]) // check dependencies later
+
 
     /**
      * returns a list of HTMLElement images

@@ -11,9 +11,9 @@ const Alignment = ({images}) => {
   const [pixPerUM, setPixPerUM] = useState(0.6265)
   const [distanceUM, setDistanceUM] = useState(1500.0)
 
-  // useEffect(() => {
-  //   setInterval(() => setTheta(theta + 0.01), 500)
-  // }, [])
+
+
+
   // image canvas is the visualizer
   // some other controls component later (or no component and just in this one)
   // this component should also handle grabbing the images later too

@@ -1,7 +1,6 @@
 import React from 'react'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import Draggable from 'react-draggable'
-import { Button, ButtonGroup } from '@mui/material'
 
 /**
  * Takes in a list of images and stitching parameters 
@@ -14,28 +13,18 @@ import { Button, ButtonGroup } from '@mui/material'
  * @param pixelsPerUM: 
  * @param theta: 
  * @param distance: 
+ * @param zoom: 
  * @returns 
  */
-const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance}) => {
+const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) => {
   const canvasRef = useRef(null)
 
-  // amount to zoom into the canvas by 
-  // larger values correspond to being more zoomed in on the image
-  const [zoom, setZoom] = useState(1.0);
 
   // redraw images whenever something changes
   useEffect(() => {
     renderImages();
   }, [images, rows, cols, pixelsPerUM, theta, distance, zoom]) // check dependencies later
 
-  const zoomOut = () => {
-    // never scale by a negative amount
-    const zoomAmt = Math.max(zoom - 0.1, 0.1);
-    setZoom(zoomAmt);
-  }
-  
-  // don't need to bound zooming out
-  const zoomIn = () => { setZoom(zoom + 0.1) }
 
   const renderImages = () => {
     const canvas = canvasRef.current
@@ -45,11 +34,11 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance}) => {
     // scale back to normal so zoom scales linearly
     // also allows us to overwrite entire canvas
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // clear canvas
     ctx.fillStyle = '#EEEEEE'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.scale(zoom, zoom);
-    // clear canvas
 
     // generate a list of usable image elements
     const htmlImages = generateHTMLImages(images)
@@ -102,20 +91,11 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance}) => {
 
   return (
     <div className='image-canvas'>
-      <div className='canvas-controls'>
-        {/*TODO: have canvas zoom controls here */}
-        <ButtonGroup variant='outlined' orientation='vertical'>
-          <Button onClick={()=>{zoomIn()}} > + </Button>           
-          <Button onClick={()=>{zoomOut()}} > - </Button>           
-        </ButtonGroup>
-      </div>
-      <div className='canvas-container'>
-        <Draggable>
-          <div>
-            <canvas ref={canvasRef} width={distance * cols} height={distance * rows}/>
-          </div>
-        </Draggable>
-      </div>
+      <Draggable>
+        <div>
+          <canvas ref={canvasRef} width={distance * cols} height={distance * rows}/>
+        </div>
+      </Draggable>
     </div>
   )
 }

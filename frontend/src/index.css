@@ -12,7 +12,6 @@ code {
     monospace;
 }
 
-
 :root {
   --hover-color: rgb(242, 242, 242);
 }
@@ -26,8 +25,11 @@ code {
 }
 
 .alignment-container {
-  display: flex;
-  flex-direction: row;
+  position:relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .alignment-image {
@@ -43,9 +45,7 @@ code {
   width:100%;
 }
 
-.canvas-container {
-  overflow: hidden;
-}
+
 MuiButtonGroup-root {
   margin-top:6px !important;
   margin-bottom:6px !important;
@@ -57,4 +57,25 @@ MuiButtonGroup-root {
 .MuiTextField-root {
   margin-top:6px !important;
   margin-bottom:6px !important;
+  background-color: white !important;
 }
+
+.canvas-controls {
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+/* .image-canvas { */
+/*   overflow:hidden; */
+/* } */
+
+.canvas-container{
+  /* position:relative; */
+  /* top:0; */
+}
+
+.FilledInput{
+  background-color: red;
+}
+

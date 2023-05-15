@@ -20,7 +20,6 @@ class PMMStage(Stage):
         sleep(0.1)
         self._core.setXYPosition(x, y)
         logging.getLogger().info(f"stage moving to ({x}, {y})")
-        
 
         self._core.waitForDevice(DEVICE_CONFIG["stage_name"]) # the xy stage
         sleep(0.1)

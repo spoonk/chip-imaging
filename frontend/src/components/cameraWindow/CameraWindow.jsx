@@ -20,9 +20,6 @@ class CameraWindow extends Component {
     }
 
     componentDidMount = () => {
-        // TODO: move these into their own functions
-        // socket.connect();
-
         socket.on('connect', () => {
             console.info('socket connection established')
         });

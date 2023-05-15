@@ -7,8 +7,8 @@ from base64 import encodebytes
 
 
 
-# IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1"
-IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1"
+IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1"
+""" IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1" """
 app = Flask('src')
 CORS(app)
 

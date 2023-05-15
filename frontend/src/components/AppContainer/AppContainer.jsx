@@ -6,9 +6,7 @@ import Control from '../Control/Control';
 class AppContainer extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            deviceStatus: {}
-        }
+        this.state = { deviceStatus: {} }
     }
 
     getDeviceStatus = async() => {

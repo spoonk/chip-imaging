@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
 
 :root {
   --hover-color: rgb(242, 242, 242);
@@ -39,8 +35,26 @@ code {
 }
 
 .alignment-controls {
-  /* width:500px; */
-  /* height: 100px; */
   display: flex;
   flex-direction: row;
+}
+
+.image-canvas {
+  width:100%;
+}
+
+.canvas-container {
+  overflow: hidden;
+}
+MuiButtonGroup-root {
+  margin-top:6px !important;
+  margin-bottom:6px !important;
+}
+.MuiButton-outlined {
+  text-transform: lowercase !important;
+}
+
+.MuiTextField-root {
+  margin-top:6px !important;
+  margin-bottom:6px !important;
 }

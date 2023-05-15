@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Button from '../../Button/Button';
+/* import Button from '../../Button/Button'; */
+import { ButtonGroup, Button } from '@mui/material';  
 import { ServerInterface } from '../../../ServerInterface';
 
 class InitializationMenu extends Component {
@@ -15,15 +16,15 @@ class InitializationMenu extends Component {
     render() { 
         return (  
             <div className="menu">
-                { /** * connect to device */ }
-                <Button 
-                    name="initialize the device"
-                    callback={this.initializeDevice.bind(this)}
-                />
-                <Button 
-                    name="get status"
-                    callback={this.getStatus.bind(this)}
-                />
+              { /** * connect to device */ }
+              <ButtonGroup orientation="vertical" variant="outlined" fullWidth={false} size="large">
+                <Button onClick={this.initializeDevice.bind(this)}>
+                  initialize device
+                </Button>
+                <Button onClick={this.getStatus.bind(this)}>
+                  get status
+                </Button> 
+              </ButtonGroup>
             </div>
         );
     }

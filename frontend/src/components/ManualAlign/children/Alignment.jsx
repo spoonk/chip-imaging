@@ -27,9 +27,7 @@ const Alignment = () => {
     let image_bytes = await ServerInterface.getAlignmentGrid(3, 3) ;
     let urls = []
     image_bytes.result.forEach(bytes => { urls.push(bytes) });
-    toast.success("images loaded", {
-      position: "bottom-left",
-    })
+    toast.success("images loaded", { position: "bottom-left", })
     setImages(urls)
   }
 

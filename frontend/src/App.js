@@ -1,16 +1,14 @@
 // import CameraStream from './components/cameraWindow/CameraWindow';
 import AppContainer from './components/AppContainer/AppContainer';
-import { createTheme, ThemeProvider } from '@mui/system';
-
-/* const theme = createTheme({ */
-/*   palette: { */
-/*     mode: 'dark' */
-/*   }, */
-/* }) */
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 
 function App() {
   return (
+    <>
       <AppContainer />
+      <ToastContainer />
+    </>
   );
 }
 

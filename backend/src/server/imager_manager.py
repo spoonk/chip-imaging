@@ -6,6 +6,7 @@ from threading import Thread, Lock
 from stitcher.linear_stitcher import LinearStitcher
 from stitcher.cv_stitcher import CVStitchPipeline
 from PIL import Image
+from flask import jsonify
 
 """
 An imager manager wraps an imager, allowing 
@@ -21,7 +22,12 @@ class ImagerManager():
     STATUS_IDLE = 0
     STATUS_IMAGING = 1
     STATUS_STITCHING = 2
-    
+    status_lut = {
+        STATUS_IDLE: "idle",
+        STATUS_IMAGING: "imaging",
+        STATUS_STITCHING: "stitching",
+    }
+
     def __init__(self, imager: ChipImager):
         self._imager = imager
         self._status = ImagerManager.STATUS_IDLE
@@ -47,7 +53,7 @@ class ImagerManager():
 
     # change chip parameters
     def change_imaging_parameters(self, imaging_width: float, imaging_height: float, 
-            distance_between_cells: float) -> bool:
+                                  distance_between_cells: float) -> bool:
 
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
@@ -58,11 +64,11 @@ class ImagerManager():
                     imaging_height,
                     distance_between_cells,
                     grid.get_pixels_per_um)
-                
+
                 # note that updating the grid will still update the stitcher
                 return True
             return False
-        
+
     def save_top_left_position(self):
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
@@ -84,7 +90,7 @@ class ImagerManager():
 
                 return True
             return False
-        
+
     def stitch(self):
         with self._state_lock:
             if self._imaging_path != None: return False # implies stitcher is None
@@ -97,11 +103,13 @@ class ImagerManager():
 
                 return True
             return False
-        
+
     def get_status(self):
         with self._state_lock:
-            return [self._status, self._imaging_path]
-        
+            return {"status":
+                    ImagerManager.status_lut[self._status], 
+                    "data path": self._imaging_path}
+
     def _thread_wrapper(self, function, args):
         function(args)
         with self._state_lock:

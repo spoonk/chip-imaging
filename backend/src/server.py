@@ -47,6 +47,7 @@ def handle_video():
 @app.route('/initialize')
 def initialize():
     try:
+        if 'manager' in cache: raise Exception("already initialized")
         """ cam = CPMMCamera() """
         cam = MockCamera()
         cam.connect()

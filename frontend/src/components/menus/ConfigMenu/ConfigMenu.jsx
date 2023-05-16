@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from "./ConfigMenu.module.css"
 import { Button, TextField } from '@mui/material';
+import { ServerInterface } from '../../../ServerInterface';
 
 class ConfigMenu extends Component {
   constructor(props) {
@@ -12,20 +13,20 @@ class ConfigMenu extends Component {
     }
   }
 
-  saveConfig = async() => { }
   saveCorner = async() => { }
+  saveConfig = async() => { }
 
   render() { 
     return (  
       <div className="menu">
         {
           /**
-                     * set top left position
-                     * set width 
-                     * set height
-                     * set distance between snapshots
-                     * update configuration
-                     */
+           * set top left position
+           * set width 
+           * set height
+           * set distance between snapshots
+           * update configuration
+           */
         }
         <div className={styles.container}>
 
@@ -69,10 +70,8 @@ class ConfigMenu extends Component {
 
           </div>
 
-          <Button 
-            name="save configuration"
-            callback={this.saveConfig.bind(this)}
-          />
+          <Button variant='contained' onClick={this.saveConfig.bind(this)}
+          >Save configuration</Button>
 
         </div>
 

@@ -48,3 +48,6 @@ todo:
 
 
 [ ] clean up server routes with blueprints
+
+[ ] documentation
+[ ] way to kill / restart server devices

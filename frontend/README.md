@@ -17,6 +17,7 @@ todo:
 
 [ x ] * make mocks of all devices for testing on mac / linux
 
+[ ] websockets, not flask -> better streaming + flask is annoying with warning
 
 [ ] full server integration
     [ ] make all routes nice + toasted

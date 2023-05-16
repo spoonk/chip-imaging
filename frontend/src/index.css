@@ -66,16 +66,14 @@ MuiButtonGroup-root {
   right:0;
 }
 
-/* .image-canvas { */
-/*   overflow:hidden; */
-/* } */
-
-.canvas-container{
-  /* position:relative; */
-  /* top:0; */
-}
-
 .FilledInput{
   background-color: red;
+}
+
+.canvas-zoom {
+  position:absolute;
+  top:100%;
+  left: 0;
+  transform:translate(0, -100%);
 }
 

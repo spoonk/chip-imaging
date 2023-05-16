@@ -4,6 +4,9 @@ import ImageCanvas from './ImageCanvas'
 import { Button, ButtonGroup, TextField } from '@mui/material' 
 import { ServerInterface } from '../../../ServerInterface'
 import { toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlassPlus, faMagnifyingGlassMinus } from '@fortawesome/free-solid-svg-icons'
+
 
 const Alignment = () => {
   // have a controls component and a visualizer component
@@ -12,12 +15,10 @@ const Alignment = () => {
   const [pixPerUM, setPixPerUM] = useState(0.6265)
   const [distanceUM, setDistanceUM] = useState(1500.0)
   const [images, setImages] = useState([])
+  const [zoom, setZoom] = useState(0.4);
 
-  // amount to zoom into the canvas by 
-  // larger values correspond to being more zoomed in on the image
-  const [zoom, setZoom] = useState(1.0);
+  const zoomIn = () => { setZoom(zoom + 0.1) }
   const zoomOut = () => {
-    // never scale by a negative amount
     const zoomAmt = Math.max(zoom - 0.1, 0.1);
     setZoom(zoomAmt);
   }
@@ -32,8 +33,6 @@ const Alignment = () => {
     setImages(urls)
   }
 
-  // don't need to bound zooming out
-  const zoomIn = () => { setZoom(zoom + 0.1) }
   // image canvas is the visualizer
   // some other controls component later (or no component and just in this one)
   // this component should also handle grabbing the images later too
@@ -64,14 +63,36 @@ const Alignment = () => {
             value = {theta}
             onChange ={(e) => {setTheta(e.target.value)}}
           />
+          <TextField 
+            label="pixels per um"
+            variant='filled'
+            type="number"
+            InputLabelProps={{ shrink: true, }}
+            value = {pixPerUM}
+            onChange ={(e) => {setPixPerUM(e.target.value)}}
+          />
+          <TextField 
+            label="distance between centers (um)"
+            variant='filled'
+            type="number"
+            InputLabelProps={{ shrink: true, }}
+            value = {distanceUM}
+            onChange ={(e) => {setDistanceUM(e.target.value)}}
+          />
 
         </ButtonGroup>
 
-        <ButtonGroup variant='contained' orientation='horizontal'>
-          <Button onClick={()=>{zoomIn()}}> + </Button>           
-          <Button onClick={()=>{zoomOut()}}> - </Button>           
-        </ButtonGroup>
 
+      </div>
+      <div className='canvas-zoom'>
+        <ButtonGroup variant='contained' orientation='vertical'>
+          <Button onClick={()=>{zoomIn()}}>
+            <FontAwesomeIcon icon={faMagnifyingGlassPlus}/>
+          </Button>           
+          <Button onClick={()=>{zoomOut()}}> 
+            <FontAwesomeIcon icon={faMagnifyingGlassMinus}/>
+          </Button>           
+        </ButtonGroup>
       </div>
 
     </div>

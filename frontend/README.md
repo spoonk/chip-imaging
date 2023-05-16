@@ -22,8 +22,8 @@ todo:
         accessing that buffer rather than resnapping each time (super slow)
 
 [ ] full server integration
-    [ ] make all routes nice + toasted
-    [ ] make sure all errors are handled
+    [ x ] make all routes nice + toasted
+    [ ] make sure all errors are handled (not sure if this is every checkable)
 
 [ ] better image saving
     [ ] make a directory just for the raw images
@@ -39,6 +39,8 @@ todo:
 [ ] make manual align send a theta to the server
 [ ] make linear stitcher be able to handle a rotation
 
+[ ] make querying the manual grid depend on path
+
 [ ] make camera feed toggleable
 
 [ ] toastify for alerts (fetching stuff)
@@ -51,3 +53,8 @@ todo:
 
 [ ] documentation
 [ ] way to kill / restart server devices
+
+[ ] server rejects a path if it is a non empty directory
+[ ] route to query the path that images will be saved in
+[ ] make a stitch utils file in python that allows you to get jpeg images 
+[ ] be able to select a different directory for stiching, not just the one from acquisition

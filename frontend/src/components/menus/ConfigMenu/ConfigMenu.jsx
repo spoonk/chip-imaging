@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from "./ConfigMenu.module.css"
 import { Button, TextField } from '@mui/material';
 import { ServerInterface } from '../../../ServerInterface';
+import { showToast } from '../../../utils';
 
 class ConfigMenu extends Component {
   constructor(props) {
@@ -13,8 +14,11 @@ class ConfigMenu extends Component {
     }
   }
 
-  saveCorner = async() => { }
-  saveConfig = async() => { }
+  saveCorner = async() => { showToast(await ServerInterface.saveTopLeftPosition()) }
+  saveConfig = async() => { 
+    showToast(await ServerInterface.setImagingParameters(
+      this.state.width, this.state.height, this.state.distance))
+  }
 
   render() { 
     return (  

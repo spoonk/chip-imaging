@@ -41,7 +41,6 @@ class ChipImager():
 
         image_num = 1
         while self._movement.has_next_location():
-            # print(self._movement.has_next_location())
             self._movement.move_to_next_location()
             sleep(CAMERA_WAIT_DURATION)
 

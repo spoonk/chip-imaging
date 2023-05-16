@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonGroup, Button } from '@mui/material';
 import { ServerInterface } from '../../../ServerInterface';
+import { showToast } from '../../../utils';
 
 class StitchingMenu extends Component {
   constructor(props) {
@@ -14,7 +15,11 @@ class StitchingMenu extends Component {
     }
   }
 
-  startStitching = async() => { }
+  startStitching = async() => {
+    showToast(await ServerInterface.startStitching())
+  }
+
+  // TODO: this
   getStitched = async() => { }
 
   render() { 

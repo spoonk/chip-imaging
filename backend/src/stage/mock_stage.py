@@ -1,5 +1,6 @@
 from stage.stage_interface import Stage
 import logging
+from time import sleep
 
 
 class MockStage(Stage):
@@ -11,6 +12,7 @@ class MockStage(Stage):
     def move_to(self, x: float, y:float):
         self._x = x
         self._y = y
+        sleep(0.3)
         logging.info(f'mock stage moved to {self._x}, {self._y}')
 
     def get_current_position(self) -> tuple[float, float]:

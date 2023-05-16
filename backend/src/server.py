@@ -78,11 +78,11 @@ def get_status():
 
     return jsonify([False, "offline"])
 
-@app.route('/update/<float:width>/<float:height>/<float:distance>')
+@app.route('/update/<width>/<height>/<distance>')
 def update_imaging_parameters(width, height, distance):
     if 'manager' in cache:
-        cache['manager'].change_imaging_parameters(width, height, distance)
-        return jsonify([True, "updated"])
+        cache['manager'].change_imaging_parameters(float(width), float(height), float(distance))
+        return jsonify([True, "imaging parameters updated"])
     return jsonify([False, 'please initialize the device'])
 
 @app.route('/exposure/<exposure>')
@@ -92,7 +92,7 @@ def set_camera_exposure(exposure):
         cache['camera'].set_exposure(exposure)
         return jsonify([True, f"set exposure to {exposure}"])
     return jsonify([False, "camera not initialized"])
-    
+
 @app.route('/gain/<gain>')
 def set_gain(gain):
     gain = float(gain)
@@ -109,6 +109,7 @@ def prompt_path():
         root.wm_attributes('-topmost', 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
+        cache['manager'].set_imaging_output_path(directory_path)
 
         return jsonify([True, directory_path])
     return jsonify([False, "please initialize the device first"])
@@ -116,6 +117,8 @@ def prompt_path():
 @app.route('/stitch')
 def start_stitching():
     if 'manager' in cache:
+        if cache['manager'].get_saved_path() is None:
+            return jsonify([False, "please choose a directory from the acquisition menu first"])
         cache['manager'].stitch()
         return jsonify([True, "stitching started"])
     return jsonify([False, "please initialize the device first"])
@@ -124,8 +127,15 @@ def start_stitching():
 @app.route('/acquire')
 def run_acquisition():
     if 'manager' in cache:
-        cache['manager'].start_acquisition
-        return jsonify([True, "acquisition started"])
+        if cache['manager'].get_saved_path() is None:
+            return jsonify([False, "please select an empty directory to save the images in first"])
+
+        res = cache['manager'].start_acquisition()
+        if res:
+            return jsonify([True, "acquisition started"])
+        else:
+            return jsonify([False, "acquisition already in progress"])
+        
     return jsonify([False, "please initialize the device first"])
 
 
@@ -133,7 +143,7 @@ def run_acquisition():
 def save_top_left():
     if 'manager' in cache:
         cache['manager'].save_top_left_position()
-        return jsonify([True, "saved"])
+        return jsonify([True, "saved top left position"])
     return jsonify([False, "please initialize the device first"])
 
 @app.route("/manualGrid/<h>/<w>")

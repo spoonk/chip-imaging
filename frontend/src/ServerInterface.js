@@ -37,39 +37,39 @@ export class ServerInterface {
 
   static setImagingParameters = async(width, height, distance) => {
     const setParamResult = await fetch(`${serverUrl}/update/${width}/${height}/${distance}`)
-    const text = await setParamResult.text()
-    return [text==='success', text]
+    const body = await setParamResult.json()
+    return body
   }
 
   static saveTopLeftPosition = async() => {
     const saveTopLeftResult = await fetch(`${serverUrl}/topLeft`)
-    const text = await saveTopLeftResult.text()
-    return [text ==='please initialize the device first']
+    const body = await saveTopLeftResult.json()
+    return body
   }
 
   static setGainExposure = async(gain, exposure) => {
     const exposureResult = await fetch(`${serverUrl}/exposure/${exposure}`)
+    const ebody = await exposureResult.json()
+    
     const gainResult = await fetch(`${serverUrl}/gain/${gain}`)
-    // TODO: interpret if they worked
-    return [exposureResult !== gainResult, [exposureResult, gainResult]]
+    const gbody = await gainResult.json()
+
+    return [ebody[0] && gbody[0], JSON.stringify(ebody[1]) + " " + JSON.stringify(gbody[1])]
   }
 
   static promptPath = async() => {
     const promptResult = await fetch(`${serverUrl}/promptDataPath`)
-    const text = await promptResult.text()
-    return [text!=='please initialize the device first' ,text]
+    return await promptResult.json()
   }
 
   static startStitching = async() => {
     const stitchRes = await fetch(`${serverUrl}/stitch`)
-    const text = await stitchRes.text()
-    return [text!=='please initialize the device first' ,text]
+    return await stitchRes.json()
   }
 
   static acquire = async() => {
     const acqRes = await fetch(`${serverUrl}/acquire`)
-    const text = await acqRes.text()
-    return [text!=='please initialize the device first' ,text]
+    return await acqRes.json()
   }
 
   /**
@@ -80,8 +80,6 @@ export class ServerInterface {
   static getAlignmentGrid = async(h, w) => {
     const acqRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
     const alJson = await acqRes.json()
-    console.log(alJson)
     return alJson
-    // console.log(acqRes)
   }
 }

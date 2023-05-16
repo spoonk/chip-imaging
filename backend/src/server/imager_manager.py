@@ -1,12 +1,9 @@
 from imager.imaging_grid import ImagingGrid
 from imager.chip_imager import ChipImager
-from camera.camera_interface import Camera
-from stage.stage_interface import Stage
 from threading import Thread, Lock
 from stitcher.linear_stitcher import LinearStitcher
 from stitcher.cv_stitcher import CVStitchPipeline
-from PIL import Image
-from flask import jsonify
+import logging
 
 """
 An imager manager wraps an imager, allowing 
@@ -32,12 +29,12 @@ class ImagerManager():
         self._imager = imager
         self._status = ImagerManager.STATUS_IDLE
 
-        self._imaging_path: str = None
-        self._running_thread: Thread = None
+        self._imaging_path: str | None = None
+        self._running_thread: Thread | None = None
         self._state_lock: Lock = Lock()
 
-        # self._stitcher: LinearStitcher = None
-        self._stitcher: CVStitchPipeline = None
+        # self._stitcher: LinearStitcher | None = None
+        self._stitcher: CVStitchPipeline | None = None
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
@@ -54,7 +51,6 @@ class ImagerManager():
     # change chip parameters
     def change_imaging_parameters(self, imaging_width: float, imaging_height: float, 
                                   distance_between_cells: float) -> bool:
-
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 grid:ImagingGrid = self._imager.get_imaging_grid()
@@ -63,7 +59,7 @@ class ImagerManager():
                     imaging_width,
                     imaging_height,
                     distance_between_cells,
-                    grid.get_pixels_per_um)
+                    grid.get_pixels_per_um())
 
                 # note that updating the grid will still update the stitcher
                 return True
@@ -112,6 +108,7 @@ class ImagerManager():
 
     def _thread_wrapper(self, function, args):
         function(args)
+        logging.info('done acquiring')
         with self._state_lock:
             self._status = ImagerManager.STATUS_IDLE
             self._running_thread = None
@@ -131,11 +128,11 @@ class ImagerManager():
         for row in range(h):
             row_images = []
             for col in range(w): 
-                # image:Image = images[row * w + col]
-                # image.convert("RGB")
-                # row_images.append(image)
-
                 row_images.append(images[row * w + col])
 
             top_lefties.append(row_images)
         return top_lefties
+
+    def get_saved_path(self):
+        return self._imaging_path
+

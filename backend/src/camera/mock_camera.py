@@ -1,7 +1,6 @@
-from camera_interface import Camera
+from camera.camera_interface import Camera
 import logging
 import numpy as np
-from math import ceil
 from PIL import Image
 
 

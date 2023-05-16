@@ -1,6 +1,5 @@
 from stage.stage_interface import Stage
 from imager.imaging_grid import ImagingGrid, ImagingLocation
-from time import sleep
 
 class MovementCoordinator():
     """
@@ -42,7 +41,3 @@ class MovementCoordinator():
         self.__current_cell_ind = -1
         pass
 
-    def __location_nm_to_steps(self, location: tuple[float, float]) -> tuple[int, int]:
-        x_steps = location[0] / self.__nm_per_step
-        y_steps = location[1] / self.__nm_per_step
-        return tuple([x_steps, y_steps])

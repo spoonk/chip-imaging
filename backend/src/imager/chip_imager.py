@@ -66,6 +66,6 @@ class ChipImager():
     def _save_image(self, image, data_directory_path:str, image_name:str):
         # @requires path exists
         "saves this image to the target directory"
-        pilIm: Image = Image.fromarray(image) 
+        pilIm = Image.fromarray(image) 
         pilIm.save(path.join(data_directory_path, image_name))
         pass

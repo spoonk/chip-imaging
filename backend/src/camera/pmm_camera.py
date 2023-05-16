@@ -33,7 +33,7 @@ class PMMCamera(Camera):
         im = np.array(self._core.getImage())
         self._apply_gain(im)
         return im
-    
+
     def set_gain(self, gain: int):
         self._gain = max(gain, 1)
 
@@ -43,10 +43,10 @@ class PMMCamera(Camera):
 
     def is_connected(self) -> bool:
         return self._connected
-    
+
     def get_gain(self) -> int:
         return self._gain
-    
+
     def get_exposure(self) -> float:
         return self._core.getExposure()
 
@@ -59,4 +59,4 @@ class PMMCamera(Camera):
 
         np.clip(image, 0, 2**(16-gainFactor)-1, out=image)
         np.multiply(image, np.array(self._gain)
-            .astype(np.float64), out=image, casting='unsafe')
+                    .astype(np.float64), out=image, casting='unsafe')

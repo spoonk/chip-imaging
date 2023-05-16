@@ -21,13 +21,13 @@ class ImagingGrid():
 
     # distance_between_cells is measured in nanometers (nm)
     # top_left is the x,y (nm) coordinates of the center of the top left image cell
-    def __init__(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixels_per_um: float):
-        self.__top_left: tuple[float, float] = top_left 
-        self.__imaging_width = imaging_width
-        self.__imaging_height = imaging_height
-        self.__distance_between: float = distance_between_cells 
-        self.__cells = self.__compute_image_grid()
-        self.__pixels_per_um = pixels_per_um # each pixel represents a 1x1 um square
+    """ def __init__(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixels_per_um: float): """
+    """     self.__top_left: tuple[float, float] = top_left  """
+    """     self.__imaging_width = imaging_width """
+    """     self.__imaging_height = imaging_height """
+    """     self.__distance_between: float = distance_between_cells  """
+    """     self.__cells = self.__compute_image_grid() """
+    """     self.__pixels_per_um = pixels_per_um # each pixel represents a 1x1 um square """
 
     def __init__(self):
         # empty constructor representing an unspecified grid

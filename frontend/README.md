@@ -15,7 +15,12 @@ todo:
 [ x ] crop canvas component
 
 
-[ ] * make mocks of all devices for testing on mac / linux
+[ x ] * make mocks of all devices for testing on mac / linux
+
+
+[ ] full server integration
+    [ ] make all routes nice + toasted
+    [ ] make sure all errors are handled
 
 [ ] better image saving
     [ ] make a directory just for the raw images
@@ -27,8 +32,6 @@ todo:
     |- raw_images
      |- *.Tiff
     |-stitched.tiff
-
-
 
 [ ] make manual align send a theta to the server
 [ ] make linear stitcher be able to handle a rotation

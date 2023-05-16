@@ -11,7 +11,7 @@ import { faMagnifyingGlassPlus, faMagnifyingGlassMinus } from '@fortawesome/free
 const Alignment = () => {
   // have a controls component and a visualizer component
   // (wow such an original idea)
-  const [theta, setTheta] = useState(0.05)
+  const [theta, setTheta] = useState(0.00)
   const [pixPerUM, setPixPerUM] = useState(0.6265)
   const [distanceUM, setDistanceUM] = useState(1500.0)
   const [images, setImages] = useState([])

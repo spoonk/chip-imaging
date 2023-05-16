@@ -45,6 +45,9 @@ code {
   width:100%;
 }
 
+.image-canvas:hover {
+  cursor:grab;
+}
 
 MuiButtonGroup-root {
   margin-top:6px !important;

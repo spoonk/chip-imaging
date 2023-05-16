@@ -11,11 +11,31 @@ todo:
 
 [ x ] refactor imaging canvas so we can have controls on the canvas area
 [ x ] have sliders for theta (use input instead)
-[ ] toastify for alerts (fetching stuff)
-[ ] have canvas controls overlap the actual canvas to save space
-[ ] crop canvas component
+[ x ] have canvas controls overlap the actual canvas to save space
+[ x ] crop canvas component
+
+
+[ ] * make mocks of all devices for testing on mac / linux
+
+[ ] better image saving
+    [ ] make a directory just for the raw images
+        [ ] stores an imaging grid config as well
+    [ ] in parent of raw image dir, save stitch
+
+    so we have something like 
+    -session
+    |- raw_images
+     |- *.Tiff
+    |-stitched.tiff
+
+
+
+[ ] make manual align send a theta to the server
+[ ] make linear stitcher be able to handle a rotation
+
 [ ] make camera feed toggleable
 
+[ ] toastify for alerts (fetching stuff)
 [ ] override onscroll for image canvas -> so canvas gets scrolled
-
-
+[ ] use different websockets for (hopefully) better streaming
+[ ] make manual grid route respect imaging grid parameters

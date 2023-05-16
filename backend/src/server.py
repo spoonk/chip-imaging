@@ -1,30 +1,30 @@
-import logging
+import logging 
 logging.basicConfig(level = logging.INFO)
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
+
 import io
 from PIL import Image
 from tkinter.filedialog import askdirectory
 from tkinter import Tk
+from io import BytesIO
 from flask import jsonify
 from base64 import encodebytes
 """ from camera.concurrent_pmm_camera import CPMMCamera """
 """ from stage.pmm_stage import PMMStage """
 from imager.chip_imager import ChipImager
 from server.imager_manager import ImagerManager
-
 from camera.mock_camera import MockCamera
 from stage.mock_stage import MockStage
-
 from stitcher.cv_stitcher import CVStitchPipeline # TODO: temp for generating images
-from io import BytesIO
 
 app = Flask('src')
 CORS(app)
 sock = SocketIO(app, cors_allowed_origins='*')
+
 
 cache = {} # server lifetime-wide cache
 
@@ -33,19 +33,16 @@ IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sampl
 
 @sock.on('video')
 def handle_video():
-    if 'feeding' in cache and not cache['feeding']:
-        cache['feeding'] = True
-        cam = cache['camera']
 
-        logging.getLogger().info("starting video loop")
-        while True:
-            logging.getLogger().info(f"{cam.get_exposure()}, {cam.get_gain()}")
-            im = Image.fromarray(cam.take_image())
-            img_byte_arr = io.BytesIO()
-            im.save(img_byte_arr, format='PNG')
-            img_byte_arr = img_byte_arr.getvalue()
-            sock.emit('frame', {'image_data': img_byte_arr})
-
+    cam = cache['camera']
+    while True:
+        logging.info(f"{cam.get_exposure()}, {cam.get_gain()}")
+        im = Image.fromarray(cam.take_image())
+        img_byte_arr = io.BytesIO()
+        im.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+        sock.emit('frame', {'image_data': img_byte_arr})
+        sock.sleep(0.1)
 
 @app.route('/initialize')
 def initialize():
@@ -140,6 +137,7 @@ def save_top_left():
 
 @app.route("/manualGrid/<h>/<w>")
 def server_images(h, w):
+    #TODO: check if manager exists and has path, return correct result
     stitcher = CVStitchPipeline(IMAGES_PATH)
     stitcher._generate_jpeg_from_tiff()
     images = stitcher._load_jpeg_images()

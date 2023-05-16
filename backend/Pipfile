@@ -15,6 +15,9 @@ pillow = "*"
 flask-socketio = "*"
 flask-cors = "*"
 tk = "*"
+websockets = "*"
+gevent-websocket = "*"
+eventlet = "*"
 
 [dev-packages]
 

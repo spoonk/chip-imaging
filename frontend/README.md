@@ -17,7 +17,9 @@ todo:
 
 [ x ] * make mocks of all devices for testing on mac / linux
 
-[ ] websockets, not flask -> better streaming + flask is annoying with warning
+[ x ] websockets, not flask -> better streaming + flask is annoying with warning
+    [ ] might want to refactor camera for continuous acquisition, storing image in a buffer and 
+        accessing that buffer rather than resnapping each time (super slow)
 
 [ ] full server integration
     [ ] make all routes nice + toasted
@@ -43,3 +45,6 @@ todo:
 [ ] override onscroll for image canvas -> so canvas gets scrolled
 [ ] use different websockets for (hopefully) better streaming
 [ ] make manual grid route respect imaging grid parameters
+
+
+[ ] clean up server routes with blueprints

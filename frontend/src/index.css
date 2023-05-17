@@ -53,13 +53,14 @@ MuiButtonGroup-root {
   margin-top:6px !important;
   margin-bottom:6px !important;
 }
+
 .MuiButton-outlined {
   text-transform: lowercase !important;
 }
 
 .MuiTextField-root {
-  margin-top:6px !important;
-  margin-bottom:6px !important;
+  /* margin-top:6px !important; */
+  /* margin-bottom:6px !important; */
   background-color: white !important;
 }
 

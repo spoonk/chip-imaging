@@ -36,6 +36,8 @@ todo:
      |- *.Tiff
     |-stitched.tiff
 
+
+[ ] put manual alignmnet into stitching menu, get rid of manual alignt menu
 [ ] make manual align send a theta to the server
 [ ] make linear stitcher be able to handle a rotation
 

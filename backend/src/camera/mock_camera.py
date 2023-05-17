@@ -6,11 +6,20 @@ from PIL import Image
 from time import sleep
 
 
-mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/topleft.png"
+#mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/topleft.png"
+mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'
+
+
+
+
+
+
+
+
+
 class MockCamera(Camera):
-
-
     """mock camera used for testing without a connection to hardware"""
+
     def __init__(self):
         logging.info('camera instantiated')
         self._gain = 1
@@ -25,7 +34,7 @@ class MockCamera(Camera):
         logging.info('camera instantiated')
         self._connected = False
 
-    def take_image(self) -> np.array:
+    def take_image(self):
         im = Image.open(mock_image_path)
         im = np.array(im)
         self._apply_gain(im)
@@ -42,13 +51,13 @@ class MockCamera(Camera):
     def is_connected(self) -> bool:
         return self._connected
 
-    def get_gain(self) -> int:
+    def get_gain(self) -> float:
         return self._gain
 
     def get_exposure(self) -> float:
         return self._exposure
 
-    def _apply_gain(self, image: np.array):
+    def _apply_gain(self, image: np.ndarray):
         if self._gain <= 1.0: self.set_gain(3.0)
         else: self.set_gain(self._gain - 0.1)
 

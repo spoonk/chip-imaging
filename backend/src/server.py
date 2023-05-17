@@ -28,21 +28,21 @@ sock = SocketIO(app, cors_allowed_origins='*')
 
 cache = {} # server lifetime-wide cache
 
-IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1"
-""" IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1" """
+""" IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1" """
+IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1"
 
 @sock.on('video')
 def handle_video():
-
-    cam = cache['camera']
-    while True:
-        logging.info(f"{cam.get_exposure()}, {cam.get_gain()}")
-        im = Image.fromarray(cam.take_image())
-        img_byte_arr = io.BytesIO()
-        im.save(img_byte_arr, format='PNG')
-        img_byte_arr = img_byte_arr.getvalue()
-        sock.emit('frame', {'image_data': img_byte_arr})
-        sock.sleep(0.1)
+    if 'camera' in cache:
+        cam = cache['camera']
+        while True:
+            logging.info(f"{cam.get_exposure()}, {cam.get_gain()}")
+            im = Image.fromarray(cam.take_image())
+            img_byte_arr = io.BytesIO()
+            im.save(img_byte_arr, format='PNG')
+            img_byte_arr = img_byte_arr.getvalue()
+            sock.emit('frame', {'image_data': img_byte_arr})
+            sock.sleep(0.1)
 
 @app.route('/initialize')
 def initialize():

@@ -4,6 +4,9 @@ from threading import Thread, Lock
 from stitcher.linear_stitcher import LinearStitcher
 # from stitcher.cv_stitcher import CVStitchPipeline
 import logging
+import os
+from typing import Tuple
+from json import dumps
 
 """
 An imager manager wraps an imager, allowing 
@@ -13,6 +16,9 @@ is only executing one process at a time, so it
 will 'reject' any method calls that may interfere
 with the current process
 """
+
+# TODO: integrate this, lets us use a message + success flag for each return
+RequestResult = Tuple[bool, str]
 
 class ImagerManager():
     # possible device states
@@ -42,8 +48,8 @@ class ImagerManager():
         # requires: path must be an existing directory
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
+                if len(os.listdir(path)) != 0: return False # not empty
                 self._imaging_path = path
-                # self._stitcher = CVStitchPipeline(path)
 
                 self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
                 return True

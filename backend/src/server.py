@@ -110,11 +110,11 @@ def prompt_path():
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
         if cache['manager'].set_imaging_output_path(directory_path):
-            ...
             # success
+            return jsonify([True, f"directory saved!"])
         else:
             # fail
-            ...
+            return jsonify([False, f"{directory_path} is not empty, please select an empty directory"])
 
         return jsonify([True, directory_path])
     return jsonify([False, "please initialize the device first"])

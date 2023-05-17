@@ -26,9 +26,11 @@ todo:
     [ ] make sure all errors are handled (not sure if this is every checkable)
 
 [ ] better image saving
-    [ ] make a directory just for the raw images
-        [ ] stores an imaging grid config as well
-    [ ] in parent of raw image dir, save stitch
+    [ x ] check to make sure directory is empty
+    [ x ] make a directory just for the raw images
+        [ x ] stores an imaging grid config as well
+    [ x ] in parent of raw image dir, save stitch
+    [ ] test on pc that doesn't crash with tkinger :|
 
     so we have something like 
     -session

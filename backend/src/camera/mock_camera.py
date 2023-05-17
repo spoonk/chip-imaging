@@ -9,14 +9,6 @@ from time import sleep
 #mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/topleft.png"
 mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'
 
-
-
-
-
-
-
-
-
 class MockCamera(Camera):
     """mock camera used for testing without a connection to hardware"""
 

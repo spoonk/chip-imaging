@@ -48,3 +48,6 @@ DEVICE_CONFIG = _ECLIPSE_DEVICE_CONFIG
 
 # serial port the prior stage connects to
 PRIOR_CONTROLLER_PORT = "COM5"
+
+RAW_DATA_DIR_NAME = 'raw_data'
+GRID_PROPERTIES_FILE_NAME = 'grid.json'

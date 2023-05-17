@@ -4,10 +4,10 @@ from camera.camera_interface import Camera
 from imager.imaging_grid import ImagingGrid
 from PIL import Image
 from imager.movement_coordinator import MovementCoordinator
-from imager.config import CAMERA_WAIT_DURATION
+from imager.config import CAMERA_WAIT_DURATION, RAW_DATA_DIR_NAME, GRID_PROPERTIES_FILE_NAME
 from time import sleep
-# from imager import device
-from os import path
+from os import path, makedirs
+from json import dump
 
 import logging
 
@@ -32,10 +32,11 @@ class ChipImager():
         # the client to configure the imaging session
         return self._grid
 
-    def run_image_acquisition(self, data_directory_path:str):
+    def run_image_acquisition(self, acquisition_path:str):
         # runs through the entire process of scanning the chip and saving images
         if not self._ready: return
-        if not path.exists(data_directory_path): return
+        if not path.exists(acquisition_path): return
+        # save the imaging grid used for this 
 
         self._movement.reset()
 
@@ -47,11 +48,11 @@ class ChipImager():
             image = self._camera.take_image()
 
             sleep(CAMERA_WAIT_DURATION)
-            self._save_image(image, data_directory_path, f"{str(image_num)}.TIFF")
+            self._save_image(image, acquisition_path, f"{str(image_num)}.TIFF")
             logging.getLogger().info(f"saved image {str(image_num)}")
             image_num += 1
 
-        logging.getLogger().info(f"finished snapping images, check {data_directory_path}")
+        logging.info(f"finished snapping images, check {acquisition_path}")
 
     def save_top_left_pos(self):
         # saves the current position as the top left corner of the microchip
@@ -62,9 +63,26 @@ class ChipImager():
         self._grid.set_top_left(pos)
         self._ready = True
     
-    def _save_image(self, image, data_directory_path:str, image_name:str):
-        # @requires path exists
+    def _save_image(self, image, acquisition_path:str, image_name:str):
+        raw_image_dir = self._handle_data_dir(acquisition_path)
+
         "saves this image to the target directory"
         pilIm = Image.fromarray(image) 
-        pilIm.save(path.join(data_directory_path, image_name))
-        pass
+        pilIm.save(path.join(raw_image_dir, image_name))
+
+
+    def _handle_data_dir(self, parent_directory_path: str):
+        data_dir:str = path.join(parent_directory_path, RAW_DATA_DIR_NAME)
+        if not path.exists(data_dir):
+           makedirs(data_dir) 
+        return data_dir
+
+
+    def _save_grid(self, acquisition_path: str):
+        # saves the properties of a grid in a file called 'grid.json'
+        grid_properites = self._grid.get_properties()
+        file_name = path.join(acquisition_path, GRID_PROPERTIES_FILE_NAME)
+        # jsonified = dumps(grid_properites)
+        with open(file_name, 'w') as f:
+            dump(grid_properites, f)
+        

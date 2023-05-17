@@ -2,7 +2,7 @@ from stitcher.stitch_pipeline_interface import StitchPipeline
 from imager.imaging_grid import ImagingGrid
 from os import listdir, path
 from PIL import Image, ImageDraw
-from imager.config import CAMERA_RESOLUTION, STITCHED_IMAGE_NAME
+from imager.config import CAMERA_RESOLUTION, STITCHED_IMAGE_NAME, RAW_DATA_DIR_NAME
 
 class LinearStitcher(StitchPipeline):
     """
@@ -41,7 +41,7 @@ class LinearStitcher(StitchPipeline):
         pixels_y = int(self.um_to_pixels(total_height_um))
         pixels_x = int(self.um_to_pixels(total_width_um))
 
-        canvas:Image = Image.new('I;16',  size=(pixels_x, pixels_y))
+        canvas = Image.new('I;16',  size=(pixels_x, pixels_y))
 
         # shift_factor = (0.009) * self._grid.get_distance_between_images_um()
         # to make math easier, set the center location of the grid to be (0,0)
@@ -122,17 +122,13 @@ class LinearStitcher(StitchPipeline):
     def _load_tiff_images(self):
         # loads and returns a list of tiff images
         images = []
-        files = listdir(self._data_path)
+        files = listdir(path.join(self._data_path, RAW_DATA_DIR_NAME))
         files.sort(key=self._file_comparefun)
 
         for file_name in files:
             file_path = path.join(self._data_path, file_name)
             if file_path.endswith(".TIFF"):
-                # use this file
                 image = Image.open(file_path)
-                # draw = ImageDraw.Draw(image, 'I;16') 
-                # draw.line((0,0, image.width - 1, 0), fill=0, width=20)
-                # draw.line((0,0, 0, image.height - 1), fill=0, width=20)
                 images.append(image)
 
         return images

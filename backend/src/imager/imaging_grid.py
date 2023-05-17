@@ -1,14 +1,22 @@
 import math
+from typing import TypedDict, Tuple
 
 class ImagingLocation():
     def __init__(self, center: tuple[float, float]):
         self.__center = center
 
     def get_center_location(self) -> tuple[float, float]:
-        """
-        Returns the (x,y) center of this imaging location
-        """
+        """ Returns the (x,y) center of this imaging location """
         return self.__center
+
+
+class GridProperties(TypedDict):
+    top_left: Tuple[float, float]
+    width: float
+    height: float
+    distance: float
+    rows: int
+    cols: int
 
 class ImagingGrid():
     """
@@ -19,16 +27,6 @@ class ImagingGrid():
     across those objects
     """
 
-    # distance_between_cells is measured in nanometers (nm)
-    # top_left is the x,y (nm) coordinates of the center of the top left image cell
-    """ def __init__(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixels_per_um: float): """
-    """     self.__top_left: tuple[float, float] = top_left  """
-    """     self.__imaging_width = imaging_width """
-    """     self.__imaging_height = imaging_height """
-    """     self.__distance_between: float = distance_between_cells  """
-    """     self.__cells = self.__compute_image_grid() """
-    """     self.__pixels_per_um = pixels_per_um # each pixel represents a 1x1 um square """
-
     def __init__(self):
         # empty constructor representing an unspecified grid
         self.__top_left = (0.0, 0.0)
@@ -36,13 +34,13 @@ class ImagingGrid():
         self.__imaging_height = 1000.0
         self.__distance_between = 500.0
         self.__cells = self.__compute_image_grid()
-        self.__pixels_per_um = 1 # each pixel represents a 1x1 um square
+        self.__pixels_per_um = 1 # each pixel represents a 1x1 um square TODO: does this belong in this class?
 
     def __compute_image_grid(self) -> list[ImagingLocation]:
         """Recompute the imaging grid with the current parameters"""
         # 1 + since the first image won't be 100% chip
-        rows = 1 + math.ceil(self.__imaging_height / self.__distance_between)
-        cols = 1 + math.ceil(self.__imaging_width / self.__distance_between)
+        # TODO: put these in a function
+        rows, cols = self.get_grid_dimensions()
 
         top_left_x, top_left_y = self.__top_left 
         cells: list[ImagingLocation] = []
@@ -60,7 +58,7 @@ class ImagingGrid():
         return cells
 
     # returns (rows, cols) for imaging locations
-    def get_grid_dimensions(self) -> tuple[int, int]:
+    def get_grid_dimensions(self) -> Tuple[int, int]:
         rows = 1 + math.ceil(self.__imaging_height / self.__distance_between)
         cols = 1 + math.ceil(self.__imaging_width / self.__distance_between)
         return tuple([rows, cols])
@@ -105,3 +103,16 @@ class ImagingGrid():
     def set_distance_between_images(self, distance: float):
         self.__distance_between = distance
         self.__cells = self.__compute_image_grid()
+            
+    def get_properties(self) -> GridProperties:
+        rows, cols = self.get_grid_dimensions()
+        data: GridProperties = {
+            "top_left": self.__top_left,
+            "width": self.__imaging_width,
+            "height": self.__imaging_height,
+            "distance": self.__distance_between,
+            "rows": rows,
+            "cols": cols,
+        }
+        return data
+

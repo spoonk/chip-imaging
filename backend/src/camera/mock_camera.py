@@ -8,7 +8,8 @@ from time import sleep
 
 #mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/topleft.png"
 # mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'
-mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\figures\topleft.png'
+# mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\figures\topleft.png'
+mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\src\demo_images\stitched.TIFF'
 
 class MockCamera(Camera):
     """mock camera used for testing without a connection to hardware"""
@@ -58,6 +59,6 @@ class MockCamera(Camera):
         # this gain without overflow
         gainFactor = ceil(np.log10(self._gain) / np.log10(2))
 
-        np.clip(image, 0, 2**(8-gainFactor)-1, out=image)
+        np.clip(image, 0, 2**(16-gainFactor)-1, out=image)
         np.multiply(image, np.array(self._gain)
                     .astype(np.float64), out=image, casting='unsafe')

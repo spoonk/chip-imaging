@@ -64,3 +64,5 @@ todo:
 [ ] be able to select a different directory for stiching, not just the one from acquisition
 
 [ ] interpret return values from manager
+[ ] separate the imaging and stitching paths, providing an option to stitch in the acquisition directory
+    - you might want to stitch in an existing data dir

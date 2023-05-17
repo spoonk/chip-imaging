@@ -1,6 +1,7 @@
 __pycache__
 .vscode
 *.TIFF
+*.tiff
 *.jpeg
 
 # dependencies

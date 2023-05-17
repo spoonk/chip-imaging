@@ -49,7 +49,7 @@ class ChipImager():
             image = self._camera.take_image()
 
             sleep(CAMERA_WAIT_DURATION)
-            self._save_image(image, acquisition_path, f"{str(image_num)}.TIFF")
+            self._save_image(image, acquisition_path, f"{str(image_num)}.tiff")
             logging.getLogger().info(f"saved image {str(image_num)}")
             image_num += 1
 

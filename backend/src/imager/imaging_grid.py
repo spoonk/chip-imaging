@@ -32,7 +32,7 @@ class ImagingGrid():
         self.__top_left = (0.0, 0.0)
         self.__imaging_width = 1000.0
         self.__imaging_height = 1000.0
-        self.__distance_between = 500.0
+        self.__distance_between = 1500.0
         self.__cells = self.__compute_image_grid()
         self.__pixels_per_um = 1 # each pixel represents a 1x1 um square TODO: does this belong in this class?
 

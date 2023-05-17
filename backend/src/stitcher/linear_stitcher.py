@@ -15,8 +15,8 @@ class LinearStitcher(StitchPipeline):
         # use imaging grid to determine layout of each image
         self._data_path = tiff_images_dir_path
         self._grid = grid
-        self.dx = 9
-        self.dy = -9
+        self._dx = 0
+        self._dy = 0
 
     def run(self):
         # load images
@@ -122,19 +122,23 @@ class LinearStitcher(StitchPipeline):
     def _load_tiff_images(self):
         # loads and returns a list of tiff images
         images = []
-        files = listdir(path.join(self._data_path, RAW_DATA_DIR_NAME))
+        raw_data_path = path.join(self._data_path, RAW_DATA_DIR_NAME)
+        files = listdir(raw_data_path)
         files.sort(key=self._file_comparefun)
 
         for file_name in files:
-            file_path = path.join(self._data_path, file_name)
-            if file_path.endswith(".TIFF"):
+            file_path = path.join(raw_data_path, file_name)
+            print(f"{file_path}=====================================")
+            if file_path.endswith(".tiff"):
                 image = Image.open(file_path)
+                print(image.mode)
                 images.append(image)
-
+        print(f"{len(images)}")
         return images
 
     def _file_comparefun(self, file_name):
         # sorts files named {number}.{extension} by increasing 
         # number where number is some decimal value
-        no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
+        no_ext = file_name.split(".jpeg")[0].split(".tiff")[0]
+        print(no_ext)
         return int(no_ext)

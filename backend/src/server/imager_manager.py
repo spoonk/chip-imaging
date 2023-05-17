@@ -48,7 +48,7 @@ class ImagerManager():
         # requires: path must be an existing directory
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
-                if len(os.listdir(path)) != 0: return False # not empty
+                # if len(os.listdir(path)) != 0: return False # not empty
                 self._imaging_path = path
 
                 self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
@@ -96,13 +96,17 @@ class ImagerManager():
 
     def stitch(self):
         with self._state_lock:
-            if self._imaging_path != None or self._stitcher is None: return False # implies stitcher is None
+            # TODO: this really doesn't need to be called in a thread....
+            print(self._imager is not None, self._stitcher is None, self._status == ImagerManager.STATUS_IDLE)
+            if self._stitcher is None: return False 
             if self._status == ImagerManager.STATUS_IDLE:
-                imaging_thread = Thread(target = self._thread_wrapper, args=[self._stitcher.run, self._imaging_path])
-                imaging_thread.start()
+                self._stitcher.run()
+                # imaging_thread = Thread(target = self._thread_wrapper, args=[self._stitcher.run])
+                # imaging_thread.start()
 
-                self._status = ImagerManager.STATUS_STITCHING
-                self._running_thread = imaging_thread
+                # self._status = ImagerManager.STATUS_STITCHING
+
+                # self._running_thread = imaging_thread
 
                 return True
             return False
@@ -115,7 +119,6 @@ class ImagerManager():
 
     def _thread_wrapper(self, function, args):
         function(args)
-        logging.info('done acquiring')
         with self._state_lock:
             self._status = ImagerManager.STATUS_IDLE
             self._running_thread = None

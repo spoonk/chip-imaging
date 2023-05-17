@@ -58,3 +58,5 @@ todo:
 [ ] route to query the path that images will be saved in
 [ ] make a stitch utils file in python that allows you to get jpeg images 
 [ ] be able to select a different directory for stiching, not just the one from acquisition
+
+[ ] interpret return values from manager

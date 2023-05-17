@@ -2,7 +2,7 @@ from imager.imaging_grid import ImagingGrid
 from imager.chip_imager import ChipImager
 from threading import Thread, Lock
 from stitcher.linear_stitcher import LinearStitcher
-from stitcher.cv_stitcher import CVStitchPipeline
+# from stitcher.cv_stitcher import CVStitchPipeline
 import logging
 
 """
@@ -33,8 +33,8 @@ class ImagerManager():
         self._running_thread: Thread | None = None
         self._state_lock: Lock = Lock()
 
-        # self._stitcher: LinearStitcher | None = None
-        self._stitcher: CVStitchPipeline | None = None
+        self._stitcher: LinearStitcher | None = None
+        # self._stitcher: CVStitchPipeline | None = None
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
@@ -43,8 +43,9 @@ class ImagerManager():
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 self._imaging_path = path
-                self._stitcher = CVStitchPipeline(path)
-                # self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
+                # self._stitcher = CVStitchPipeline(path)
+
+                self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid())
                 return True
             return False
 
@@ -89,7 +90,7 @@ class ImagerManager():
 
     def stitch(self):
         with self._state_lock:
-            if self._imaging_path != None: return False # implies stitcher is None
+            if self._imaging_path != None or self._stitcher is None: return False # implies stitcher is None
             if self._status == ImagerManager.STATUS_IDLE:
                 imaging_thread = Thread(target = self._thread_wrapper, args=[self._stitcher.run, self._imaging_path])
                 imaging_thread.start()
@@ -112,26 +113,6 @@ class ImagerManager():
         with self._state_lock:
             self._status = ImagerManager.STATUS_IDLE
             self._running_thread = None
-
-    # @TODO: also return imaging grid
-    def get_top_left_grid(self, w, h):
-        # images = self._stitcher._load_tiff_images()
-        self._stitcher._generate_jpeg_from_tiff()
-        images = self._stitcher._load_jpeg_images()
-
-        # images = self._stitcher._load_tiff_images()
-        grid = self._imager.get_imaging_grid()
-        r, c = grid.get_grid_dimensions()
-        if r < h or c < w: return None
-        # for now we will know nothing about the location of the images 
-        top_lefties = []
-        for row in range(h):
-            row_images = []
-            for col in range(w): 
-                row_images.append(images[row * w + col])
-
-            top_lefties.append(row_images)
-        return top_lefties
 
     def get_saved_path(self):
         return self._imaging_path

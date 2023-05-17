@@ -109,7 +109,12 @@ def prompt_path():
         root.wm_attributes('-topmost', 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        cache['manager'].set_imaging_output_path(directory_path)
+        if cache['manager'].set_imaging_output_path(directory_path):
+            ...
+            # success
+        else:
+            # fail
+            ...
 
         return jsonify([True, directory_path])
     return jsonify([False, "please initialize the device first"])
@@ -158,7 +163,8 @@ def server_images(h, w):
         img_byte_arr = BytesIO()
         image.save(img_byte_arr, format='PNG')
         images_bytes.append(encodebytes(img_byte_arr.getvalue()).decode('ascii'))
-
+    
+    stitcher._delete_temp_jpegs()
     return jsonify({'result': images_bytes})
 
 if __name__ == '__main__':

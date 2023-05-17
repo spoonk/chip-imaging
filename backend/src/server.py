@@ -36,7 +36,6 @@ def handle_video():
     if 'camera' in cache:
         cam = cache['camera']
         while True:
-            logging.info(f"{cam.get_exposure()}, {cam.get_gain()}")
             im = Image.fromarray(cam.take_image())
             img_byte_arr = io.BytesIO()
             im.save(img_byte_arr, format='PNG')

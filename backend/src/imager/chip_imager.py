@@ -37,6 +37,7 @@ class ChipImager():
         if not self._ready: return
         if not path.exists(acquisition_path): return
         # save the imaging grid used for this 
+        self._save_grid(acquisition_path)
 
         self._movement.reset()
 

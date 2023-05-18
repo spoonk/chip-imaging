@@ -67,8 +67,10 @@ class CameraWindow extends Component {
   render() { 
     return ( 
       <div className={styles.camera_window}>
-        <CameraFeed imgUrl={this.state.imgUrl} />
-        <CameraControl startFeedFN={this.startVideoFeed} setGainExposureFN={this.setGainAndExposure} />
+        <div className={styles.camera_stream_container}>
+          <CameraFeed imgUrl={this.state.imgUrl} />
+          <CameraControl startFeedFN={this.startVideoFeed} setGainExposureFN={this.setGainAndExposure} />
+        </div>
       </div>
     );
   }

@@ -8,13 +8,15 @@ class CameraFeed extends Component {
 
     render() { 
         return (  
-            <img 
-                className={styles.camera_feed}
-                src={this.props.imgUrl} 
-                alt="camera feed frame" 
-            />
-        );
-    }
+      <div className={styles.camera_feed_container}>
+        <img 
+          className={styles.camera_feed}
+          src={this.props.imgUrl} 
+          alt="camera feed frame" 
+        />
+      </div>
+    );
+  }
 } // class CameraFeed
 
 export default CameraFeed;

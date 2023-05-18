@@ -29,17 +29,19 @@ class StitchingMenu extends Component {
 
         <Alignment />
 
-        <ButtonGroup orientation="vertical" variant="outlined" >
+        <div className='stitching-controls'>
+          <ButtonGroup orientation="vertical" variant="outlined" >
 
-          <Button onClick={this.startStitching.bind(this)}>
-            start stitching
-          </Button>
+            <Button onClick={this.startStitching.bind(this)}>
+              start stitching
+            </Button>
 
-          <Button onClick={this.getStitched.bind(this)}>
-            get stitching result
-          </Button>
+            <Button onClick={this.getStitched.bind(this)}>
+              get stitching result
+            </Button>
 
-        </ButtonGroup>
+          </ButtonGroup>
+        </div>
 
       </div>
     );

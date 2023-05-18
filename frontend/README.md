@@ -25,7 +25,7 @@ todo:
     [ x ] make all routes nice + toasted
     [ ] make sure all errors are handled (not sure if this is every checkable)
 
-[ ] better image saving
+[ x ] better image saving
     [ x ] check to make sure directory is empty
     [ x ] make a directory just for the raw images
         [ x ] stores an imaging grid config as well
@@ -38,32 +38,38 @@ todo:
      |- *.Tiff
     |-stitched.tiff
 
+[ ] separate the imaging and stitching paths, providing an option to stitch in the acquisition directory
+    - you might want to stitch in an existing data dir
 
-
-[ ] put manual alignmnet into stitching menu, get rid of manual alignt menu
 [ ] make manual align send a theta to the server
 [ ] make linear stitcher be able to handle a rotation
 
-[ ] make querying the manual grid depend on path
+[ ] make querying the manual grid depend on stitcher's path
+[ ] server offline errors for request
 
-[ ] make camera feed toggleable
+[ ] implement getting stitched result
 
-[ ] toastify for alerts (fetching stuff)
-[ ] override onscroll for image canvas -> so canvas gets scrolled
-[ ] use different websockets for (hopefully) better streaming
 [ ] make manual grid route respect imaging grid parameters
-
+    - currently just sends a 3x3, we want to handle the case where there may not be a 3x3 to return
 
 [ ] clean up server routes with blueprints
 
 [ ] documentation
 [ ] way to kill / restart server devices
 
-[ ] server rejects a path if it is a non empty directory
-[ ] route to query the path that images will be saved in
-[ ] make a stitch utils file in python that allows you to get jpeg images 
-[ ] be able to select a different directory for stiching, not just the one from acquisition
+[ ] make a stitch utils file in python that allows you to get jpeg images (for sending manual grid back to client)
+    [ ] also need a gain scalar on frontend (images will likely be black)
 
-[ ] interpret return values from manager
-[ ] separate the imaging and stitching paths, providing an option to stitch in the acquisition directory
-    - you might want to stitch in an existing data dir
+
+[ ] zoom slider for manual align
+
+[ ] figure out how to run server and frontend with exe file
+
+[ x ] server rejects a path if it is a non empty directory
+[ x ] use different websockets for (hopefully) better streaming -> just use gevent
+[ x ] put manual alignmnet into stitching menu, get rid of manual alignt menu
+[ x ] make camera feed toggleable
+
+[ x ] toastify for alerts (fetching stuff)
+[ x ] interpret return values from manager
+[ x ] route to query the path that images will be saved in

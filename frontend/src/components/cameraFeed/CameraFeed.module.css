@@ -1,4 +1,8 @@
+.camera_feed_container {
+}
+
 .camera_feed {
-    width:100%;
-    height: auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 5px;
+  border: 1px solid black;
 }

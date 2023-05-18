@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup, TextField } from '@mui/material'; 
 import styles from './CameraControl.module.css'
-import InputField from '../InputField/InputField';
+
 class CameraControl extends Component {
   constructor(props) {
     super(props)
@@ -25,6 +25,7 @@ class CameraControl extends Component {
             InputLabelProps={{ shrink: true, }}
             value = {this.state.exposureVal}
             onChange ={(e) => { this.changeExposureCB(e.target.value) }}
+            fullWidth={true}
           />
           <TextField
             label="gain"
@@ -32,10 +33,11 @@ class CameraControl extends Component {
             InputLabelProps={{ shrink: true, }}
             value = {this.state.gainVal}
             onChange ={(e) => { this.changeGainCB(e.target.value) }}
+            fullWidth={true}
           />
         </div>
         <div className={styles.button_container}>
-          <ButtonGroup orientation="horizontal" variant="outlined" fullWidth={true}>
+          <ButtonGroup orientation="horizontal" variant="contained" fullWidth={true} style={{margin:'4px'}}>
             <Button onClick={this.props.startFeedFN}>
               start camera feed
             </Button>

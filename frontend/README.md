@@ -30,13 +30,14 @@ todo:
     [ x ] make a directory just for the raw images
         [ x ] stores an imaging grid config as well
     [ x ] in parent of raw image dir, save stitch
-    [ ] test on pc that doesn't crash with tkinger :|
+    [ x ] test on pc that doesn't crash with tkinger :|
 
     so we have something like 
     -session
     |- raw_images
      |- *.Tiff
     |-stitched.tiff
+
 
 
 [ ] put manual alignmnet into stitching menu, get rid of manual alignt menu

@@ -109,13 +109,9 @@ def prompt_path():
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
         if cache['manager'].set_imaging_output_path(directory_path):
-            # success
             return jsonify([True, f"directory saved!"])
         else:
-            # fail
             return jsonify([False, f"{directory_path} is not empty, please select an empty directory"])
-
-        return jsonify([True, directory_path])
     return jsonify([False, "please initialize the device first"])
 
 @app.route('/stitch')
@@ -123,8 +119,11 @@ def start_stitching():
     if 'manager' in cache:
         if cache['manager'].get_saved_path() is None:
             return jsonify([False, "please choose a directory from the acquisition menu first"])
-        cache['manager'].stitch()
-        return jsonify([True, "stitching started"])
+        try:
+            cache['manager'].stitch()
+            return jsonify([True, "stitching succeeded"])
+        except Exception as e:
+            return jsonify([False, f"something went wrong: {e}"])
     return jsonify([False, "please initialize the device first"])
 
 
@@ -150,6 +149,8 @@ def save_top_left():
         return jsonify([True, "saved top left position"])
     return jsonify([False, "please initialize the device first"])
 
+
+# TODO: store jpegs in a buffer man
 @app.route("/manualGrid/<h>/<w>")
 def server_images(h, w):
     #TODO: check if manager exists and has path, return correct result

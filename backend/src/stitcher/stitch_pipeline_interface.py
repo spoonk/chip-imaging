@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 class StitchPipeline(ABC):
 
     """
-    A stitch pipeline stitches a directory of *.tiff
-    images into a single, larger .tiff image
+    A stitch pipeline stitches a directory of *.TIFF
+    images into a single, larger .TIFF image
     """
 
     @abstractmethod

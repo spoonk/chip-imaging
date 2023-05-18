@@ -28,8 +28,8 @@ sock = SocketIO(app, cors_allowed_origins='*')
 
 cache = {} # server lifetime-wide cache
 
-""" IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1" """
-IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1"
+IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1"
+""" IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1" """
 
 @sock.on('video')
 def handle_video():

@@ -43,9 +43,9 @@ class CVStitchPipeline(StitchPipeline):
         files = os.listdir(self._data_path)
         files.sort(key=self._file_comparefun)
         for file_name in files:
-            if file_name.endswith(".tiff"):
+            if file_name.endswith(".TIFF"):
                 in_file_path = os.path.join(self._data_path, file_name)
-                out_file_path = in_file_path.split(".tiff")[0] + ".jpeg"
+                out_file_path = in_file_path.split(".TIFF")[0] + ".jpeg"
                 image = Image.open(in_file_path)
 
                 image.mode = 'I'
@@ -54,7 +54,7 @@ class CVStitchPipeline(StitchPipeline):
     def _file_comparefun(self, file_name):
         # sorts files named {number}.{extension} by increasing 
         # number where number is some decimal value
-        no_ext = file_name.split(".jpeg")[0].split(".tiff")[0]
+        no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
         return int(no_ext)
 
     def _load_jpeg_images(self):

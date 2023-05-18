@@ -129,7 +129,7 @@ class LinearStitcher(StitchPipeline):
         for file_name in files:
             file_path = path.join(raw_data_path, file_name)
             print(f"{file_path}=====================================")
-            if file_path.endswith(".tiff"):
+            if file_path.endswith(".TIFF"):
                 image = Image.open(file_path)
                 print(image.mode)
                 images.append(image)
@@ -139,6 +139,6 @@ class LinearStitcher(StitchPipeline):
     def _file_comparefun(self, file_name):
         # sorts files named {number}.{extension} by increasing 
         # number where number is some decimal value
-        no_ext = file_name.split(".jpeg")[0].split(".tiff")[0]
+        no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
         print(no_ext)
         return int(no_ext)

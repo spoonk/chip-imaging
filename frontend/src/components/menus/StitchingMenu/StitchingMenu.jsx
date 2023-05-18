@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ButtonGroup, Button } from '@mui/material';
 import { ServerInterface } from '../../../ServerInterface';
 import { showToast } from '../../../utils';
+import Alignment from '../../ManualAlign/children/Alignment';
 
 class StitchingMenu extends Component {
   constructor(props) {
@@ -25,6 +26,8 @@ class StitchingMenu extends Component {
   render() { 
     return (  
       <div className="menu">
+
+        <Alignment />
 
         <ButtonGroup orientation="vertical" variant="outlined" >
 

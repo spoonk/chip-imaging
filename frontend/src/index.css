@@ -20,6 +20,7 @@ code {
   justify-content: center;
   align-items: center;
   display: flex;
+  /* flex-direction:column; */
   font-size: 28px;
   height: 100%;
 }

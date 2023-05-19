@@ -134,7 +134,7 @@ class ImagerManager:
                 "status": ImagerManager.status_lut[self._status],
                 "data path": self._imaging_path,
             }
-""" helper methods """
+
     def _thread_wrapper(self, function, args):
         function(args)
         with self._state_lock:

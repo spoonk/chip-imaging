@@ -98,10 +98,9 @@ def get_status():
 def update_imaging_parameters(width, height, distance):
     if "manager" in cache:
         manager: ImagerManager = cache['manager']
-        manager.change_imaging_parameters(
+        return jsonify(manager.change_imaging_parameters(
             float(width), float(height), float(distance)
-        )
-        return jsonify([True, "imaging parameters updated"])
+        ))
     return jsonify([False, "please initialize the device"])
 
 
@@ -130,19 +129,12 @@ def prompt_acquisition_path():
     # prompts the user to select where the data images will be saved
     if "manager" in cache:
         manager: ImagerManager = cache['manager']
+        #TODO: put popup calling in a function with return being new dir
         root = Tk()
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        if manager.set_imaging_output_path(directory_path):
-            return jsonify([True, f"directory saved!"])
-        else:
-            return jsonify(
-                [
-                    False,
-                    f"{directory_path} is not empty, please select an empty directory",
-                ]
-            )
+        return jsonify(manager.set_imaging_output_path(directory_path))
     return jsonify([False, "please initialize the device first"])
 
 
@@ -155,15 +147,7 @@ def prompt_path():
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        if manager.set_stitching_directory(directory_path):
-            return jsonify([True, f"stitching directory saved!"])
-        else:
-            return jsonify(
-                [
-                    False,
-                    f"{directory_path} is not stitchable, please make sure it only has a raw_data directory and a grid.json file",
-                ]
-            )
+        return jsonify(manager.set_stitching_directory(directory_path))
     return jsonify([False, "please initialize the device first"])
 
 

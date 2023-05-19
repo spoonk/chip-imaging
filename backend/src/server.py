@@ -41,7 +41,10 @@ def handle_video():
             im.save(img_byte_arr, format='PNG')
             img_byte_arr = img_byte_arr.getvalue()
             sock.emit('frame', {'image_data': img_byte_arr})
-            sock.sleep(0.1)
+            sock.sleep(0.01)
+
+    else:
+        sock.emit('camera_uninitialized', 'please initialize the device first')
 
 @app.route('/initialize')
 def initialize():

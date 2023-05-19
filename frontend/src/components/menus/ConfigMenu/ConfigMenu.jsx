@@ -32,7 +32,6 @@ class ConfigMenu extends Component {
            * update configuration
            */
         }
-        <div className={styles.container}>
 
           <div className={styles.column_wrapper}>
 
@@ -79,7 +78,6 @@ class ConfigMenu extends Component {
 
         </div>
 
-      </div>
     );
   }
 }

@@ -1,8 +1,18 @@
 .input_column {
-    width:100%;
-    padding: 30px;
+  width:100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.input_column * {
+  display: block;
+  margin:30px;
 }
 
 .column_wrapper {
-    display: flex;
+  display: flex;
 }

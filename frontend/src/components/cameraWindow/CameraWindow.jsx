@@ -40,6 +40,14 @@ class CameraWindow extends Component {
     socket.on('message', (data) => {
       console.info(data)
     })
+
+    socket.on('camera_uninitialized', (data) => {
+      showToast([false, data])
+    })
+
+    socket.on('camera_failure', (data) => {
+      showToast([false, data])
+    })
   }
 
   componentWillUnmount = () => {

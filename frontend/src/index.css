@@ -30,6 +30,7 @@ height:100%;
   flex-direction:column;
 }
 
+
 .alignment-container {
   position:relative;
   height: 50%;
@@ -87,9 +88,7 @@ MuiButtonGroup-root {
   transform:translate(0, -100%);
 }
 
-.stiching-controls {
-
+.stitching-controls {
+  margin-top:20px;
 }
-
-
 

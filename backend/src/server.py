@@ -34,14 +34,17 @@ IMAGES_PATH ="/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sampl
 @sock.on('video')
 def handle_video():
     if 'camera' in cache:
-        cam = cache['camera']
-        while True:
-            im = Image.fromarray(cam.take_image())
-            img_byte_arr = io.BytesIO()
-            im.save(img_byte_arr, format='PNG')
-            img_byte_arr = img_byte_arr.getvalue()
-            sock.emit('frame', {'image_data': img_byte_arr})
-            sock.sleep(0.01)
+        try:
+            cam = cache['camera']
+            while True:
+                im = Image.fromarray(cam.take_image())
+                img_byte_arr = io.BytesIO()
+                im.save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+                sock.emit('frame', {'image_data': img_byte_arr})
+                sock.sleep(0.01)
+        except Exception as e:
+            sock.emit('camera_failure', str(e)) # note: this goes away with a real camera :O
 
     else:
         sock.emit('camera_uninitialized', 'please initialize the device first')

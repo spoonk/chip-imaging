@@ -37,7 +37,7 @@ class StitchingMenu extends Component {
             </Button>
 
             <Button onClick={this.getStitched.bind(this)}>
-              get stitching result
+              preview stitching result
             </Button>
 
           </ButtonGroup>

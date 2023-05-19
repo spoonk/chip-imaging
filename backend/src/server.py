@@ -88,7 +88,8 @@ def initialize():
 @app.route("/status")
 def get_status():
     if "manager" in cache:  # take this as initialized
-        return jsonify([True, cache["manager"].get_status()])
+        manager: ImagerManager = cache['manager']
+        return jsonify([True, manager.get_status()])
 
     return jsonify([False, "offline"])
 
@@ -96,7 +97,8 @@ def get_status():
 @app.route("/update/<width>/<height>/<distance>")
 def update_imaging_parameters(width, height, distance):
     if "manager" in cache:
-        cache["manager"].change_imaging_parameters(
+        manager: ImagerManager = cache['manager']
+        manager.change_imaging_parameters(
             float(width), float(height), float(distance)
         )
         return jsonify([True, "imaging parameters updated"])
@@ -107,7 +109,8 @@ def update_imaging_parameters(width, height, distance):
 def set_camera_exposure(exposure):
     exposure = float(exposure)
     if "camera" in cache:
-        cache["camera"].set_exposure(exposure)
+        cam = cache['camera']
+        cam.set_exposure(exposure)
         return jsonify([True, f"set exposure to {exposure}"])
     return jsonify([False, "camera not initialized"])
 
@@ -116,7 +119,8 @@ def set_camera_exposure(exposure):
 def set_gain(gain):
     gain = float(gain)
     if "camera" in cache:
-        cache["camera"].set_gain(gain)
+        cam = cache['camera']
+        cam.set_gain(gain)
         return jsonify([True, f"set gain to {gain}"])
     return jsonify([False, "camera not initialized"])
 
@@ -125,11 +129,12 @@ def set_gain(gain):
 def prompt_acquisition_path():
     # prompts the user to select where the data images will be saved
     if "manager" in cache:
+        manager: ImagerManager = cache['manager']
         root = Tk()
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        if cache["manager"].set_imaging_output_path(directory_path):
+        if manager.set_imaging_output_path(directory_path):
             return jsonify([True, f"directory saved!"])
         else:
             return jsonify(
@@ -142,14 +147,15 @@ def prompt_acquisition_path():
 
 
 @app.route("/promptStitchingPath")
-def prompt_stitching_path():
+def prompt_path():
     # prompts the user to select where the data images will be saved
     if "manager" in cache:
+        manager: ImagerManager = cache['manager']
         root = Tk()
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
-        if cache["manager"].set_stitching_directory(directory_path):
+        if manager.set_stitching_directory(directory_path):
             return jsonify([True, f"stitching directory saved!"])
         else:
             return jsonify(
@@ -164,12 +170,13 @@ def prompt_stitching_path():
 @app.route("/stitch")
 def start_stitching():
     if "manager" in cache:
-        if cache["manager"].get_saved_path() is None:
+        manager: ImagerManager = cache['manager']
+        if manager.get_saved_path() is None:
             return jsonify(
                 [False, "please choose a directory from the acquisition menu first"]
             )
         try:
-            cache["manager"].stitch()
+            manager.stitch()
             return jsonify([True, "stitching succeeded"])
         except Exception as e:
             return jsonify([False, f"something went wrong: {e}"])
@@ -179,12 +186,13 @@ def start_stitching():
 @app.route("/acquire")
 def run_acquisition():
     if "manager" in cache:
-        if cache["manager"].get_saved_path() is None:
+        manager: ImagerManager = cache['manager']
+        if manager.get_saved_path() is None:
             return jsonify(
                 [False, "please select an empty directory to save the images in first"]
             )
 
-        res = cache["manager"].start_acquisition()
+        res = manager.start_acquisition()
         if res:
             return jsonify([True, "acquisition started"])
         else:
@@ -196,7 +204,8 @@ def run_acquisition():
 @app.route("/topLeft")
 def save_top_left():
     if "manager" in cache:
-        cache["manager"].save_top_left_position()
+        manager: ImagerManager = cache['manager']
+        manager.save_top_left_position()
         return jsonify([True, "saved top left position"])
     return jsonify([False, "please initialize the device first"])
 
@@ -204,21 +213,23 @@ def save_top_left():
 # TODO: store jpegs in a buffer man
 @app.route("/manualGrid/<h>/<w>")
 def server_images(h, w):
-    # TODO: check if manager exists and has stitching path, return correct result
-    # TODO: try except
-    stitcher = CVStitchPipeline(IMAGES_PATH)
-    stitcher._generate_jpeg_from_tiff()
-    images = stitcher._load_jpeg_images()
-    # convert images
-    images_bytes = []
-    for image in images:
-        img_byte_arr = BytesIO()
-        image.save(img_byte_arr, format="PNG")
-        images_bytes.append(encodebytes(img_byte_arr.getvalue()).decode("ascii"))
+    try:
+        # TODO: check if manager exists and has stitching path, return correct result
+        # TODO: try except
+        stitcher = CVStitchPipeline(IMAGES_PATH)
+        stitcher._generate_jpeg_from_tiff()
+        images = stitcher._load_jpeg_images()
+        # convert images
+        images_bytes = []
+        for image in images:
+            img_byte_arr = BytesIO()
+            image.save(img_byte_arr, format="PNG")
+            images_bytes.append(encodebytes(img_byte_arr.getvalue()).decode("ascii"))
 
-    stitcher._delete_temp_jpegs()
-    return jsonify({"result": images_bytes})
-
+        stitcher._delete_temp_jpegs()
+        return [True, jsonify({"result": images_bytes})]
+    except Exception as e:
+        return [False, str(e)]
 
 if __name__ == "__main__":
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

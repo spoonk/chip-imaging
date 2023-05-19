@@ -6,6 +6,7 @@ import { ServerInterface } from '../../../ServerInterface'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlassPlus, faMagnifyingGlassMinus } from '@fortawesome/free-solid-svg-icons'
+import { showToast } from '../../../utils'
 
 
 const Alignment = () => {
@@ -25,7 +26,13 @@ const Alignment = () => {
 
   const getManual = async() => { 
     let image_bytes = await ServerInterface.getAlignmentGrid(3, 3) ;
+    if (!image_bytes[0]){
+      showToast(image_bytes)
+      return
+    }
+
     let urls = []
+    image_bytes = image_bytes[1]
     image_bytes.result.forEach(bytes => { urls.push(bytes) });
     toast.success("images loaded", { position: "bottom-left", })
     setImages(urls)

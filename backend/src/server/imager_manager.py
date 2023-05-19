@@ -20,6 +20,7 @@ with the current process
 
 # TODO: integrate this, lets us use a message + success flag for each return
 ManagerResponse = Tuple[bool, str]  # [success, reason]
+busy_message = "device busy"
 
 class ImagerManager:
     # possible device states
@@ -42,40 +43,41 @@ class ImagerManager:
         self._state_lock: Lock = Lock()
 
         self._stitcher: LinearStitcher | None = None
-        # self._stitcher: CVStitchPipeline | None = None
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
-    def set_imaging_output_path(self, path: str) -> bool:
+    def set_imaging_output_path(self, path: str) -> ManagerResponse:
         # requires: path must be an existing directory
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
-                # if len(os.listdir(path)) != 0: return False # not empty
+                if len(os.listdir(path)) != 0: 
+                    return (False, f"{path} is not an empty directory")
+
                 self._imaging_path = path
 
                 """ self._stitcher = LinearStitcher(path, self._imager.get_imaging_grid()) """
-                return True
-            return False
+                return (True, f'set acquisition path to {path}')
+            return (False, busy_message)
 
-    def set_stitching_directory(self, path: str):
+    def set_stitching_directory(self, path: str) -> ManagerResponse:
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 # TODO: try except
                 if not check_stitchable_dir(path):
-                    return False
+                    return (False, f"{path} doesn't meet the requirements for stitching")
 
                 grid: ImagingGrid = load_grid_from_json(
                     os.path.join(path, GRID_PROPERTIES_FILE_NAME)
                 )
 
                 self._stitcher = LinearStitcher(path, grid)
-                return True
-            return False
+                return (True, f"{path} saved as stitching directory")
+            return (False, busy_message)
 
     # change chip parameters
     def change_imaging_parameters(
         self, imaging_width: float, imaging_height: float, distance_between_cells: float
-    ) -> bool:
+    ) -> ManagerResponse:
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 grid: ImagingGrid = self._imager.get_imaging_grid()
@@ -87,19 +89,19 @@ class ImagerManager:
                 )
 
                 # NOTE: that updating the grid will still update the stitcher
-                return True
-            return False
+                return (True, "updated chip parameters")
+            return (False, busy_message)
 
-    def save_top_left_position(self):
+    def save_top_left_position(self) -> ManagerResponse:
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
-                self._imager.save_top_left_pos()
-                return True
-            return False
+                self._imager.save_top_left_pos() # TODO: error check?
+                return (True, "saved top left position")
+            return (False, busy_message)
 
     # tells the device to start snapping images
     # returns True if the request wasn't rejected
-    def start_acquisition(self) -> bool:
+    def start_acquisition(self) -> ManagerResponse:
         with self._state_lock:
             if self._imaging_path != None and self._status == ImagerManager.STATUS_IDLE:
                 # start the device
@@ -112,19 +114,19 @@ class ImagerManager:
                 self._status = ImagerManager.STATUS_IMAGING
                 self._running_thread = imaging_thread
 
-                return True
-            return False
+                return (True, "acquisition started")
+            return (False, busy_message)
 
-    def stitch(self):
+    def stitch(self) -> ManagerResponse:
         with self._state_lock:
             if self._stitcher is None:
-                return False
+                return (False, "no stitching directory has been specified")
             if self._status == ImagerManager.STATUS_IDLE:
+                # TODO: try except in case running fails
                 self._stitcher.run()
-                # TODO: try except
 
-                return True
-            return False
+                return (True, "stitching complete")
+            return (False, busy_message)
 
     def get_status(self):
         with self._state_lock:
@@ -132,7 +134,7 @@ class ImagerManager:
                 "status": ImagerManager.status_lut[self._status],
                 "data path": self._imaging_path,
             }
-
+""" helper methods """
     def _thread_wrapper(self, function, args):
         function(args)
         with self._state_lock:

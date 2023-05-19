@@ -38,11 +38,25 @@ todo:
      |- *.Tiff
     |-stitched.tiff
 
+[ x ] server rejects a path if it is a non empty directory
+[ x ] use different websockets for (hopefully) better streaming -> just use gevent
+[ x ] put manual alignmnet into stitching menu, get rid of manual alignt menu
+[ x ] make camera feed toggleable
+
+[ x ] toastify for alerts (fetching stuff)
+[ x ] interpret return values from manager
+[ x ] route to query the path that images will be saved in
+
 [ ] separate the imaging and stitching paths, providing an option to stitch in the acquisition directory
     - you might want to stitch in an existing data dir
+[ ] manager better return messages / types
+
+
 
 [ ] make manual align send a theta to the server
+[ ] also send a pixels per um
 [ ] make linear stitcher be able to handle a rotation
+[ ] make stitcher able to handle fewer than expected images (it might already)
 
 [ ] make querying the manual grid depend on stitcher's path
 [ ] server offline errors for request
@@ -65,11 +79,9 @@ todo:
 
 [ ] figure out how to run server and frontend with exe file
 
-[ x ] server rejects a path if it is a non empty directory
-[ x ] use different websockets for (hopefully) better streaming -> just use gevent
-[ x ] put manual alignmnet into stitching menu, get rid of manual alignt menu
-[ x ] make camera feed toggleable
 
-[ x ] toastify for alerts (fetching stuff)
-[ x ] interpret return values from manager
-[ x ] route to query the path that images will be saved in
+[ ] add documentation on the website to say what each button means (popup or something)
+
+
+
+

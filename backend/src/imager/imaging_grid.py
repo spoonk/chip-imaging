@@ -1,5 +1,6 @@
 import math
-from typing import TypedDict, Tuple
+from typing import Tuple, TypedDict
+
 
 class ImagingLocation():
     def __init__(self, center: tuple[float, float]):
@@ -47,14 +48,14 @@ class ImagingGrid():
 
         for r in range(rows):
             for c in range(cols):
-               # vertical position
-               # note we use minus here since a negative value moves to a downward channel on the chip
-               y_offset: float = top_left_y - self.__distance_between * r
-               # horizontal position
-               x_offset: float = top_left_x + self.__distance_between * c
-               loc = ImagingLocation(tuple([x_offset, y_offset]))
-               cells.append(loc)
-        
+                # vertical position
+                # note we use minus here since a negative value moves to a downward channel on the chip
+                y_offset: float = top_left_y - self.__distance_between * r
+                # horizontal position
+                x_offset: float = top_left_x + self.__distance_between * c
+                loc = ImagingLocation(tuple([x_offset, y_offset]))
+                cells.append(loc)
+
         return cells
 
     # returns (rows, cols) for imaging locations
@@ -66,27 +67,27 @@ class ImagingGrid():
     # pre: index is in [0, num_cells)
     def get_cell(self, index: int) -> ImagingLocation:
         return self.__cells[index]
-    
+
     def get_num_cells(self) -> int:
         return len(self.__cells)
-    
+
     def get_pixels_per_um(self) -> float:
         return self.__pixels_per_um
-    
+
     def get_distance_between_images_um(self) -> float:
         return self.__distance_between
-    
+
     def set_pixels_per_um(self, pixels_per_um: float):
         self.__pixels_per_um = pixels_per_um
 
-    def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float, pixel_size_um: float):
+    def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float):
         # reset all properties of the imaging grid
         self.__top_left: tuple[float, float] = top_left 
         self.__imaging_width = imaging_width
         self.__imaging_height = imaging_height
         self.__distance_between: float = distance_between_cells 
         self.__cells = self.__compute_image_grid()
-        self.__pixels_per_um = pixel_size_um
+        """ self.__pixels_per_um = pixel_size_um """
 
     def set_top_left(self, top_left: tuple[float, float]):
         self.__top_left = top_left
@@ -103,7 +104,7 @@ class ImagingGrid():
     def set_distance_between_images(self, distance: float):
         self.__distance_between = distance
         self.__cells = self.__compute_image_grid()
-            
+
     def get_properties(self) -> GridProperties:
         rows, cols = self.get_grid_dimensions()
         data: GridProperties = {

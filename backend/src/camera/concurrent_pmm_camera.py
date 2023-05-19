@@ -1,6 +1,8 @@
+from threading import Lock
+
 from camera.camera_interface import Camera
 from camera.pmm_camera import PMMCamera
-from threading import Lock
+
 
 class CPMMCamera(Camera):
     """

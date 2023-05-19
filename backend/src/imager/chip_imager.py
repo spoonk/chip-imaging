@@ -1,15 +1,17 @@
 # top-level class :)
-from stage.stage_interface import Stage
-from camera.camera_interface import Camera
-from imager.imaging_grid import ImagingGrid
-from PIL import Image
-from imager.movement_coordinator import MovementCoordinator
-from imager.config import CAMERA_WAIT_DURATION, RAW_DATA_DIR_NAME, GRID_PROPERTIES_FILE_NAME
-from time import sleep
-from os import path, makedirs
-from json import dump
-
 import logging
+from json import dump
+from os import makedirs, path
+from time import sleep
+
+from camera.camera_interface import Camera
+from imager.config import (CAMERA_WAIT_DURATION, GRID_PROPERTIES_FILE_NAME,
+                           RAW_DATA_DIR_NAME)
+from imager.imaging_grid import ImagingGrid
+from imager.movement_coordinator import MovementCoordinator
+from PIL import Image
+from stage.stage_interface import Stage
+
 
 class ChipImager():
     """

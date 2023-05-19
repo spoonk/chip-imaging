@@ -1,22 +1,23 @@
 import logging
+
 logging.basicConfig(level = logging.INFO)
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 # logging.getLogger('socketio').setLevel(logging.ERROR)
 # logging.getLogger('engineio').setLevel(logging.ERROR)
 # logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
 
-from flask import Flask
-from flask_cors import CORS
-from flask_socketio import SocketIO
-from time import sleep, time
 import io
-from PIL import Image
+from time import sleep, time
 
 # from camera.pmm_camera import PMMCamera
 from camera.concurrent_pmm_camera import CPMMCamera
-from stage.pmm_stage import PMMStage
+from flask import Flask
+from flask_cors import CORS
+from flask_socketio import SocketIO
 from imager.chip_imager import ChipImager
+from PIL import Image
 from server.imager_manager import ImagerManager
+from stage.pmm_stage import PMMStage
 
 app = Flask('src')
 CORS(app)

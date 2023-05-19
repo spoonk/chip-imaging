@@ -1,8 +1,10 @@
-from stage.stage_interface import Stage
-from imager.pymmcore_singleton import PymmcoreSingleton
-from imager.config import DEVICE_CONFIG
 import logging
 from time import sleep
+
+from imager.config import DEVICE_CONFIG
+from imager.pymmcore_singleton import PymmcoreSingleton
+from stage.stage_interface import Stage
+
 
 class PMMStage(Stage):
     """

@@ -50,7 +50,7 @@ export class ServerInterface {
   static setGainExposure = async(gain, exposure) => {
     const exposureResult = await fetch(`${serverUrl}/exposure/${exposure}`)
     const ebody = await exposureResult.json()
-    
+
     const gainResult = await fetch(`${serverUrl}/gain/${gain}`)
     const gbody = await gainResult.json()
 
@@ -81,5 +81,11 @@ export class ServerInterface {
     const acqRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
     const alJson = await acqRes.json()
     return alJson
+  }
+
+
+  static promptStitchingPath = async() => {
+    const promptResult = await fetch(`${serverUrl}/promptStitchingPath`)
+    return await promptResult.json()
   }
 }

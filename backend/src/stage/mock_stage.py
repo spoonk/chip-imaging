@@ -1,6 +1,7 @@
-from stage.stage_interface import Stage
 import logging
 from time import sleep
+
+from stage.stage_interface import Stage
 
 
 class MockStage(Stage):

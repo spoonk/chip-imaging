@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Device(ABC):
     """
     A device is a piece of hardware that we interact with

@@ -1,6 +1,8 @@
-import pymmcore
-from imager.config import MICROMANAGER_PATH, DEVICE_CONFIG 
 import logging
+
+import pymmcore
+from imager.config import DEVICE_CONFIG, MICROMANAGER_PATH
+
 
 class PymmcoreSingleton():
     """

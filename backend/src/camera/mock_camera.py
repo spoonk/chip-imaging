@@ -1,9 +1,10 @@
-from camera.camera_interface import Camera
 import logging
-import numpy as np
 from math import ceil
-from PIL import Image
 from time import sleep
+
+import numpy as np
+from camera.camera_interface import Camera
+from PIL import Image
 
 # mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/example.TIFF"
 # mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'

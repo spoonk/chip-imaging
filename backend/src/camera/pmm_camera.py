@@ -1,9 +1,10 @@
-from imager.pymmcore_singleton import PymmcoreSingleton
-from camera.camera_interface import Camera
-import numpy as np
-from math import ceil
 import logging
+from math import ceil
 from time import sleep
+
+import numpy as np
+from camera.camera_interface import Camera
+from imager.pymmcore_singleton import PymmcoreSingleton
 
 # SLEEP_DURATION = 0.5 # 500ms
 

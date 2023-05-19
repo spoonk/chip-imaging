@@ -1,8 +1,11 @@
-from stitcher.stitch_pipeline_interface import StitchPipeline
-from imager.imaging_grid import ImagingGrid
 from os import listdir, path
+
+from imager.config import (CAMERA_RESOLUTION, RAW_DATA_DIR_NAME,
+                           STITCHED_IMAGE_NAME)
+from imager.imaging_grid import ImagingGrid
 from PIL import Image, ImageDraw
-from imager.config import CAMERA_RESOLUTION, STITCHED_IMAGE_NAME, RAW_DATA_DIR_NAME
+from stitcher.stitch_pipeline_interface import StitchPipeline
+
 
 class LinearStitcher(StitchPipeline):
     """

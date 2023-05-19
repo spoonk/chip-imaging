@@ -2,11 +2,14 @@
 
 raise Exception("this class is deprecated (for now)")
 
-from serial import Serial, SerialException
-from stage.stage_interface import Stage 
+from time import sleep  # don't use this often
+
+from imager.config import (PRIOR_CONTROLLER_PORT, STAGE_BAUD_RATE,
+                           STAGE_POLL_DELAY)
 from imager.device import Device
-from imager.config import STAGE_BAUD_RATE, STAGE_POLL_DELAY, PRIOR_CONTROLLER_PORT
-from time import sleep # don't use this often
+from serial import Serial, SerialException
+from stage.stage_interface import Stage
+
 
 class PriorStage(Stage, Device):
     """

@@ -1,8 +1,8 @@
-from flask import Flask,request
-from flask_socketio import SocketIO
+import io
 
 from camera.mock_camera import MockCamera
-import io
+from flask import Flask, request
+from flask_socketio import SocketIO
 from PIL import Image
 
 app = Flask(__name__)

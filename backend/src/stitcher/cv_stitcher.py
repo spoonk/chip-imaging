@@ -1,9 +1,10 @@
+import os
+
 import cv2
 import numpy as np
 from PIL import Image
-import os
-
 from stitcher.stitch_pipeline_interface import StitchPipeline
+
 
 class CVStitchPipeline(StitchPipeline):
     """

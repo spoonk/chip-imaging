@@ -1,6 +1,7 @@
+import unittest
+
 from imager.imaging_grid import ImagingGrid
 
-import unittest
 
 class TestImagingGrid(unittest.TestCase):
     def test_simple(self):

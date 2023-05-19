@@ -20,6 +20,10 @@ class StitchingMenu extends Component {
     showToast(await ServerInterface.startStitching())
   }
 
+  setStitchingPath = async() => {
+    showToast(await ServerInterface.promptStitchingPath())
+  }
+
   // TODO: this
   getStitched = async() => { }
 
@@ -31,6 +35,10 @@ class StitchingMenu extends Component {
 
         <div className='stitching-controls'>
           <ButtonGroup orientation="vertical" variant="outlined" >
+
+            <Button onClick={this.setStitchingPath.bind(this)}>
+              set data directory
+            </Button>
 
             <Button onClick={this.startStitching.bind(this)}>
               start stitching

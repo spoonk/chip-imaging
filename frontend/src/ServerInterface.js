@@ -121,7 +121,21 @@ export class ServerInterface {
 
 
   static promptStitchingPath = async() => {
-    const promptResult = await fetch(`${serverUrl}/promptStitchingPath`)
-    return await promptResult.json()
+    try{
+      const promptResult = await fetch(`${serverUrl}/promptStitchingPath`)
+      return await promptResult.json()
+    } catch (e) {
+      return [false, 'server offline']
+    }
+  }
+
+  static setStitchingParameters = async(theta, pixePerUm) => {
+    try{
+      const setResult = await fetch(`${serverUrl}/setStitchingParameters/${theta}/${pixePerUm}`)
+      return await setResult.json()
+    } catch (e) {
+      return [false, 'server offline']
+    }
+
   }
 }

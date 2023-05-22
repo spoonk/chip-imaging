@@ -161,23 +161,19 @@ def prompt_path():
 def start_stitching():
     if "manager" in cache:
         manager: ImagerManager = cache['manager']
-        if manager.get_saved_path() is None:
+        if manager.get_saved_stitching_path() is None:
             return jsonify(
-                [False, "please choose a directory from the acquisition menu first"]
+                [False, "please choose a directory to stitch from first"]
             )
-        try:
-            manager.stitch()
-            return jsonify([True, "stitching succeeded"])
-        except Exception as e:
-            return jsonify([False, f"something went wrong: {e}"])
+        return jsonify(manager.stitch())
     return jsonify([False, "please initialize the device first"])
 
 
 @app.route("/acquire")
 def run_acquisition():
-    if "manager" in cache:
+    if "manager" in cache and cache['manager'] is not None:
         manager: ImagerManager = cache['manager']
-        if manager.get_saved_path() is None:
+        if manager.get_saved_acquisition_path() is None:
             return jsonify(
                 [False, "please select an empty directory to save the images in first"]
             )
@@ -209,6 +205,21 @@ def server_images(h, w):
         return jsonify(image_grid_res)
     return jsonify(False, 'please initialize the device first') # shouldn't have to do this, move stitcher outside
 
+
+@app.route("/setStitchingParams/<theta>/<pixelsPerUm>")
+def set_stitching_params(theta, pixelsPerUm):
+    if 'manager' not in cache:
+        return jsonify(False, 'please initialize the device first')
+
+    manager: ImagerManager = cache["manager"]
+
+    try:
+        theta = float(theta)
+        pixelsPerUm = float(pixelsPerUm)
+    except Exception:
+        return jsonify(False, 'failed to parse theta and number of pixels per um')
+
+    return jsonify(manager.set_stitching_parameters(theta, pixelsPerUm))
 
 if __name__ == "__main__":
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

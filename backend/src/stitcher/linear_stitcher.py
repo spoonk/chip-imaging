@@ -5,6 +5,7 @@ from imager.config import (CAMERA_RESOLUTION, RAW_DATA_DIR_NAME,
 from imager.imaging_grid import ImagingGrid
 from PIL import Image, ImageDraw
 from stitcher.stitch_pipeline_interface import StitchPipeline
+import numpy as np
 
 
 class LinearStitcher(StitchPipeline):
@@ -18,8 +19,11 @@ class LinearStitcher(StitchPipeline):
         # use imaging grid to determine layout of each image
         self._data_path = tiff_images_dir_path
         self._grid = grid
-        self._dx = 0
-        self._dy = 0
+        # todo: deprecate dx and dy, only using theta pls
+        self._theta = 0.0
+        self._pix_per_um = 1.0
+        """ self._dx = 0 """
+        """ self._dy = 0 """
 
     def run(self):
         # load images
@@ -37,6 +41,10 @@ class LinearStitcher(StitchPipeline):
         self._dx = x_shift
         self._dy = y_shift
 
+    def set_params(self, theta: float, pix_per_um: float):
+        self._theta = theta
+        self._pix_per_um = pix_per_um
+
     def _stitch_images(self, images):
         total_width_um = self._compute_image_width_um()
         total_height_um = self._compute_image_height_um()
@@ -49,27 +57,30 @@ class LinearStitcher(StitchPipeline):
         # shift_factor = (0.009) * self._grid.get_distance_between_images_um()
         # to make math easier, set the center location of the grid to be (0,0)
         # undo the transformation to the grid when done
+
+
         top_left = self._grid.get_cell(0).get_center_location()
         self._grid.set_top_left((0, 0))
         canvas = self._paste_images_into_canvas(canvas, images)
         self._grid.set_top_left(top_left)
+
         return canvas
 
     def _paste_images_into_canvas(self, canvas, images):
         # @modifies: canvas
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
+        rot = np.matrix([[np.cos(self._theta, -np.sin(self._theta))], [np.sin(self._theta), np.cos(self._theta)]])
+
+        # center of image with rotation applied
+        first_image_center_offset = (self._pix_per_um) * rot * (np.matrix([self._grid.get_distance_between_images_um(), 0]))
+        projected_x = self._pix_per_um * self._grid.get_distance_between_images_um()
+        projected_y = 0.0
+
+        x_shift = projected_x - first_image_center_offset[0]
+        y_shift = projected_y - first_image_center_offset[1]
         
-        # TODO: fix with integration testing
-        # top_left = self._grid.get_cell(0).get_center_location()
-        # center_offset = (0, 0) # shift x and y by the width of the image / 2, height / 2
-
-        #TODO: change shifting depending on distance between images (or for now leave it as a parameter)
-
         grid_dims = self._grid.get_grid_dimensions()
-        x_shift = self._dx
-        y_shift = self._dy
-
         for i in range(len(images))[::-1]:
             image = images[i]
             # compute pixel coords of where this image's center should go

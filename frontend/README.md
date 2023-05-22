@@ -84,4 +84,8 @@ todo:
 
 
 [ ] stitching stuff needs to not require device to be initialized
+    - add a stitcher manager, which is separate from imager manager
 
+    - this means separating it out from the manager (which I think I wanted originally)
+[ x ] chip imager should NOT have a sticher, they should be separate (lol it doesn't)
+[ ] update the stitchable_dir function in manager to allow there to be tiff files throughout, just give a new stitching result a later name

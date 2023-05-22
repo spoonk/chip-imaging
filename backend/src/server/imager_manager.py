@@ -3,6 +3,8 @@ import os
 from json import dumps, load
 from threading import Lock, Thread
 from typing import Tuple
+from io import BytesIO
+from base64 import encodebytes
 
 from imager.chip_imager import ChipImager
 from imager.config import GRID_PROPERTIES_FILE_NAME, RAW_DATA_DIR_NAME
@@ -42,7 +44,8 @@ class ImagerManager:
         self._running_thread: Thread | None = None
         self._state_lock: Lock = Lock()
 
-        self._stitcher: LinearStitcher | None = None
+        self._stitcher: LinearStitcher | None = None 
+        
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
@@ -145,9 +148,45 @@ class ImagerManager:
             self._status = ImagerManager.STATUS_IDLE
             self._running_thread = None
 
-    def get_saved_path(self):
+    def get_saved_acquisition_path(self):
         return self._imaging_path
+    
+    def get_saved_stitching_path(self):
+        if self._stitcher is None:
+            return None
+        return self._stitcher._data_path
 
+
+    def get_manual_grid(self, h, w):
+        data_path = self.get_saved_stitching_path()
+        if data_path is None:
+            return (False, 'please select a directory to stitch from first')
+        try: 
+            grid = load_grid_from_json(os.path.join(data_path, GRID_PROPERTIES_FILE_NAME))
+            images = self._stitcher._load_tiff_images() # TODO: stitcher shouldn't be responsible for loading iamges, that should be done here
+            grid_r, grid_c = grid.get_grid_dimensions()
+            h = min(grid_r, h)
+            w = min(grid_c, w)
+
+            # grab h x w images
+            image_grid = []
+            for r in range(h):
+                image_grid_row = []
+                for c in range(w):
+                    image_ind = r * grid_c + c
+                    if image_ind >= len(images): break
+                    image = images[image_ind]
+
+                    img_byte_arr = BytesIO()
+                    image.save(img_byte_arr, format="PNG")
+                    image_grid_row.append(encodebytes(img_byte_arr.getvalue()).decode("ascii"))
+                image_grid.append(image_grid_row)
+
+            return (True, {"result": image_grid, "grid": grid.get_properties()})
+
+        except Exception as e:
+            print(estack)
+            return (False, str(e))
 
 def check_stitchable_dir(dir_path: str) -> bool:
     # checks if a dir contains only a raw_data dir and a grid.json

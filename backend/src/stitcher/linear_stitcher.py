@@ -145,3 +145,7 @@ class LinearStitcher(StitchPipeline):
         no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
         print(no_ext)
         return int(no_ext)
+
+
+    def get_path(self):
+        return self._data_path

@@ -46,15 +46,15 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
     const R =   [[Math.cos(theta), -Math.sin(theta)],
       [Math.sin(theta), Math.cos(theta)]]
 
-    htmlImages.forEach((image, index) => {
-      // determine where to place image
-      const row = Math.floor(index / cols) 
-      const col = index % cols
-      // convert to x,y pixel coordinates
-      const pix_X = distance * col * pixelsPerUM
-      const pix_Y = distance * row * pixelsPerUM
-      const rotated = dotProduct(R, [pix_X, pix_Y])
-      pasteImageIntoCanvas(image,rotated, ctx)
+    htmlImages.forEach((image_row, row) => {
+      image_row.forEach((image, col) => {
+        // determine where to place image
+        // convert to x,y pixel coordinates
+        const pix_X = distance * col * pixelsPerUM
+        const pix_Y = distance * row * pixelsPerUM
+        const rotated = dotProduct(R, [pix_X, pix_Y])
+        pasteImageIntoCanvas(image,rotated, ctx)
+      })
     })
   }
 
@@ -64,11 +64,13 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
    */
   const generateHTMLImages = (images) => {
     return(
-      images.map((image) => {
-        const im = document.createElement('img');
-        im.src = `data:image/png;base64, ${image}`
-        im.alt= "microscope image"
-        return im;
+      images.map((image_row) => {
+        return image_row.map((image) => {
+          const im = document.createElement('img');
+          im.src = `data:image/png;base64, ${image}`
+          im.alt= "microscope image"
+          return im;
+        })
       }));
   }
 

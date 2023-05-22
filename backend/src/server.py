@@ -46,7 +46,7 @@ def handle_video():
                 im.save(img_byte_arr, format="PNG")
                 img_byte_arr = img_byte_arr.getvalue()
                 sock.emit("frame", {"image_data": img_byte_arr})
-                sock.sleep(0.01)
+                sock.sleep(0.01) #TODO: I don't care!!!!!!
         except Exception as e:
             sock.emit(
                 "camera_failure", str(e)
@@ -140,6 +140,8 @@ def prompt_acquisition_path():
     return jsonify([False, "please initialize the device first"])
 
 
+
+# TODO: all stitching stuff shouldn't require the device to be initialiZed
 @app.route("/promptStitchingPath")
 def prompt_path():
     # prompts the user to select where the data images will be saved
@@ -199,23 +201,14 @@ def save_top_left():
 # TODO: store jpegs in a buffer man
 @app.route("/manualGrid/<h>/<w>")
 def server_images(h, w):
-    try:
-        # TODO: check if manager exists and has stitching path, return correct result
-        # TODO: try except
-        stitcher = CVStitchPipeline(IMAGES_PATH)
-        stitcher._generate_jpeg_from_tiff()
-        images = stitcher._load_jpeg_images()
-        # convert images
-        images_bytes = []
-        for image in images:
-            img_byte_arr = BytesIO()
-            image.save(img_byte_arr, format="PNG")
-            images_bytes.append(encodebytes(img_byte_arr.getvalue()).decode("ascii"))
+    if 'manager' in cache:
+        manager: ImagerManager = cache['manager']
 
-        stitcher._delete_temp_jpegs()
-        return jsonify([True, {"result": images_bytes}])
-    except Exception as e:
-        return jsonify([False, str(e)])
+        image_grid_res = manager.get_manual_grid(int(h), int(w))
+
+        return jsonify(image_grid_res)
+    return jsonify(False, 'please initialize the device first') # shouldn't have to do this, move stitcher outside
+
 
 if __name__ == "__main__":
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

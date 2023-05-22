@@ -30,12 +30,18 @@ const Alignment = () => {
       showToast(image_bytes)
       return
     }
+    console.log(image_bytes)
 
     let urls = []
     image_bytes = image_bytes[1]
     image_bytes.result.forEach(bytes => { urls.push(bytes) });
     toast.success("images loaded", { position: "bottom-left", })
     setImages(urls)
+
+
+    // parse out the imaging grid
+    const grid = image_bytes.grid
+    setDistanceUM(grid.distance)
   }
 
   // image canvas is the visualizer
@@ -53,6 +59,7 @@ const Alignment = () => {
         distance={distanceUM}
         zoom={zoom}
       />
+
       <div className='canvas-controls'>
         <ButtonGroup orientation="vertical" variant="contained" >
           {/* TODO: theta number input, distance number input, pixperum input  */}

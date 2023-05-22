@@ -9,16 +9,16 @@ import { serverUrl } from "./config"
 
 export class ServerInterface {
   /**
-     * All functions return a 2-dimensional list of the form
-     * [succeeded:bool, response:str]
-     * A request will not succeed if the server is running 
-     * but the device is unable to service the request
-     */
+   * All functions return a 2-dimensional list of the form
+   * [succeeded:bool, response:str]
+   * A request will not succeed if the server is running 
+   * but the device is unable to service the request
+   */
 
   /**
-     * pings the server for the status of the device,
-     * returning a json object or None
-     */
+   * pings the server for the status of the device,
+   * returning a json object or None
+   */
   static initialize = async() => {
     try{
       const initRes = await fetch(`${serverUrl}/initialize`)

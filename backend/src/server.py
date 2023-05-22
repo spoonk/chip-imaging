@@ -134,6 +134,8 @@ def prompt_acquisition_path():
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
+        if directory_path is None: 
+            return jsonify([False, "directory not selected"])
         return jsonify(manager.set_imaging_output_path(directory_path))
     return jsonify([False, "please initialize the device first"])
 
@@ -147,6 +149,8 @@ def prompt_path():
         root.wm_attributes("-topmost", 1)
         root.mainloop()
         directory_path = askdirectory(initialdir="./")
+        if directory_path is None: 
+            return jsonify([False, "directory not selected"])
         return jsonify(manager.set_stitching_directory(directory_path))
     return jsonify([False, "please initialize the device first"])
 

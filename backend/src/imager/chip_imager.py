@@ -12,7 +12,6 @@ from imager.movement_coordinator import MovementCoordinator
 from PIL import Image
 from stage.stage_interface import Stage
 
-
 class ChipImager():
     """
     Chip imager takes control of a stage and camera.
@@ -36,11 +35,11 @@ class ChipImager():
 
     def run_image_acquisition(self, acquisition_path:str):
         # runs through the entire process of scanning the chip and saving images
+        
         if not self._ready: return
         if not path.exists(acquisition_path): return
-        # save the imaging grid used for this 
-        self._save_grid(acquisition_path)
 
+        self._save_grid(acquisition_path)
         self._movement.reset()
 
         image_num = 1
@@ -67,10 +66,11 @@ class ChipImager():
         self._ready = True
     
     def _save_image(self, image, acquisition_path:str, image_name:str):
+        "saves this image to the target directory"
         raw_image_dir = self._handle_data_dir(acquisition_path)
 
-        "saves this image to the target directory"
         pilIm = Image.fromarray(image) 
+        logging.info(f"saved image to {raw_image_dir}")
         pilIm.save(path.join(raw_image_dir, image_name))
 
 

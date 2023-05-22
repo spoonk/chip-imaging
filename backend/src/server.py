@@ -181,10 +181,8 @@ def run_acquisition():
             )
 
         res = manager.start_acquisition()
-        if res:
-            return jsonify([True, "acquisition started"])
-        else:
-            return jsonify([False, "acquisition already in progress"])
+        logging.info(f'res is {res}')
+        return jsonify(res)
 
     return jsonify([False, "please initialize the device first"])
 
@@ -215,9 +213,9 @@ def server_images(h, w):
             images_bytes.append(encodebytes(img_byte_arr.getvalue()).decode("ascii"))
 
         stitcher._delete_temp_jpegs()
-        return [True, jsonify({"result": images_bytes})]
+        return jsonify([True, {"result": images_bytes}])
     except Exception as e:
-        return [False, str(e)]
+        return jsonify([False, str(e)])
 
 if __name__ == "__main__":
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

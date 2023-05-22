@@ -60,6 +60,8 @@ class ImagerManager:
             return (False, busy_message)
 
     def set_stitching_directory(self, path: str) -> ManagerResponse:
+        # side effect: instantiates a stitcher, meaning this method
+        # must be called before stitching takes place
         with self._state_lock:
             if self._status == ImagerManager.STATUS_IDLE:
                 # TODO: try except
@@ -104,7 +106,9 @@ class ImagerManager:
     def start_acquisition(self) -> ManagerResponse:
         with self._state_lock:
             if self._imaging_path != None and self._status == ImagerManager.STATUS_IDLE:
-                # start the device
+                if not self._imager._ready: # TODO: have a get_is_ready function in manager
+                    return (False, 'please select imaging parameters first')
+
                 imaging_thread = Thread(
                     target=self._thread_wrapper,
                     args=[self._imager.run_image_acquisition, self._imaging_path],
@@ -151,17 +155,20 @@ def check_stitchable_dir(dir_path: str) -> bool:
     grid_found = False
     data_dir_found = False
     for item in os.listdir(dir_path):
-        if os.path.isfile(item):
+        logging.info(item)
+        if os.path.isfile(os.path.join(dir_path, item)): # must check absolute path to file
+            logging.info('it is a file')
             if os.path.basename(item) != GRID_PROPERTIES_FILE_NAME:
                 acceptable = False
             else:
                 grid_found = True
         else:
+            logging.info('it is a directory')
             if os.path.basename(item) != RAW_DATA_DIR_NAME:
                 acceptable = False
             else:
                 data_dir_found = True
-
+    logging.info(str([acceptable, grid_found, data_dir_found]))
     return acceptable and grid_found and data_dir_found
 
 

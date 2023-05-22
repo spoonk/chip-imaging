@@ -6,10 +6,10 @@ import numpy as np
 from camera.camera_interface import Camera
 from PIL import Image
 
-# mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/example.TIFF"
+mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/example.TIFF"
 # mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'
 # mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\figures\topleft.png'
-mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\src\demo_images\stitched.TIFF'
+# mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\src\demo_images\stitched.TIFF'
 
 class MockCamera(Camera):
     """mock camera used for testing without a connection to hardware"""
@@ -52,7 +52,7 @@ class MockCamera(Camera):
         return self._exposure
 
     def _apply_gain(self, image: np.ndarray):
-        if self._gain <= 1.0: self.set_gain(3.0)
+        if self._gain <= 1.0: self.set_gain(15.0)
         else: self.set_gain(self._gain - 0.1)
 
         # the extra number of bits we will need to apply 

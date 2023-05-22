@@ -83,5 +83,5 @@ todo:
 [ ] add documentation on the website to say what each button means (popup or something)
 
 
-
+[ ] stitching stuff needs to not require device to be initialized
 

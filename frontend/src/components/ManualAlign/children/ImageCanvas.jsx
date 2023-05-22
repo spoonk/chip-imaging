@@ -93,7 +93,7 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
   return (
     <div className='image-canvas'>
       <Draggable>
-        <div style={{scale: zoom}}>
+        <div style={{transform: `scale${zoom}`}}>
           <canvas ref={canvasRef} width={distance * cols} height={distance * rows}/>
         </div>
       </Draggable>

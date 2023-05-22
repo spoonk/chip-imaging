@@ -20,9 +20,13 @@ export class ServerInterface {
      * returning a json object or None
      */
   static initialize = async() => {
-    const initRes = await fetch(`${serverUrl}/initialize`)
-    const body = await initRes.json()
-    return body 
+    try{
+      const initRes = await fetch(`${serverUrl}/initialize`)
+      const body = await initRes.json()
+      return body 
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   /**
@@ -30,46 +34,74 @@ export class ServerInterface {
    * returning [true, status] if the device is online
    */
   static getStatus = async() => {
-    const result = await fetch(`${serverUrl}/status`)
-    const body = await result.json()
-    return body
+    try{
+      const result = await fetch(`${serverUrl}/status`)
+      const body = await result.json()
+      return body
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static setImagingParameters = async(width, height, distance) => {
-    const setParamResult = await fetch(`${serverUrl}/update/${width}/${height}/${distance}`)
-    const body = await setParamResult.json()
-    return body
+    try{
+      const setParamResult = await fetch(`${serverUrl}/update/${width}/${height}/${distance}`)
+      const body = await setParamResult.json()
+      return body
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static saveTopLeftPosition = async() => {
-    const saveTopLeftResult = await fetch(`${serverUrl}/topLeft`)
-    const body = await saveTopLeftResult.json()
-    return body
+    try{
+      const saveTopLeftResult = await fetch(`${serverUrl}/topLeft`)
+      const body = await saveTopLeftResult.json()
+      return body
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static setGainExposure = async(gain, exposure) => {
-    const exposureResult = await fetch(`${serverUrl}/exposure/${exposure}`)
-    const ebody = await exposureResult.json()
+    try{
+      const exposureResult = await fetch(`${serverUrl}/exposure/${exposure}`)
+      const ebody = await exposureResult.json()
 
-    const gainResult = await fetch(`${serverUrl}/gain/${gain}`)
-    const gbody = await gainResult.json()
+      const gainResult = await fetch(`${serverUrl}/gain/${gain}`)
+      const gbody = await gainResult.json()
 
-    return [ebody[0] && gbody[0], JSON.stringify(ebody[1]) + " " + JSON.stringify(gbody[1])]
+      return [ebody[0] && gbody[0], JSON.stringify(ebody[1]) + " " + JSON.stringify(gbody[1])]
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static promptPath = async() => {
-    const promptResult = await fetch(`${serverUrl}/promptDataPath`)
-    return await promptResult.json()
+    try{
+      const promptResult = await fetch(`${serverUrl}/promptDataPath`)
+      return await promptResult.json()
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static startStitching = async() => {
-    const stitchRes = await fetch(`${serverUrl}/stitch`)
-    return await stitchRes.json()
+    try{
+      const stitchRes = await fetch(`${serverUrl}/stitch`)
+      return await stitchRes.json()
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   static acquire = async() => {
-    const acqRes = await fetch(`${serverUrl}/acquire`)
-    return await acqRes.json()
+    try{
+      const acqRes = await fetch(`${serverUrl}/acquire`)
+      return await acqRes.json()
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
   /**
@@ -78,8 +110,13 @@ export class ServerInterface {
      * (<9). If there are no images at all, success will be false
      */
   static getAlignmentGrid = async(h, w) => {
-    const acqRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
-    return await acqRes.json()
+    try{
+      const gridRes = await fetch(`${serverUrl}/manualGrid/${h}/${w}`)
+      const gridJson = await gridRes.json()
+      return gridJson
+    } catch (e) {
+      return [false, 'server offline']
+    }
   }
 
 

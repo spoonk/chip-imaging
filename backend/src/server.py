@@ -46,11 +46,11 @@ def handle_video():
                 im.save(img_byte_arr, format="PNG")
                 img_byte_arr = img_byte_arr.getvalue()
                 sock.emit("frame", {"image_data": img_byte_arr})
-                sock.sleep(0.01) #TODO: I don't care!!!!!!
+                sock.sleep(0.01) #I don't care!!!!!!
         except Exception as e:
             sock.emit(
                 "camera_failure", str(e)
-            )  # note: this goes away with a real camera :O
+            )  # note: this goes away with a real camera :O (does it?)
 
     else:
         sock.emit("camera_uninitialized", "please initialize the device first")

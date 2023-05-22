@@ -19,7 +19,6 @@ import Draggable from 'react-draggable'
 const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) => {
   const canvasRef = useRef(null)
 
-
   // redraw images whenever something changes
   useEffect(() => {
     renderImages();
@@ -33,12 +32,12 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
 
     // scale back to normal so zoom scales linearly
     // also allows us to overwrite entire canvas
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // clear canvas
-    ctx.fillStyle = '#EEEEEE'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    ctx.scale(zoom, zoom);
+    /* ctx.setTransform(1, 0, 0, 1, 0, 0); */
+    /* // clear canvas */
+    /* ctx.fillStyle = '#EEEEEE' */
+    /* ctx.fillRect(0, 0, canvas.width, canvas.height) */
+    /**/
+    /* ctx.scale(zoom, zoom); */
 
     // generate a list of usable image elements
     const htmlImages = generateHTMLImages(images)
@@ -94,7 +93,7 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
   return (
     <div className='image-canvas'>
       <Draggable>
-        <div>
+        <div style={{scale: zoom}}>
           <canvas ref={canvasRef} width={distance * cols} height={distance * rows}/>
         </div>
       </Draggable>

@@ -88,14 +88,6 @@ const Alignment = () => {
             value = {pixPerUM}
             onChange ={(e) => {setPixPerUM(e.target.value)}}
           />
-          {/* <TextField  */}
-          {/*   label="distance between centers (um)" */}
-          {/*   variant='filled' */}
-          {/*   type="number" */}
-          {/*   InputLabelProps={{ shrink: true, }} */}
-          {/*   value = {distanceUM} */}
-          {/*   onChange ={(e) => {setDistanceUM(e.target.value)}} */}
-          {/* />  */}
           <Button variant='contained' onClick={() => {setParameters()}}>
             use these parameters
           </Button>

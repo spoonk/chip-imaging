@@ -59,10 +59,10 @@ todo:
 [ x ] make a stitch utils file in python that allows you to get jpeg images (for sending manual grid back to client) (not necessary now :) )
 [ x ] chip imager should NOT have a sticher, they should be separate (lol it doesn't)
 
-[ ] make manual align send a theta to the server
-[ ] also send a pixels per um
-[ ] make linear stitcher be able to handle a rotation
-[ ] make stitcher able to handle fewer than expected images (it might already)
+[ x ] make manual align send a theta to the server
+[ x ] also send a pixels per um
+[ x ] make linear stitcher be able to handle a rotation
+[ x ] make stitcher able to handle fewer than expected images (it might already)
 
 [ ] implement getting stitched result on frontend
 

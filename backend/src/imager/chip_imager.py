@@ -12,6 +12,7 @@ from imager.movement_coordinator import MovementCoordinator
 from PIL import Image
 from stage.stage_interface import Stage
 
+
 class ChipImager():
     """
     Chip imager takes control of a stage and camera.

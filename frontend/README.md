@@ -23,7 +23,7 @@ todo:
 
 [ ] full server integration
     [ x ] make all routes nice + toasted
-    [ ] make sure all errors are handled (not sure if this is every checkable)
+    [ ] make sure all errors are handled (not sure if this is ever checkable)
 
 [ x ] better image saving
     [ x ] check to make sure directory is empty
@@ -57,14 +57,18 @@ todo:
 [ x ] make manual grid route respect imaging grid parameters (untested :P)
     - currently just sends a 3x3, we want to handle the case where there may not be a 3x3 to return
 [ x ] make a stitch utils file in python that allows you to get jpeg images (for sending manual grid back to client) (not necessary now :) )
+[ x ] chip imager should NOT have a sticher, they should be separate (lol it doesn't)
 
 [ ] make manual align send a theta to the server
 [ ] also send a pixels per um
 [ ] make linear stitcher be able to handle a rotation
 [ ] make stitcher able to handle fewer than expected images (it might already)
 
-[ ] implement getting stitched result
+[ ] implement getting stitched result on frontend
 
+[ ] zoom the html element not the canvas for the image canvas component
+    - stuff can go out of bounds on canvas if too much zoom
+[ ] zoom slider for manual align
 
 [ ] clean up server routes with blueprints
 
@@ -73,9 +77,6 @@ todo:
 
 [ ] gain scalar on frontend (images will likely be black)
 
-[ ] zoom the html element not the canvas for the image canvas component
-    - stuff can go out of bounds on canvas if too much zoom
-[ ] zoom slider for manual align
 
 
 [ ] figure out how to run server and frontend with exe file
@@ -87,5 +88,5 @@ todo:
 [ ] stitching stuff needs to not require device to be initialized
     - add a stitcher manager, which is separate from imager manager
     - this means separating it out from the manager (which I think I wanted originally)
-[ x ] chip imager should NOT have a sticher, they should be separate (lol it doesn't)
 [ ] update the stitchable_dir function in manager to allow there to be tiff files throughout, just give a new stitching result a later name
+[ ] remove distance param from the manual align menu

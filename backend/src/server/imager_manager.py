@@ -32,7 +32,7 @@ class ImagerManager:
     status_lut = {
         STATUS_IDLE: "idle",
         STATUS_IMAGING: "imaging",
-        STATUS_STITCHING: "stitching",
+        STATUS_STITCHING: "stitching", # TODO: unnecessary
     }
 
     def __init__(self, imager: ChipImager):
@@ -44,8 +44,11 @@ class ImagerManager:
         self._running_thread: Thread | None = None
         self._state_lock: Lock = Lock()
 
+
+        # TODO: make a stitcher manager
         self._stitcher: LinearStitcher | None = None 
-        
+        self._stitch_theta: float = 0.0
+        self._stitch_pix_per_um = 1.0
 
     # change path of where images are saved to and where stitching occurs
     # this must be used before acquiring or stitching
@@ -78,6 +81,15 @@ class ImagerManager:
                 self._stitcher = LinearStitcher(path, grid)
                 return (True, f"{path} saved as stitching directory")
             return (False, busy_message)
+
+
+    def set_stitching_parameters(self, theta:float, pixels_per_um:float) -> ManagerResponse:
+    # NOTE: enforce that we have a stitching path first...
+        if self._stitcher is None:
+            return (False, "please select a stitching directory first")
+        else:
+            self._stitcher.set_params(theta, pixels_per_um)
+            return (True, "parameters set")
 
     # change chip parameters
     def change_imaging_parameters(
@@ -130,9 +142,11 @@ class ImagerManager:
                 return (False, "no stitching directory has been specified")
             if self._status == ImagerManager.STATUS_IDLE:
                 # TODO: try except in case running fails
-                self._stitcher.run()
-
-                return (True, "stitching complete")
+                try:
+                    self._stitcher.run()
+                    return (True, "stitching complete")
+                except Exception as e:
+                    return (False, str(e))
             return (False, busy_message)
 
     def get_status(self):

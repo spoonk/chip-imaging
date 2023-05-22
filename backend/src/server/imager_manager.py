@@ -142,11 +142,12 @@ class ImagerManager:
                 return (False, "no stitching directory has been specified")
             if self._status == ImagerManager.STATUS_IDLE:
                 # TODO: try except in case running fails
-                try:
-                    self._stitcher.run()
-                    return (True, "stitching complete")
-                except Exception as e:
-                    return (False, str(e))
+                # try:
+                self._stitcher.run()
+                return (True, "stitching complete")
+            # except Exception as e:
+                print(e)
+                return (False, str(e))
             return (False, busy_message)
 
     def get_status(self):

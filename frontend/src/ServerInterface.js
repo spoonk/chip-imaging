@@ -131,7 +131,7 @@ export class ServerInterface {
 
   static setStitchingParameters = async(theta, pixePerUm) => {
     try{
-      const setResult = await fetch(`${serverUrl}/setStitchingParameters/${theta}/${pixePerUm}`)
+      const setResult = await fetch(`${serverUrl}/setStitchingParams/${theta}/${pixePerUm}`)
       return await setResult.json()
     } catch (e) {
       return [false, 'server offline']

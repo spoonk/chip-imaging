@@ -6,6 +6,7 @@ from imager.imaging_grid import ImagingGrid
 from PIL import Image, ImageDraw
 from stitcher.stitch_pipeline_interface import StitchPipeline
 import numpy as np
+import logging
 
 
 class LinearStitcher(StitchPipeline):
@@ -70,15 +71,19 @@ class LinearStitcher(StitchPipeline):
         # @modifies: canvas
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
-        rot = np.matrix([[np.cos(self._theta, -np.sin(self._theta))], [np.sin(self._theta), np.cos(self._theta)]])
+        rot = np.matrix([[np.cos(self._theta), -np.sin(self._theta)], 
+                         [np.sin(self._theta), np.cos(self._theta)]])
 
         # center of image with rotation applied
-        first_image_center_offset = (self._pix_per_um) * rot * (np.matrix([self._grid.get_distance_between_images_um(), 0]))
+        first_image_center_offset = (self._pix_per_um) * rot * (np.matrix([self._grid.get_distance_between_images_um(), 0]).T)
         projected_x = self._pix_per_um * self._grid.get_distance_between_images_um()
         projected_y = 0.0
 
-        x_shift = projected_x - first_image_center_offset[0]
-        y_shift = projected_y - first_image_center_offset[1]
+        x_shift = first_image_center_offset[0] - projected_x
+        y_shift = first_image_center_offset[1] - projected_y
+        logging.info("hi")
+        logging.info([x_shift, y_shift])
+        logging.info('bye')
         
         grid_dims = self._grid.get_grid_dimensions()
         for i in range(len(images))[::-1]:
@@ -97,7 +102,8 @@ class LinearStitcher(StitchPipeline):
             image_center_px[0] = int(image_center_px[0])
             image_center_px[1] = int(image_center_px[1])
 
-            print(image_center_px)
+            # print(image_center_px)
+            logging.info(image_center_px)
             canvas.paste(image, image_center_px)
 
         return canvas

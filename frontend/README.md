@@ -66,7 +66,7 @@ todo:
 
 [ ] implement getting stitched result on frontend
 
-[ ] zoom the html element not the canvas for the image canvas component
+[ x ] zoom the html element not the canvas for the image canvas component
     - stuff can go out of bounds on canvas if too much zoom
 [ ] zoom slider for manual align
 
@@ -77,13 +77,9 @@ todo:
 
 [ ] gain scalar on frontend (images will likely be black)
 
-
-
 [ ] figure out how to run server and frontend with exe file
 
-
 [ ] add documentation on the website to say what each button means (popup or something)
-
 
 [ ] stitching stuff needs to not require device to be initialized
     - add a stitcher manager, which is separate from imager manager
@@ -92,3 +88,6 @@ todo:
 [ ] remove distance param from the manual align menu
 
 [ ] figure out how to prevent multiple sockets connected / streaming video
+
+
+closing in!

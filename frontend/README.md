@@ -72,6 +72,7 @@ todo:
 [ ] use MUI stack for laying out buttons
 
 [ ] implement stitcher manager for cleaner code
+[ ] maybe make initialization process more fine-grained
 
 [ ] clean up server routes with blueprints
 

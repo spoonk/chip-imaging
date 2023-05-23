@@ -1,4 +1,5 @@
 import logging
+import atexit
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
@@ -202,6 +203,11 @@ def start_stitching():
     stitcher: StitcherManager = cache['stitcher']
     return jsonify(stitcher.stitch())
 
+
+def shut_down():
+    cache.clear()
+
 if __name__ == "__main__":
     cache['stitcher'] = StitcherManager()
+    atexit.register(shut_down)
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

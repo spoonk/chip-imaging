@@ -31,7 +31,7 @@ checking
 class StitcherManager:
     def __init__(self):
         self._stitcher: LinearStitcher | None = None
-        self._path: os.PathLike | None = None
+        self._path: str | None = None
         self._grid: ImagingGrid | None = None
         self._lock = RLock()
 
@@ -47,7 +47,7 @@ class StitcherManager:
 
     # configures the stitcher to stitch from path, loading
     # the imaging grid from the stoored grid.json at that path
-    def initialize(self, path: os.PathLike) -> ManagerResponse:
+    def initialize(self, path: str) -> ManagerResponse:
         # note: we always stitch from a directory now, so no need to configure these independently
         with self._lock:
             if not self._is_stitchable_dir(path):
@@ -68,9 +68,10 @@ class StitcherManager:
     # stitches from the configured directory
     def stitch(self) -> ManagerResponse:
         with self._lock:
-            if self._stitcher is None:
+            if not self.is_ready():
                 return (False, "stitcher uninitialized")
             try:
+                assert(self._stitcher is not None)
                 self._stitcher.run()
                 return (True, "stitching complete")
             except Exception as e:
@@ -135,7 +136,7 @@ class StitcherManager:
 
     # True if the directory only has a raw_data directory and a
     # grid.json
-    def _is_stitchable_dir(self, dir: os.PathLike) -> bool:
+    def _is_stitchable_dir(self, dir: str) -> bool:
         # checks if a dir contains only a raw_data dir and a grid.json
         acceptable = True
         grid_found = False

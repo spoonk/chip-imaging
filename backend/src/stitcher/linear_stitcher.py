@@ -23,8 +23,6 @@ class LinearStitcher(StitchPipeline):
         # todo: deprecate dx and dy, only using theta pls
         self._theta = 0.0
         self._pix_per_um = 1.0
-        """ self._dx = 0 """
-        """ self._dy = 0 """
 
     def run(self):
         # load images

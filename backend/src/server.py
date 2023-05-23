@@ -175,43 +175,32 @@ def server_images(h, w):
 
 @app.route("/setStitchingParams/<theta>/<pixelsPerUm>")
 def set_stitching_params(theta, pixelsPerUm):
-    if "manager" not in cache:
-        return jsonify(False, "please initialize the device first")
-
-    manager: ImagerManager = cache["manager"]
-
+    stitcher: StitcherManager = cache['stitcher']
     try:
         theta = float(theta)
         pixelsPerUm = float(pixelsPerUm)
     except Exception:
         return jsonify(False, "failed to parse theta and number of pixels per um")
 
-    return jsonify(manager.set_stitching_parameters(theta, pixelsPerUm))
+    return jsonify(stitcher.configure(theta, pixelsPerUm))
 
-# TODO: all stitching stuff shouldn't require the device to be initialiZed
 @app.route("/promptStitchingPath")
 def prompt_path():
     # prompts the user to select where the data images will be saved
-    if "manager" in cache:
-        manager: ImagerManager = cache["manager"]
-        root = Tk()
-        root.wm_attributes("-topmost", 1)
-        root.mainloop()
-        directory_path = askdirectory(initialdir="./")
-        if directory_path is None:
-            return jsonify([False, "directory not selected"])
-        return jsonify(manager.set_stitching_directory(directory_path))
-    return jsonify([False, "please initialize the device first"])
+    stitcher: StitcherManager = cache['stitcher']
+    root = Tk()
+    root.wm_attributes("-topmost", 1)
+    root.mainloop()
+    directory_path = askdirectory(initialdir="./")
+    if directory_path is None:
+        return jsonify([False, "directory not selected"])
+    return jsonify(stitcher.initialize(directory_path))
 
 
 @app.route("/stitch")
 def start_stitching():
-    if "manager" in cache:
-        manager: ImagerManager = cache["manager"]
-        if manager.get_saved_stitching_path() is None:
-            return jsonify([False, "please choose a directory to stitch from first"])
-        return jsonify(manager.stitch())
-    return jsonify([False, "please initialize the device first"])
+    stitcher: StitcherManager = cache['stitcher']
+    return jsonify(stitcher.stitch())
 
 if __name__ == "__main__":
     cache['stitcher'] = StitcherManager()

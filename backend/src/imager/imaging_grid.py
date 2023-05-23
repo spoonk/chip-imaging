@@ -35,7 +35,6 @@ class ImagingGrid():
         self.__imaging_height = 1000.0
         self.__distance_between = 1500.0
         self.__cells = self.__compute_image_grid()
-        self.__pixels_per_um = 1 # each pixel represents a 1x1 um square TODO: does this belong in this class?
 
     def __compute_image_grid(self) -> list[ImagingLocation]:
         """Recompute the imaging grid with the current parameters"""
@@ -71,14 +70,8 @@ class ImagingGrid():
     def get_num_cells(self) -> int:
         return len(self.__cells)
 
-    def get_pixels_per_um(self) -> float:
-        return self.__pixels_per_um
-
     def get_distance_between_images_um(self) -> float:
         return self.__distance_between
-
-    def set_pixels_per_um(self, pixels_per_um: float):
-        self.__pixels_per_um = pixels_per_um
 
     def set_properties(self, top_left: tuple[float, float], imaging_width: float, imaging_height: float, distance_between_cells: float):
         # reset all properties of the imaging grid
@@ -87,7 +80,6 @@ class ImagingGrid():
         self.__imaging_height = imaging_height
         self.__distance_between: float = distance_between_cells 
         self.__cells = self.__compute_image_grid()
-        """ self.__pixels_per_um = pixel_size_um """
 
     def set_top_left(self, top_left: tuple[float, float]):
         self.__top_left = top_left

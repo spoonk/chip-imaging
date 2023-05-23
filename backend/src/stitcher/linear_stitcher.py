@@ -148,11 +148,11 @@ class LinearStitcher(StitchPipeline):
 
     def pixel_to_um(self, pixels: float):
         # computes the number um spanned by pixels pixels
-        return pixels * (1.0 / self._grid.get_pixels_per_um())
+        return pixels * (1.0 / self._pix_per_um)
 
     def um_to_pixels(self, um: float):
         # computes the number pixels spanned by um um
-        return um * self._grid.get_pixels_per_um()
+        return um * self._pix_per_um
 
     def _load_tiff_images(self):
         # loads and returns a list of tiff images

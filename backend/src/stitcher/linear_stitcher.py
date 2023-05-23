@@ -81,29 +81,36 @@ class LinearStitcher(StitchPipeline):
             * rot
             * (np.matrix([self._grid.get_distance_between_images_um(), 0]).T)
         )
+
+        # === weird
         projected_x = self._pix_per_um * self._grid.get_distance_between_images_um()
         projected_y = 0.0
 
         x_shift = first_image_center_offset[0] - projected_x
 
         y_shift = first_image_center_offset[1] - projected_y
-        logging.info("hi")
-        logging.info([x_shift, y_shift])
-        logging.info("bye")
+
+        # === weird
 
         grid_dims = self._grid.get_grid_dimensions()
         # for i in range(len(images))[::-1]:
         for i in range(len(images)):
             image = images[i]
-            # compute pixel coords of where this image's center should go
             image_center_um = self._grid.get_cell(i).get_center_location()
+            rotated_center_pix = self._pix_per_um * rot * (np.matrix([image_center_um[0], image_center_um[1]]).T)
+            projected_x = self._pix_per_um * image_center_um[0]
+            x_shift = rotated_center_pix[0] - projected_x
+            print(x_shift)
+            # compute pixel coords of where this image's center should go
+
+
             image_center_px = (
                 self.um_to_pixels(image_center_um[0]),
                 self.um_to_pixels(image_center_um[1]),
             )
             image_center_px = list(image_center_px)
 
-            image_center_px[0] = int(abs(image_center_px[0])) + (
+            image_center_px[0] = int(abs(image_center_px[0])) - ( # TODO: ??? (originally +)
                 x_shift * (i // grid_dims[0])
             )
             image_center_px[1] = int(abs(image_center_px[1])) + (

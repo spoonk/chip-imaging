@@ -1,11 +1,16 @@
 import logging
 import atexit
 
+# fixes not able to open tkinter window bug (it does not work)
+import sys
+sys.coinit_flags = 2  # COINIT_APARTMENTTHREADED
+
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 import io
 from tkinter import Tk
+import tkfilebrowser
 from tkinter.filedialog import askdirectory
 
 from flask import Flask, jsonify
@@ -13,13 +18,15 @@ from flask_cors import CORS
 from flask_socketio import SocketIO
 from PIL import Image
 
-""" from camera.concurrent_pmm_camera import CPMMCamera """
-""" from stage.pmm_stage import PMMStage """
-from camera.mock_camera import MockCamera
+from camera.concurrent_pmm_camera import CPMMCamera 
+from stage.pmm_stage import PMMStage 
+
+# from camera.mock_camera import MockCamera
+# from stage.mock_stage import MockStage
+
 from imager.chip_imager import ChipImager
 from server.imager_manager import ImagerManager
 from server.stitcher_manager import StitcherManager
-from stage.mock_stage import MockStage
 
 app = Flask("src")
 CORS(app)
@@ -61,13 +68,13 @@ def initialize():
         if "manager" in cache:
             raise Exception("already initialized")
         """ cam = CPMMCamera() """
-        cam = MockCamera()
+        cam = CPMMCamera()
         cam.connect()
         cam.set_exposure(100)
         cache["camera"] = cam
 
         """ stage = PMMStage() """
-        stage = MockStage()
+        stage = PMMStage()
         cache["stage"] = stage
 
         imager = ChipImager(stage, cam)
@@ -130,11 +137,14 @@ def prompt_acquisition_path():
     # prompts the user to select where the data images will be saved
     if "manager" in cache:
         manager: ImagerManager = cache["manager"]
-        # TODO: put popup calling in a function with return being new dir
-        root = Tk()
-        root.wm_attributes("-topmost", 1)
-        root.mainloop()
-        directory_path = askdirectory(initialdir="./")
+        # # TODO: put popup calling in a function with return being new dir
+        # root = Tk()
+        # root.wm_attributes("-topmost", 1)
+        # root.mainloop()
+        # root.update()
+        directory_path = tkfilebrowser.askopendirname(initialdir="./")
+
+        # directory_path = askdirectory(initialdir="./")
         if directory_path is None:
             return jsonify([False, "directory not selected"])
         return jsonify(manager.set_imaging_output_path(directory_path))
@@ -164,8 +174,6 @@ def save_top_left():
         return jsonify([True, "saved top left position"])
     return jsonify([False, "please initialize the device first"])
 
-
-
 # ===============================  stitching routes ============================
 
 @app.route("/manualGrid/<h>/<w>")
@@ -189,10 +197,7 @@ def set_stitching_params(theta, pixelsPerUm):
 def prompt_path():
     # prompts the user to select where the data images will be saved
     stitcher: StitcherManager = cache['stitcher']
-    root = Tk()
-    root.wm_attributes("-topmost", 1)
-    root.mainloop()
-    directory_path = askdirectory(initialdir="./")
+    directory_path = tkfilebrowser.askopendirname(initialdir="./")
     if directory_path is None:
         return jsonify([False, "directory not selected"])
     return jsonify(stitcher.initialize(directory_path))

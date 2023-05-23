@@ -18,6 +18,8 @@ tk = "*"
 websockets = "*"
 gevent-websocket = "*"
 eventlet = "*"
+pywinauto = "*"
+tkfilebrowser = "*"
 
 [dev-packages]
 

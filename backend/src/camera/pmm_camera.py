@@ -25,8 +25,10 @@ class PMMCamera(Camera):
         self._core.setAutoShutter(False)
         self._core.setShutterOpen(False)
         self._connected = True
+        # self._core.startContinuousSequenceAcquisition(0.0)
 
     def close(self):
+        # self._core.stopSequenceAcquisition()
         self._connected = False
 
     def take_image(self) -> np.array:

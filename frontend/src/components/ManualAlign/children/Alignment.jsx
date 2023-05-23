@@ -1,28 +1,22 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ImageCanvas from './ImageCanvas'
-import { Button, ButtonGroup, TextField } from '@mui/material' 
+import { Button, ButtonGroup, TextField, Slider } from '@mui/material' 
 import { ServerInterface } from '../../../ServerInterface'
 import { toast } from 'react-toastify'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlassPlus, faMagnifyingGlassMinus } from '@fortawesome/free-solid-svg-icons'
 import { showToast } from '../../../utils'
 
 
 const Alignment = () => {
+  const frameRef = useRef(null)
+
   // have a controls component and a visualizer component
   // (wow such an original idea)
   const [theta, setTheta] = useState(0.00)
   const [pixPerUM, setPixPerUM] = useState(0.6265)
   const [distanceUM, setDistanceUM] = useState(1500.0)
   const [images, setImages] = useState([])
-  const [zoom, setZoom] = useState(0.4);
-
-  const zoomIn = () => { setZoom(zoom + 0.1) }
-  const zoomOut = () => {
-    const zoomAmt = Math.max(zoom - 0.1, 0.1);
-    setZoom(zoomAmt);
-  }
+  const [zoom, setZoom] = useState(1.0);
 
   const setParameters = async() => {
     const setRes = await ServerInterface.setStitchingParameters(theta, pixPerUM)
@@ -35,14 +29,12 @@ const Alignment = () => {
       showToast(image_bytes)
       return
     }
-    console.log(image_bytes)
 
     let urls = []
     image_bytes = image_bytes[1]
     image_bytes.result.forEach(bytes => { urls.push(bytes) });
     toast.success("images loaded", { position: "bottom-left", })
     setImages(urls)
-
 
     // parse out the imaging grid
     const grid = image_bytes.grid
@@ -53,7 +45,7 @@ const Alignment = () => {
   // some other controls component later (or no component and just in this one)
   // this component should also handle grabbing the images later too
   return (
-    <div className='alignment-container'>
+    <div className='alignment-container' ref={frameRef}>
       {/*TODO: display theta*/}
       <ImageCanvas 
         images={images}
@@ -63,6 +55,7 @@ const Alignment = () => {
         theta={theta}
         distance={distanceUM}
         zoom={zoom}
+        frameRef={frameRef}
       />
 
       <div className='canvas-controls'>
@@ -97,14 +90,23 @@ const Alignment = () => {
 
       </div>
       <div className='canvas-zoom'>
-        <ButtonGroup variant='contained' orientation='vertical'>
-          <Button onClick={()=>{zoomIn()}}>
-            <FontAwesomeIcon icon={faMagnifyingGlassPlus}/>
-          </Button>           
-          <Button onClick={()=>{zoomOut()}}> 
-            <FontAwesomeIcon icon={faMagnifyingGlassMinus}/>
-          </Button>           
-        </ButtonGroup>
+        <Slider
+          sx={{
+            '& input[type="range"]': {
+              WebkitAppearance: 'slider-vertical',
+            },
+          }}
+          orientation="vertical"
+          step = {0.1}
+          max={5.0}
+          min={0.1}
+          value={zoom}
+          onChange = {(e, val) => {
+            setZoom(val)
+          }}
+          aria-label="zoom"
+          valueLabelDisplay="auto"
+        />
       </div>
 
     </div>

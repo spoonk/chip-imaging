@@ -16,27 +16,27 @@ import Draggable from 'react-draggable'
  * @param zoom: 
  * @returns 
  */
-const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) => {
+const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef}) => {
   const canvasRef = useRef(null)
   const [dragOffset, setDragOffset] = useState({x: 0, y: 0})
 
   // redraw images whenever something changes
   useEffect(() => {
     renderImages();
-  }, [images, rows, cols, pixelsPerUM, theta, distance, zoom]) // check dependencies later
-
+  }, [images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef]) // check dependencies later
 
   const renderImages = () => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
+    console.log(frameRef.current)
 
 
     // scale back to normal so zoom scales linearly
     // also allows us to overwrite entire canvas
     /* ctx.setTransform(1, 0, 0, 1, 0, 0); */
     /* // clear canvas */
-    /* ctx.fillStyle = '#EEEEEE' */
-    /* ctx.fillRect(0, 0, canvas.width, canvas.height) */
+    ctx.fillStyle = '#EEEEEE'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
     /**/
     /* ctx.scale(zoom, zoom); */
 
@@ -91,6 +91,14 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
     ];
   }
 
+  const computeOrigin = () => {
+    const frame = frameRef.current
+    if (frame === null) return "0px 0px"
+    const frameH = frame.clientHeight 
+    const frameW = frame.clientWidth
+    return `${frameW/2 - dragOffset.x}px ${frameH/2 - dragOffset.y}px` 
+  }
+
   return (
     <div className='image-canvas'>
       <Draggable
@@ -101,7 +109,8 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
         <div>
           <canvas 
             style={{transform: `scale(${zoom})`,
-                    transformOrigin: `calc(50% - ${dragOffset.x/2}px) calc(50% - ${dragOffset.y/2}px)`}} 
+                  transformOrigin: computeOrigin()
+            }} 
             ref={canvasRef} 
             width={distance * cols} 
             height={distance * rows}

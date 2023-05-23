@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
 
 /**
@@ -18,6 +18,7 @@ import Draggable from 'react-draggable'
  */
 const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) => {
   const canvasRef = useRef(null)
+  const [dragOffset, setDragOffset] = useState({x: 0, y: 0})
 
   // redraw images whenever something changes
   useEffect(() => {
@@ -92,9 +93,19 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom}) =
 
   return (
     <div className='image-canvas'>
-      <Draggable>
-        <div style={{transform: `scale${zoom}`}}>
-          <canvas ref={canvasRef} width={distance * cols} height={distance * rows}/>
+      <Draggable
+        onDrag = {(e, data) => {
+          setDragOffset({x: data.x, y: data.y})
+        }}
+      >
+        <div>
+          <canvas 
+            style={{transform: `scale(${zoom})`,
+                    transformOrigin: `calc(50% - ${dragOffset.x/2}px) calc(50% - ${dragOffset.y/2}px)`}} 
+            ref={canvasRef} 
+            width={distance * cols} 
+            height={distance * rows}
+          />
         </div>
       </Draggable>
     </div>

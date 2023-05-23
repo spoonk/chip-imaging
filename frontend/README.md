@@ -90,3 +90,5 @@ todo:
     - this means separating it out from the manager (which I think I wanted originally)
 [ ] update the stitchable_dir function in manager to allow there to be tiff files throughout, just give a new stitching result a later name
 [ ] remove distance param from the manual align menu
+
+[ ] figure out how to prevent multiple sockets connected / streaming video

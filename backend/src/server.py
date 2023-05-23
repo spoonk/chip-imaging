@@ -139,8 +139,6 @@ def prompt_acquisition_path():
         return jsonify(manager.set_imaging_output_path(directory_path))
     return jsonify([False, "please initialize the device first"])
 
-
-
 @app.route("/acquire")
 def run_acquisition():
     if "manager" in cache and cache["manager"] is not None:
@@ -166,19 +164,14 @@ def save_top_left():
     return jsonify([False, "please initialize the device first"])
 
 
-# TODO: store jpegs in a buffer man
+
+# ===============================  stitching routes ============================
+
 @app.route("/manualGrid/<h>/<w>")
 def server_images(h, w):
-    if "manager" in cache:
-        manager: ImagerManager = cache["manager"]
-
-        image_grid_res = manager.get_manual_grid(int(h), int(w))
-
-        return jsonify(image_grid_res)
-    return jsonify(
-        False, "please initialize the device first"
-    )  # shouldn't have to do this, move stitcher outside
-
+    stitcher: StitcherManager = cache['stitcher']
+    image_grid_res = stitcher.get_manual_grid(int(h), int(w))
+    return jsonify(image_grid_res)
 
 @app.route("/setStitchingParams/<theta>/<pixelsPerUm>")
 def set_stitching_params(theta, pixelsPerUm):
@@ -194,7 +187,6 @@ def set_stitching_params(theta, pixelsPerUm):
         return jsonify(False, "failed to parse theta and number of pixels per um")
 
     return jsonify(manager.set_stitching_parameters(theta, pixelsPerUm))
-
 
 # TODO: all stitching stuff shouldn't require the device to be initialiZed
 @app.route("/promptStitchingPath")

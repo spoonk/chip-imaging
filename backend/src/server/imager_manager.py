@@ -29,11 +29,9 @@ class ImagerManager:
     # possible device states
     STATUS_IDLE = 0
     STATUS_IMAGING = 1
-    STATUS_STITCHING = 2
     status_lut = {
         STATUS_IDLE: "idle",
         STATUS_IMAGING: "imaging",
-        STATUS_STITCHING: "stitching",  # TODO: unnecessary
     }
 
     def __init__(self, imager: ChipImager):

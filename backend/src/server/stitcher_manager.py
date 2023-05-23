@@ -27,6 +27,7 @@ checking
 """
 
 
+# TODO: use lock decorator
 class StitcherManager:
     def __init__(self):
         self._stitcher: LinearStitcher | None = None
@@ -171,4 +172,3 @@ class StitcherManager:
             )
             return grid
 
-    # TODO: use lock decorator

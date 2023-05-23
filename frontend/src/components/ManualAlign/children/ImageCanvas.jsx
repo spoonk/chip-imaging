@@ -46,6 +46,19 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, fr
     const R =   [[Math.cos(theta), -Math.sin(theta)],
       [Math.sin(theta), Math.cos(theta)]]
 
+
+    // for (let row = htmlImages.length - 1; row >=0; row--){
+    //   const image_row = htmlImages[row];
+    //   for (let col = image_row.length - 1; col >=0; col--){
+    //     const image = image_row[col]
+    //     // determine where to place image
+    //     // convert to x,y pixel coordinates
+    //     const pix_X = distance * col * pixelsPerUM
+    //     const pix_Y = distance * row * pixelsPerUM
+    //     const rotated = dotProduct(R, [pix_X, pix_Y])
+    //     pasteImageIntoCanvas(image,rotated, ctx)
+    //   }
+    // }
     htmlImages.forEach((image_row, row) => {
       image_row.forEach((image, col) => {
         // determine where to place image

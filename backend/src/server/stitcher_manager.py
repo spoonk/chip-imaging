@@ -39,6 +39,7 @@ class StitcherManager:
     # stitch from
     def is_ready(self) -> bool:
         with self._lock:
+            print(self._stitcher, self._path, self._grid)
             return (
                 self._stitcher is not None
                 and self._path is not None
@@ -53,15 +54,17 @@ class StitcherManager:
             if not self._is_stitchable_dir(path):
                 return (False, f"not something we can stitch from: {path}")
             grid_path = os.path.join(path, GRID_PROPERTIES_FILE_NAME)
-            raw_data_path = os.path.join(path, RAW_DATA_DIR_NAME)
             grid = self._load_grid_from_json(grid_path)
-            self._stitcher = LinearStitcher(raw_data_path, grid)
+            self._stitcher = LinearStitcher(path, grid)
+            self._grid = grid
+            self._path = path
             return (True, "stitcher initialized")
 
     def configure(self, theta: float, pixels_per_um: float) -> ManagerResponse:
         with self._lock:
-            if self._stitcher is None:
+            if not self.is_ready():
                 return (False, "stitcher uninitialized")
+
             self._stitcher.set_params(theta, pixels_per_um)
             return (True, "parameters set")
 
@@ -147,7 +150,7 @@ class StitcherManager:
                 base_name = os.path.basename(item)
                 if (
                     base_name != GRID_PROPERTIES_FILE_NAME
-                    or base_name != STITCHED_IMAGE_NAME
+                    and base_name != STITCHED_IMAGE_NAME
                 ):
                     acceptable = False
                 else:

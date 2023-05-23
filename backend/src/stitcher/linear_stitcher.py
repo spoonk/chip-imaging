@@ -25,6 +25,7 @@ class LinearStitcher(StitchPipeline):
         self._pix_per_um = 1.0
 
     def run(self):
+        print(self._theta, self._pix_per_um)
         # load images
         images = self._load_tiff_images()
         # figure out each image's center (via imaging grid's get cell)
@@ -91,7 +92,8 @@ class LinearStitcher(StitchPipeline):
         logging.info("bye")
 
         grid_dims = self._grid.get_grid_dimensions()
-        for i in range(len(images))[::-1]:
+        # for i in range(len(images))[::-1]:
+        for i in range(len(images)):
             image = images[i]
             # compute pixel coords of where this image's center should go
             image_center_um = self._grid.get_cell(i).get_center_location()
@@ -114,7 +116,6 @@ class LinearStitcher(StitchPipeline):
             image_center_px[0] = int(image_center_px[0])
             image_center_px[1] = int(image_center_px[1])
 
-            # print(image_center_px)
             logging.info(image_center_px)
             canvas.paste(image, image_center_px)
 
@@ -162,19 +163,15 @@ class LinearStitcher(StitchPipeline):
 
         for file_name in files:
             file_path = path.join(raw_data_path, file_name)
-            print(f"{file_path}=====================================")
             if file_path.endswith(".TIFF"):
                 image = Image.open(file_path)
-                print(image.mode)
                 images.append(image)
-        print(f"{len(images)}")
         return images
 
     def _file_comparefun(self, file_name):
         # sorts files named {number}.{extension} by increasing
         # number where number is some decimal value
         no_ext = file_name.split(".jpeg")[0].split(".TIFF")[0]
-        print(no_ext)
         return int(no_ext)
 
     def get_path(self):

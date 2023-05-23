@@ -17,6 +17,7 @@ from PIL import Image
 from camera.mock_camera import MockCamera
 from imager.chip_imager import ChipImager
 from server.imager_manager import ImagerManager
+from server.stitcher_manager import StitcherManager
 from stage.mock_stage import MockStage
 
 app = Flask("src")
@@ -139,31 +140,6 @@ def prompt_acquisition_path():
     return jsonify([False, "please initialize the device first"])
 
 
-# TODO: all stitching stuff shouldn't require the device to be initialiZed
-@app.route("/promptStitchingPath")
-def prompt_path():
-    # prompts the user to select where the data images will be saved
-    if "manager" in cache:
-        manager: ImagerManager = cache["manager"]
-        root = Tk()
-        root.wm_attributes("-topmost", 1)
-        root.mainloop()
-        directory_path = askdirectory(initialdir="./")
-        if directory_path is None:
-            return jsonify([False, "directory not selected"])
-        return jsonify(manager.set_stitching_directory(directory_path))
-    return jsonify([False, "please initialize the device first"])
-
-
-@app.route("/stitch")
-def start_stitching():
-    if "manager" in cache:
-        manager: ImagerManager = cache["manager"]
-        if manager.get_saved_stitching_path() is None:
-            return jsonify([False, "please choose a directory to stitch from first"])
-        return jsonify(manager.stitch())
-    return jsonify([False, "please initialize the device first"])
-
 
 @app.route("/acquire")
 def run_acquisition():
@@ -220,5 +196,31 @@ def set_stitching_params(theta, pixelsPerUm):
     return jsonify(manager.set_stitching_parameters(theta, pixelsPerUm))
 
 
+# TODO: all stitching stuff shouldn't require the device to be initialiZed
+@app.route("/promptStitchingPath")
+def prompt_path():
+    # prompts the user to select where the data images will be saved
+    if "manager" in cache:
+        manager: ImagerManager = cache["manager"]
+        root = Tk()
+        root.wm_attributes("-topmost", 1)
+        root.mainloop()
+        directory_path = askdirectory(initialdir="./")
+        if directory_path is None:
+            return jsonify([False, "directory not selected"])
+        return jsonify(manager.set_stitching_directory(directory_path))
+    return jsonify([False, "please initialize the device first"])
+
+
+@app.route("/stitch")
+def start_stitching():
+    if "manager" in cache:
+        manager: ImagerManager = cache["manager"]
+        if manager.get_saved_stitching_path() is None:
+            return jsonify([False, "please choose a directory to stitch from first"])
+        return jsonify(manager.stitch())
+    return jsonify([False, "please initialize the device first"])
+
 if __name__ == "__main__":
+    cache['stitcher'] = StitcherManager()
     sock.run(app, host="127.0.0.1", port=8079, debug=True)

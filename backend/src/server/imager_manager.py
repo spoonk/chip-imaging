@@ -63,36 +63,6 @@ class ImagerManager:
                 return (True, f"set acquisition path to {path}")
             return (False, busy_message)
 
-    def set_stitching_directory(self, path: str) -> ManagerResponse:
-        # side effect: instantiates a stitcher, meaning this method
-        # must be called before stitching takes place
-        with self._state_lock:
-            if self._status == ImagerManager.STATUS_IDLE:
-                # TODO: try except
-                if not check_stitchable_dir(path):
-                    return (
-                        False,
-                        f"{path} doesn't meet the requirements for stitching",
-                    )
-
-                grid: ImagingGrid = load_grid_from_json(
-                    os.path.join(path, GRID_PROPERTIES_FILE_NAME)
-                )
-
-                self._stitcher = LinearStitcher(path, grid)
-                return (True, f"{path} saved as stitching directory")
-            return (False, busy_message)
-
-    def set_stitching_parameters(
-        self, theta: float, pixels_per_um: float
-    ) -> ManagerResponse:
-        # NOTE: enforce that we have a stitching path first...
-        if self._stitcher is None:
-            return (False, "please select a stitching directory first")
-        else:
-            self._stitcher.set_params(theta, pixels_per_um)
-            return (True, "parameters set")
-
     # change chip parameters
     def change_imaging_parameters(
         self, imaging_width: float, imaging_height: float, distance_between_cells: float
@@ -140,19 +110,6 @@ class ImagerManager:
                 return (True, "acquisition started")
             return (False, busy_message)
 
-    def stitch(self) -> ManagerResponse:
-        with self._state_lock:
-            if self._stitcher is None:
-                return (False, "no stitching directory has been specified")
-            if self._status == ImagerManager.STATUS_IDLE:
-                # TODO: try except in case running fails
-                try:
-                    self._stitcher.run()
-                    return (True, "stitching complete")
-                except Exception as e:
-                    return (False, str(e))
-            return (False, busy_message)
-
     def get_status(self):
         with self._state_lock:
             return {
@@ -168,6 +125,56 @@ class ImagerManager:
 
     def get_saved_acquisition_path(self):
         return self._imaging_path
+
+
+
+
+
+
+# =========================== stitching (remove) =========================
+
+    def set_stitching_directory(self, path: str) -> ManagerResponse:
+        # side effect: instantiates a stitcher, meaning this method
+        # must be called before stitching takes place
+        with self._state_lock:
+            if self._status == ImagerManager.STATUS_IDLE:
+                # TODO: try except
+                if not check_stitchable_dir(path):
+                    return (
+                        False,
+                        f"{path} doesn't meet the requirements for stitching",
+                    )
+
+                grid: ImagingGrid = load_grid_from_json(
+                    os.path.join(path, GRID_PROPERTIES_FILE_NAME)
+                )
+
+                self._stitcher = LinearStitcher(path, grid)
+                return (True, f"{path} saved as stitching directory")
+            return (False, busy_message)
+
+    def set_stitching_parameters(
+        self, theta: float, pixels_per_um: float
+    ) -> ManagerResponse:
+        # NOTE: enforce that we have a stitching path first...
+        if self._stitcher is None:
+            return (False, "please select a stitching directory first")
+        else:
+            self._stitcher.set_params(theta, pixels_per_um)
+            return (True, "parameters set")
+
+    def stitch(self) -> ManagerResponse:
+        with self._state_lock:
+            if self._stitcher is None:
+                return (False, "no stitching directory has been specified")
+            if self._status == ImagerManager.STATUS_IDLE:
+                # TODO: try except in case running fails
+                try:
+                    self._stitcher.run()
+                    return (True, "stitching complete")
+                except Exception as e:
+                    return (False, str(e))
+            return (False, busy_message)
 
     def get_saved_stitching_path(self):
         if self._stitcher is None:
@@ -210,7 +217,6 @@ class ImagerManager:
 
         except Exception as e:
             return (False, str(e))
-
 
 def check_stitchable_dir(dir_path: str) -> bool:
     # checks if a dir contains only a raw_data dir and a grid.json

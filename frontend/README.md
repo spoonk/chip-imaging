@@ -64,11 +64,10 @@ todo:
 [ x ] make linear stitcher be able to handle a rotation
 [ x ] make stitcher able to handle fewer than expected images (it might already)
 
-[ ] implement getting stitched result on frontend
 
 [ x ] zoom the html element not the canvas for the image canvas component
     - stuff can go out of bounds on canvas if too much zoom
-[ ] zoom slider for manual align
+[ x ] zoom slider for manual align
 [ ] use MUI stack for laying out buttons
 
 [ ] implement stitcher manager for cleaner code
@@ -94,4 +93,5 @@ todo:
 [ ] figure out how to prevent multiple sockets connected / streaming video
 
 
+[ ] implement getting stitched result on frontend
 closing in!

@@ -24,7 +24,6 @@ class StitchingMenu extends Component {
     showToast(await ServerInterface.promptStitchingPath())
   }
 
-  // TODO: this
   getStitched = async() => { }
 
   render() { 
@@ -41,12 +40,9 @@ class StitchingMenu extends Component {
             </Button>
 
             <Button onClick={this.startStitching.bind(this)}>
-              start stitching
+              stitch with parameters 
             </Button>
 
-            <Button onClick={this.getStitched.bind(this)}>
-              preview stitching result
-            </Button>
 
           </ButtonGroup>
         </div>

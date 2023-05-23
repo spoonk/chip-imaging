@@ -10,7 +10,7 @@
 
 .input_column * {
   display: block;
-  margin:30px;
+  /* margin:30px; */
 }
 
 .column_wrapper {

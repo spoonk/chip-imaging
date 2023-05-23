@@ -69,6 +69,9 @@ todo:
 [ x ] zoom the html element not the canvas for the image canvas component
     - stuff can go out of bounds on canvas if too much zoom
 [ ] zoom slider for manual align
+[ ] use MUI stack for laying out buttons
+
+[ ] implement stitcher manager for cleaner code
 
 [ ] clean up server routes with blueprints
 

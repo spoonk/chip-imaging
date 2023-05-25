@@ -110,7 +110,7 @@ class LinearStitcher(StitchPipeline):
             )
             image_center_px = list(image_center_px)
 
-            image_center_px[0] = int(abs(image_center_px[0])) - ( # TODO: ??? (originally +)
+            image_center_px[0] = int(abs(image_center_px[0])) + ( # TODO: ??? (originally +)
                 x_shift * (i // grid_dims[0])
             )
             image_center_px[1] = int(abs(image_center_px[1])) + (

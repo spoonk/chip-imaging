@@ -25,7 +25,6 @@ class LinearStitcher(StitchPipeline):
         self._pix_per_um = 1.0
 
     def run(self):
-        print(self._theta, self._pix_per_um)
         # load images
         images = self._load_tiff_images()
         # figure out each image's center (via imaging grid's get cell)
@@ -53,10 +52,7 @@ class LinearStitcher(StitchPipeline):
 
         canvas = Image.new("I;16", size=(pixels_x, pixels_y))
 
-        # shift_factor = (0.009) * self._grid.get_distance_between_images_um()
-        # to make math easier, set the center location of the grid to be (0,0)
-        # undo the transformation to the grid when done
-
+        # TODO: this is so ugly
         top_left = self._grid.get_cell(0).get_center_location()
         self._grid.set_top_left((0, 0))
         canvas = self._paste_images_into_canvas(canvas, images)
@@ -69,61 +65,28 @@ class LinearStitcher(StitchPipeline):
         # pre: images must be sorted by increasing file name
         # uses the image grid to determine where to paste the images in the canvas
         rot = np.matrix(
-            [
-                [np.cos(self._theta), -np.sin(self._theta)],
-                [np.sin(self._theta), np.cos(self._theta)],
-            ]
-        )
+            [[np.cos(self._theta), -np.sin(self._theta)],
+             [np.sin(self._theta), np.cos(self._theta)],])
 
-        # center of image with rotation applied
-        first_image_center_offset = (
-            (self._pix_per_um)
-            * rot
-            * (np.matrix([self._grid.get_distance_between_images_um(), 0]).T)
-        )
 
-        # === weird
-        projected_x = self._pix_per_um * self._grid.get_distance_between_images_um()
-        projected_y = 0.0
 
-        x_shift = first_image_center_offset[0] - projected_x
-
-        y_shift = first_image_center_offset[1] - projected_y
-
-        # === weird
-
-        grid_dims = self._grid.get_grid_dimensions()
-        # for i in range(len(images))[::-1]:
-        for i in range(len(images)):
+        # stitching in reverse order results in a much better looking image
+        # I have no idea why... (I think one of the corners of the images is darker)
+        for i in range(len(images))[::-1]:
             image = images[i]
-            image_center_um = self._grid.get_cell(i).get_center_location()
-            rotated_center_pix = self._pix_per_um * rot * (np.matrix([image_center_um[0], image_center_um[1]]).T)
-            projected_x = self._pix_per_um * image_center_um[0]
-            x_shift = rotated_center_pix[0] - projected_x
-            print(x_shift)
-            # compute pixel coords of where this image's center should go
+            image_center_um = np.matrix(self._grid.get_cell(i).get_center_location())
 
+            rotated_center_pix = (self._pix_per_um * rot * image_center_um.T).T
+            
+            # where the center of the image would be if there was no rotation
+            projected_center_px = self._pix_per_um * image_center_um
+            shift = np.array(rotated_center_pix - projected_center_px)[0]
+            shift[0] = -shift[0]
 
-            image_center_px = (
-                self.um_to_pixels(image_center_um[0]),
-                self.um_to_pixels(image_center_um[1]),
-            )
-            image_center_px = list(image_center_px)
+            image_center_px = np.add(np.abs(projected_center_px),  shift)
+            image_center_px = np.array(image_center_px, dtype=int)[0] # ?
+            image_center_px = [image_center_px[0], image_center_px[1]]
 
-            image_center_px[0] = int(abs(image_center_px[0])) + ( # TODO: ??? (originally +)
-                x_shift * (i // grid_dims[0])
-            )
-            image_center_px[1] = int(abs(image_center_px[1])) + (
-                y_shift * (i % grid_dims[1])
-            )
-
-            # image_center_px[0] += -top_left[0] + center_offset[0]
-            # image_center_px[1] += -top_left[1] + center_offset[1]
-
-            image_center_px[0] = int(image_center_px[0])
-            image_center_px[1] = int(image_center_px[1])
-
-            logging.info(image_center_px)
             canvas.paste(image, image_center_px)
 
         return canvas

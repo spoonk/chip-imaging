@@ -12,6 +12,7 @@ from imager.config import (
 from base64 import encodebytes
 from io import BytesIO
 from json import load
+import logging
 
 """
 a stitcher manager wraps a stitcher, handling 
@@ -39,7 +40,6 @@ class StitcherManager:
     # stitch from
     def is_ready(self) -> bool:
         with self._lock:
-            print(self._stitcher, self._path, self._grid)
             return (
                 self._stitcher is not None
                 and self._path is not None
@@ -78,6 +78,7 @@ class StitcherManager:
                 self._stitcher.run()
                 return (True, "stitching complete")
             except Exception as e:
+                logging.exception(e)
                 return (False, str(e))
 
     # returns a h x w grid of raw images, fewer if the
@@ -132,7 +133,6 @@ class StitcherManager:
             file_path = os.path.join(raw_data_path, file_name)
             if file_path.endswith(".TIFF"):
                 image = Image.open(file_path)
-                print(image.mode)
                 images.append(image)
         return images
         ...

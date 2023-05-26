@@ -46,6 +46,8 @@ _DEMO_DEVICE_CONFIG = {
 # DEVICE_CONFIG = _DEMO_DEVICE_CONFIG
 DEVICE_CONFIG = _ECLIPSE_DEVICE_CONFIG
 
+DEMO_STITCH_DATA_PATH = '/Users/spunk/college/work/chip-imaging/backend/src/demo_images/realtest4'
+
 # serial port the prior stage connects to
 PRIOR_CONTROLLER_PORT = "COM5"
 

@@ -17,6 +17,7 @@ const Alignment = () => {
   const [distanceUM, setDistanceUM] = useState(1500.0)
   const [images, setImages] = useState([])
   const [zoom, setZoom] = useState(1.0);
+  const [gain, setGain] = useState(1.0);
 
   const setParameters = async() => {
     const setRes = await ServerInterface.setStitchingParameters(theta, pixPerUM)
@@ -56,6 +57,7 @@ const Alignment = () => {
         distance={distanceUM}
         zoom={zoom}
         frameRef={frameRef}
+        gain={gain}
       />
 
       <div className='canvas-controls'>
@@ -80,6 +82,14 @@ const Alignment = () => {
             InputLabelProps={{ shrink: true, }}
             value = {pixPerUM}
             onChange ={(e) => {setPixPerUM(e.target.value)}}
+          />
+          <TextField 
+            label="gain"
+            variant='filled'
+            type="number"
+            InputLabelProps={{ shrink: true, }}
+            value = {gain}
+            onChange ={(e) => {setGain(e.target.value)}}
           />
           <Button variant='contained' onClick={() => {setParameters()}}>
             use these parameters

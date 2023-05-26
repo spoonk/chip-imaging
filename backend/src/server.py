@@ -1,9 +1,8 @@
 import logging
 import atexit
 
-# fixes not able to open tkinter window bug (it does not work)
-import sys
-sys.coinit_flags = 2  # COINIT_APARTMENTTHREADED
+import platform
+
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
@@ -27,6 +26,7 @@ from stage.pmm_stage import PMMStage
 from imager.chip_imager import ChipImager
 from server.imager_manager import ImagerManager
 from server.stitcher_manager import StitcherManager
+from imager.config import DEMO_STITCH_DATA_PATH
 
 app = Flask("src")
 CORS(app)
@@ -195,13 +195,17 @@ def set_stitching_params(theta, pixelsPerUm):
 
 @app.route("/promptStitchingPath")
 def prompt_path():
-    # prompts the user to select where the data images will be saved
     stitcher: StitcherManager = cache['stitcher']
-    directory_path = tkfilebrowser.askopendirname(initialdir="./")
+    directory_path = None
+
+    if platform.system() != 'Darwin':
+        directory_path = tkfilebrowser.askopendirname(initialdir="./")
+    else:
+        directory_path = DEMO_STITCH_DATA_PATH
     if directory_path is None:
         return jsonify([False, "directory not selected"])
-    return jsonify(stitcher.initialize(directory_path))
 
+    return jsonify(stitcher.initialize(str(directory_path)))
 
 @app.route("/stitch")
 def start_stitching():

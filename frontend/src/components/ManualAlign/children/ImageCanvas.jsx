@@ -16,14 +16,14 @@ import Draggable from 'react-draggable'
  * @param zoom: 
  * @returns 
  */
-const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef}) => {
+const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef, gain}) => {
   const canvasRef = useRef(null)
   const [dragOffset, setDragOffset] = useState({x: 0, y: 0})
 
   // redraw images whenever something changes
   useEffect(() => {
     renderImages();
-  }, [images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef]) // check dependencies later
+  }, [images, rows, cols, pixelsPerUM, theta, distance, zoom, frameRef, gain]) // check dependencies later
 
   const renderImages = () => {
     const canvas = canvasRef.current
@@ -119,10 +119,10 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, fr
           setDragOffset({x: data.x, y: data.y})
         }}
       >
-        <div>
+        <div style={{filter:`brightness(${gain})`}}>
           <canvas 
             style={{transform: `scale(${zoom})`,
-                  transformOrigin: computeOrigin()
+                  transformOrigin: computeOrigin(),
             }} 
             ref={canvasRef} 
             width={distance * cols} 

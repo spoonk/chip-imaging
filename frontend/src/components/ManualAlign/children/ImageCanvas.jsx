@@ -115,7 +115,7 @@ const ImageCanvas = ({images, rows, cols, pixelsPerUM, theta, distance, zoom, fr
   return (
     <div className='image-canvas'>
       <Draggable
-        onDrag = {(e, data) => {
+        onDrag = {(_, data) => {
           setDragOffset({x: data.x, y: data.y})
         }}
       >

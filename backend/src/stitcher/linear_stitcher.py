@@ -62,12 +62,11 @@ class LinearStitcher(StitchPipeline):
 
     def _paste_images_into_canvas(self, canvas, images):
         # @modifies: canvas
-        # pre: images must be sorted by increasing file name
+        # pre: images must be sorted in the order they were acquired
         # uses the image grid to determine where to paste the images in the canvas
         rot = np.matrix(
             [[np.cos(self._theta), -np.sin(self._theta)],
              [np.sin(self._theta), np.cos(self._theta)],])
-
 
 
         # stitching in reverse order results in a much better looking image

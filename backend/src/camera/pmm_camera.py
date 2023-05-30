@@ -1,12 +1,9 @@
 import logging
 from math import ceil
-from time import sleep
 
 import numpy as np
 from camera.camera_interface import Camera
 from imager.pymmcore_singleton import PymmcoreSingleton
-
-# SLEEP_DURATION = 0.5 # 500ms
 
 class PMMCamera(Camera):
     """
@@ -15,23 +12,24 @@ class PMMCamera(Camera):
 
     def __init__(self):
         self._pymm = PymmcoreSingleton()
-        self._core = self._pymm.core
+        self._core = self._pymm.core # for ease of reference
         self._connected = False
         self._gain = 1
         logging.getLogger().info("pycromanager camera instantiated")
 
+    # initializes the camera
     def connect(self):
         # set the camera to a state where it can take pictures
         self._core.setAutoShutter(False)
         self._core.setShutterOpen(False)
         self._connected = True
-        # self._core.startContinuousSequenceAcquisition(0.0)
 
+    # disconnects this device
     def close(self):
-        # self._core.stopSequenceAcquisition()
+        # note: this function kinda unnecessary 
         self._connected = False
 
-    def take_image(self) -> np.array:
+    def take_image(self) -> np.ndarray:
         self._core.snapImage()
         im = np.array(self._core.getImage())
         self._apply_gain(im)
@@ -53,9 +51,10 @@ class PMMCamera(Camera):
     def get_exposure(self) -> float:
         return self._core.getExposure()
 
-    def _apply_gain(self, image: np.array):
-        # @modifies image
-
+    # multiplies each pixel in image by self._gain
+    # Performs clamping to ensure pixels don't overflow
+    # modifies image in-place
+    def _apply_gain(self, image: np.ndarray) -> None:
         # the extra number of bits we will need to apply 
         # this gain without overflow
         gainFactor = ceil(np.log10(self._gain) / np.log10(2))

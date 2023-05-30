@@ -200,9 +200,10 @@ def prompt_path():
 
     if platform.system() != 'Darwin':
         directory_path = tkfilebrowser.askopendirname(initialdir="./")
+        print(directory_path)
     else:
         directory_path = DEMO_STITCH_DATA_PATH
-    if directory_path is None:
+    if directory_path is None or directory_path == '':
         return jsonify([False, "directory not selected"])
 
     return jsonify(stitcher.initialize(str(directory_path)))

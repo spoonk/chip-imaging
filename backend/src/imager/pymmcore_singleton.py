@@ -19,6 +19,7 @@ class PymmcoreSingleton():
 
     def __init__(self):
         if PymmcoreSingleton._instance is None or PymmcoreSingleton._instance_counter == 0:
+            # initialize pymmcore instance
             PymmcoreSingleton._instance = pymmcore.CMMCore()
             PymmcoreSingleton._instance.setDeviceAdapterSearchPaths([MICROMANAGER_PATH])
             PymmcoreSingleton._instance.loadSystemConfiguration(DEVICE_CONFIG["config_path"])
@@ -28,9 +29,7 @@ class PymmcoreSingleton():
         PymmcoreSingleton._instance_counter += 1
 
     def __del__(self):
-        """
-        When all references to the singleton are lost, we reset the pymmcore session
-        """
+        # When all references to the singleton are lost, we reset the pymmcore session
         PymmcoreSingleton._instance_counter -= 1
         if PymmcoreSingleton._instance_counter == 0:
             PymmcoreSingleton._instance.reset()

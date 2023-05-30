@@ -68,30 +68,38 @@ todo:
 [ x ] zoom the html element not the canvas for the image canvas component
     - stuff can go out of bounds on canvas if too much zoom
 [ x ] zoom slider for manual align
-[ ] use MUI stack for laying out buttons
+[ ] use MUI stack for laying out buttons on frontend
 
-[ ] implement stitcher manager for cleaner code
-[ ] maybe make initialization process more fine-grained
+[ x ] implement stitcher manager for cleaner code
+[ x ] maybe make initialization process more fine-grained
+    - not 100% sure what I meant by this, but I have separated out stitching and acquiring
+
+
+[ x ] gain scalar on frontend (images will likely be black)
+
+[ x ] figure out how to run server and frontend with exe file
+
+[ x ] stitching stuff needs to not require device to be initialized
+    - add a stitcher manager, which is separate from imager manager
+    - this means separating it out from the manager (which I think I wanted originally)
+[ x ] update the stitchable_dir function in manager to allow there to be tiff files throughout, just give a new stitching result a later name
+
+
+
+[ ] figure out how to prevent multiple sockets connected / streaming video
+[ ] implement bat scripts to run / kill server + frontend
+
+[ ] add documentation on the website to say what each button means (popup or something)
+    - lazy :)
 
 [ ] clean up server routes with blueprints
+
+[ ] actually interpret status codes returned by server (right now I just say server offline, which isn't always true)
+    - if offline, say that, otherwise spit out the error code back to client
 
 [ ] documentation
 [ ] way to kill / restart server devices
 
-[ ] gain scalar on frontend (images will likely be black)
+[ ] readme on repo explaining how this project works
 
-[ ] figure out how to run server and frontend with exe file
-
-[ ] add documentation on the website to say what each button means (popup or something)
-
-[ ] stitching stuff needs to not require device to be initialized
-    - add a stitcher manager, which is separate from imager manager
-    - this means separating it out from the manager (which I think I wanted originally)
-[ ] update the stitchable_dir function in manager to allow there to be tiff files throughout, just give a new stitching result a later name
-[ ] remove distance param from the manual align menu
-
-[ ] figure out how to prevent multiple sockets connected / streaming video
-
-
-[ ] implement getting stitched result on frontend
 closing in!

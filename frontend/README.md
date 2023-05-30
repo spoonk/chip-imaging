@@ -98,8 +98,13 @@ todo:
     - if offline, say that, otherwise spit out the error code back to client
 
 [ ] documentation
+    [ x ] server routes
 [ ] way to kill / restart server devices
 
 [ ] readme on repo explaining how this project works
+
+
+[ ] ***see if gain on frontend actually works for dark images***
+    - if not, need to apply gain server-side, send those in for manual adjustment
 
 closing in!

@@ -22,6 +22,7 @@ class PMMCamera(Camera):
         # set the camera to a state where it can take pictures
         self._core.setAutoShutter(False)
         self._core.setShutterOpen(False)
+        self._core.setExposure(100)
         self._connected = True
 
     # disconnects this device

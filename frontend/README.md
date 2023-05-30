@@ -99,6 +99,7 @@ todo:
 
 [ ] documentation
     [ x ] server routes
+
 [ ] way to kill / restart server devices
 
 [ ] readme on repo explaining how this project works

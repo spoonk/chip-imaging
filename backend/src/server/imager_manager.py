@@ -29,6 +29,7 @@ it was rejected. If not, it will be some success message
 ManagerResponse = Tuple[bool, str]  # [success, reason]
 busy_message = "device busy"
 
+
 class ImagerManager:
     # possible device states
     STATUS_IDLE = 0
@@ -79,8 +80,8 @@ class ImagerManager:
                 return (True, "updated chip parameters")
             return (False, busy_message)
 
-    # saves the current position of the stage as 
-    # the one in which the top-left corner of the 
+    # saves the current position of the stage as
+    # the one in which the top-left corner of the
     # chip is visible to the camera
     def save_top_left_position(self) -> ManagerResponse:
         with self._state_lock:
@@ -111,7 +112,7 @@ class ImagerManager:
                 return (True, "acquisition started")
             return (False, busy_message)
 
-    # returns a dictionary of the devices current state 
+    # returns a dictionary of the devices current state
     # and the path that is being used for data acquisition
     def get_status(self) -> dict[str, str | None]:
         with self._state_lock:
@@ -130,4 +131,3 @@ class ImagerManager:
 
     def get_saved_acquisition_path(self):
         return self._imaging_path
-

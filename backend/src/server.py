@@ -1,16 +1,12 @@
 import logging
 import atexit
-
 import platform
-
-
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 import io
 import tkfilebrowser    # this package is such a pain, but needs to be used since tk doesn't work
                         # with eclipse device running for some reason
-
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO
@@ -30,11 +26,6 @@ sock = SocketIO(app, cors_allowed_origins="*")
 
 
 cache = {}  # server lifetime-wide cache
-
-IMAGES_PATH = (
-    "/home/spoonk/dev/allbritton/chip-imaging/backend/prototyping/sample_data/test1"
-)
-""" IMAGES_PATH = "/Users/spunk/college/work/chip-imaging/backend/prototyping/sample_data/test1" """
 
 
 # Streams images from the camera to the socket that  
@@ -173,6 +164,7 @@ def save_top_left():
     return jsonify([False, "please initialize the device first"])
 
 # ===============================  stitching routes ============================
+
 # opens a file explorer where the user selects the directory from 
 # which they would like to stitch
 # the selected directory must contain a grid.json file and a 
@@ -221,12 +213,12 @@ def start_stitching():
     stitcher: StitcherManager = cache['stitcher']
     return jsonify(stitcher.stitch())
 
-
+# cleanup code to run when the server closes
 def shut_down():
     cache.clear()
 
 if __name__ == "__main__":
-    # stitcher manager doesn't rely on hardware
+    # stitcher manager doesn't rely on hardware so it can be instantiated right away
     cache['stitcher'] = StitcherManager()
     atexit.register(shut_down)
 

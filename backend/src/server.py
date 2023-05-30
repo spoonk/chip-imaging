@@ -8,9 +8,8 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 import io
-from tkinter import Tk
-import tkfilebrowser
-from tkinter.filedialog import askdirectory
+import tkfilebrowser    # this package is such a pain, but needs to be used since tk doesn't work
+                        # with eclipse device running for some reason
 
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -19,9 +18,6 @@ from PIL import Image
 
 from camera.concurrent_pmm_camera import CPMMCamera 
 from stage.pmm_stage import PMMStage 
-
-# from camera.mock_camera import MockCamera
-# from stage.mock_stage import MockStage
 
 from imager.chip_imager import ChipImager
 from server.imager_manager import ImagerManager
@@ -221,3 +217,4 @@ if __name__ == "__main__":
     cache['stitcher'] = StitcherManager()
     atexit.register(shut_down)
     sock.run(app, host="127.0.0.1", port=8079, debug=True)
+

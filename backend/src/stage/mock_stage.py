@@ -3,6 +3,10 @@ from time import sleep
 
 from stage.stage_interface import Stage
 
+"""
+A simulated stage object to use when not testing 
+on actual hardware. 
+"""
 
 class MockStage(Stage):
     def __init__(self):

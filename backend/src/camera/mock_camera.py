@@ -6,13 +6,25 @@ import numpy as np
 from camera.camera_interface import Camera
 from PIL import Image
 
+
+
+# NOTE: unfortunately, we need to reference some image to be able to mock a camera. 
+#       this depends on the computer you are using
 mock_image_path = "/home/spoonk/dev/allbritton/chip-imaging/backend/figures/example.TIFF"
 # mock_image_path = '/Users/spunk/college/work/chip-imaging/backend/figures/topleft.png'
 # mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\figures\topleft.png'
 # mock_image_path = r'C:\Users\Luke\Desktop\chip-imager\chip-imaging\backend\src\demo_images\stitched.TIFF'
 
+"""
+A simulated camera to use when not 
+testing the code on hardware. 
+
+This camera mimics a live-feed by automatically 
+changing the gain. This makes all the images 
+not appear the same and indicates that 
+there is some feed being streamed
+"""
 class MockCamera(Camera):
-    """mock camera used for testing without a connection to hardware"""
 
     def __init__(self):
         logging.info('camera instantiated')

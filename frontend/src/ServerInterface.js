@@ -25,7 +25,7 @@ export class ServerInterface {
       const body = await initRes.json()
       return body 
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -39,7 +39,7 @@ export class ServerInterface {
       const body = await result.json()
       return body
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -49,7 +49,7 @@ export class ServerInterface {
       const body = await setParamResult.json()
       return body
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -59,7 +59,7 @@ export class ServerInterface {
       const body = await saveTopLeftResult.json()
       return body
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -73,7 +73,7 @@ export class ServerInterface {
 
       return [ebody[0] && gbody[0], JSON.stringify(ebody[1]) + " " + JSON.stringify(gbody[1])]
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -82,7 +82,7 @@ export class ServerInterface {
       const promptResult = await fetch(`${serverUrl}/promptDataPath`)
       return await promptResult.json()
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -91,7 +91,7 @@ export class ServerInterface {
       const stitchRes = await fetch(`${serverUrl}/stitch`)
       return await stitchRes.json()
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -100,7 +100,7 @@ export class ServerInterface {
       const acqRes = await fetch(`${serverUrl}/acquire`)
       return await acqRes.json()
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -115,7 +115,7 @@ export class ServerInterface {
       const gridJson = await gridRes.json()
       return gridJson
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -125,7 +125,7 @@ export class ServerInterface {
       const promptResult = await fetch(`${serverUrl}/promptStitchingPath`)
       return await promptResult.json()
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
   }
 
@@ -134,7 +134,7 @@ export class ServerInterface {
       const setResult = await fetch(`${serverUrl}/setStitchingParams/${theta}/${pixePerUm}`)
       return await setResult.json()
     } catch (e) {
-      return [false, 'server offline']
+      return [false, e.message]
     }
 
   }
